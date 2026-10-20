@@ -55,6 +55,10 @@ func _hide_feedback() -> void:
 func _process(delta: float) -> void:
 	if not visible:
 		return
+	# Slow weapons can have a cooldown longer than the brief single-shot display.
+	# Once shown, keep the count stable during held fire; release still fades it.
+	if Input.is_action_pressed("shoot") and weapon.enabled and weapon.ammo > 0 and not weapon.is_reloading:
+		_remaining = display_duration
 	_remaining = maxf(0.0, _remaining - delta)
 	if _remaining <= 0.0:
 		_hide_feedback()

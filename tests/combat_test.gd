@@ -73,7 +73,7 @@ func _run() -> void:
 	_check(not _weapon.request_reload(), "Full magazine cannot start reload")
 	for shot in range(12):
 		_check(_weapon.try_fire(Vector2(900, 565), _player), "Magazine shot %d fires" % (shot + 1))
-		await _ticks(11)
+		await _ticks(ceili(60.0 / _weapon.fire_rate) + 1)
 	_check(_weapon.ammo == 0, "Every successful shot consumes one round")
 	_check(not _weapon.try_fire(Vector2(900, 565), _player), "Empty magazine blocks firing")
 	await _ticks(20)
@@ -150,27 +150,27 @@ func _run() -> void:
 	cover.queue_free()
 	await _ticks(2)
 	_check(_enemy.can_see_target(), "Removing cover restores vision")
-	for shot in range(4):
+	for shot in range(ceili(_enemy.max_health / _weapon.damage)):
 		_weapon.try_fire(_enemy.global_position, _player)
 		if shot == 0:
-			_check(_enemy.health == 75.0, "Player bullets damage guard through enemy collision layer")
-		await _ticks(11)
-	_check(_enemy.is_dead and _enemy.health == 0.0, "Four default player hits kill guard")
+			_check(_enemy.health == _enemy.max_health - _weapon.damage, "Player bullets damage guard through enemy collision layer")
+		await _ticks(ceili(60.0 / _weapon.fire_rate) + 1)
+	_check(_enemy.is_dead and _enemy.health == 0.0, "Accurate hits kill guard according to live damage and health")
 	_check(_enemy.collision_layer == 0 and _enemy.get_node("CollisionShape2D").disabled, "Guard corpse has no collision")
 	_check(not _enemy.get_node("Aim/Weapon").enabled, "Dead guard cannot fire")
-	_check("ЗАЧИЩЕН" in _yard.get_node("HUD/CombatStatus").text, "Guard death completes combat objective")
+	_check(_yard.get_node("HUD/PauseMenu/DeveloperPanel").content.get_node("Count").text.ends_with("живы: 0"), "Guard death updates developer count without a gameplay victory banner")
 
 	await _fresh()
 	_duel_positions()
 	await _ticks(2)
 	_check(_enemy.state == _enemy.State.AIM, "Detection starts a telegraphed aiming phase")
-	await _ticks(48)
+	await _ticks(floori(_enemy.aim_duration * 60.0) - 6)
 	_check(_player.health == 100.0 and _enemy.state == _enemy.State.AIM, "Guard gives reaction time before first hitscan shot")
-	await _ticks(40)
-	_check(_player.health == 58.0, "A complete burst deals three 14-damage hits")
+	await _ticks(ceili(_enemy.burst_size / _enemy.weapon.fire_rate * 60.0) + 10)
+	_check(_player.health == _player.max_health - _enemy.burst_size * _enemy.weapon.damage, "Full burst deals configured damage on each hit")
 	_check(_enemy.state == _enemy.State.RELOAD and _enemy.get_node("Aim/Weapon").is_reloading, "Burst ends with enemy reload")
 	var health_after_burst: float = _player.health
-	await _ticks(70)
+	await _ticks(floori(_enemy.weapon.reload_duration * 30.0))
 	_check(_player.health == health_after_burst, "Enemy reload leaves a safe attack window")
 
 	await _fresh()
@@ -179,10 +179,13 @@ func _run() -> void:
 	var remembered := _player.global_position
 	_player.global_position = Vector2(650, 565)
 	await _ticks(2)
-	_check(_enemy.state == _enemy.State.INVESTIGATE, "Breaking sight cancels aiming and starts investigation")
+	_check(_enemy.state == _enemy.State.AIM, "Brief sight loss preserves preparation for the last observed angle")
 	_check(_enemy.last_known_position.is_equal_approx(remembered), "Guard remembers last visible position, not hidden player position")
-	await _ticks(115)
-	_check(_enemy.state == _enemy.State.SEARCH, "Guard reaches remembered position and searches")
+	var search_wait := 0
+	while _enemy.state != _enemy.State.SEARCH and search_wait < 420:
+		await _ticks(1)
+		search_wait += 1
+	_check(_enemy.state == _enemy.State.SEARCH, "After committed fire and reload, guard investigates remembered position and searches")
 	_check(_player.health == 100.0, "Guard cannot shoot hidden player through cover")
 	await _ticks(190)
 	_check(_enemy.state == _enemy.State.PATROL, "Unsuccessful search returns to patrol")

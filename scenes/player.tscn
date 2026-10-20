@@ -32,6 +32,9 @@ script = ExtResource("3_visual")
 
 [node name="Weapon" type="Node2D" parent="Aim"]
 script = ExtResource("2_weapon")
+damage = 20.0
+fire_rate = 3.0
+max_range = 500.0
 active_reload_enabled = true
 
 [node name="Barrel" type="Polygon2D" parent="Aim/Weapon"]

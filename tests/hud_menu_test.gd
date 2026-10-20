@@ -58,7 +58,10 @@ func _run() -> void:
 	var readout: Control = yard.get_node("HUD/WeaponReadout")
 	var menu: Control = yard.get_node("HUD/PauseMenu")
 	var cursor: Control = yard.get_node("HUD/AimCursor")
-	_check(not yard.has_node("HUD/Bottom") and not menu.visible, "Full-width controls strip is removed and help starts closed")
+	var has_debug_overlay := false
+	for node_name in ["Top", "DeveloperHint", "CombatStatus", "Objective", "TargetStatus", "Bottom"]:
+		has_debug_overlay = has_debug_overlay or yard.has_node("HUD/" + node_name)
+	_check(not has_debug_overlay and not menu.visible, "Gameplay HUD has no top strip, location name, objective, debug status or controls banner")
 	_check(readout.visible and readout.get_node("Name").text == weapon.display_name.to_upper() and readout.get_node("Ammo").text == "12 / 12", "Persistent HUD shows selected weapon and loaded ammo before any shot")
 	await _ticks(30)
 	_check(_shots == 0 and readout.visible and not player.get_node("AmmoFeedback").visible, "Idle player can inspect ammo silently while transient readout stays hidden")

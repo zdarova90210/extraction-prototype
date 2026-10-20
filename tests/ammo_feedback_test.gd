@@ -47,7 +47,12 @@ func _run() -> void:
 	_check(not feedback.visible and is_zero_approx(feedback.modulate.a), "Readout disappears after roughly 300 milliseconds")
 	Input.action_press("shoot")
 	player.set_physics_process(true)
-	await _ticks(24)
+	await _ticks(3)
+	var stayed_readable := true
+	for frame in range(60):
+		await _ticks(1)
+		stayed_readable = stayed_readable and feedback.visible and feedback.modulate.a > 0.7
+	_check(stayed_readable, "Readout remains readable throughout slow-fire cooldowns, not only after each shot")
 	Input.action_release("shoot")
 	player.set_physics_process(false)
 	_check(weapon.ammo < 11 and feedback.visible and feedback.modulate.a > 0.7, "Holding fire keeps count readable between shots without restarting fade-in")

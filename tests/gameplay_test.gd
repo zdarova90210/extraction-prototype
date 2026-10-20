@@ -50,6 +50,10 @@ func _run() -> void:
 	var weapon: Node2D = player.get_node("Aim/Weapon")
 	weapon.magazine_size = 100
 	weapon.ammo = 100
+	# Controlled values verify configurable ballistics independently of live balance.
+	weapon.damage = 25.0
+	weapon.fire_rate = 6.0
+	weapon.max_range = 1000.0
 	var target: StaticBody2D = yard.get_node("Target")
 	var camera: Camera2D = player.get_node("Camera2D")
 	camera.position_smoothing_enabled = false
@@ -157,7 +161,7 @@ func _run() -> void:
 	await _ticks(2)
 	_check(target.is_destroyed and is_zero_approx(target.health), "Lethal shot destroys target")
 	_check(target.collision_layer == 0 and target.get_node("CollisionShape2D").disabled, "Wreck no longer blocks shots or movement")
-	_check("РАЗРУШЕНА" in yard.get_node("HUD/TargetStatus").text, "HUD receives destruction signal")
+	_check(not yard.has_node("HUD/TargetStatus"), "Target destruction needs no debug counter in gameplay HUD")
 	target.take_damage(500.0)
 	_check(is_zero_approx(target.health), "Destroyed target ignores further damage")
 	await _ticks(15)

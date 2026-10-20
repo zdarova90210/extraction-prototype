@@ -76,6 +76,8 @@ func _run() -> void:
 	var guard: CharacterBody2D = yard.get_node("Enemy")
 	guard.set_physics_process(false)
 	var weapon: Node2D = player.get_node("Aim/Weapon")
+	var base_damage: float = weapon.damage
+	var base_capacity: int = weapon.magazine_size
 	var cursor: Control = yard.get_node("HUD/AimCursor")
 	weapon.active_reload_resolved.connect(_record_result)
 	weapon.get_node("Audio").cue_played.connect(_record_cue)
@@ -119,7 +121,7 @@ func _run() -> void:
 	var actual_duration := float(_ticks_elapsed - started) / 60.0
 	_check(absf(actual_duration - expected_duration) < 0.06 and actual_duration < 1.4, "Only remaining reload time runs 1.5 times faster")
 	_check(weapon.ammo == 12 and _completed_cues == 3 and not cursor.is_reload_active, "Successful completion refills once, sounds once and hides ring")
-	_check(weapon.damage == 25.0 and weapon.magazine_size == 12, "Timing success adds no damage buff or extra rounds")
+	_check(weapon.damage == base_damage and weapon.magazine_size == base_capacity, "Timing success adds no damage buff or extra rounds")
 
 	started = _begin(weapon)
 	await _at_progress(weapon, weapon.active_window_end + 0.05)

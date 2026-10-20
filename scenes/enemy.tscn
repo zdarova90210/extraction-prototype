@@ -13,7 +13,7 @@ radius = 15.0
 
 [node name="Enemy" type="CharacterBody2D"]
 collision_layer = 8
-collision_mask = 7
+collision_mask = 15
 motion_mode = 1
 script = ExtResource("1")
 
@@ -35,11 +35,11 @@ armor_color = Color(0.28, 0.25, 0.23, 1)
 
 [node name="Weapon" type="Node2D" parent="Aim"]
 script = ExtResource("3")
-damage = 14.0
+damage = 18.0
 fire_rate = 5.0
 max_range = 650.0
-magazine_size = 3
-reload_duration = 2.2
+magazine_size = 4
+reload_duration = 1.4
 hit_mask = 7
 tracer_color = Color(1, 0.45, 0.29, 1)
 

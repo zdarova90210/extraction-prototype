@@ -27,6 +27,14 @@ func _capture() -> void:
 	yard.get_node("HUD/PauseMenu").set_open(true)
 	await _ticks(2)
 	await _save("pause_menu")
+	yard.get_node("HUD/PauseMenu").set_developer_open(true)
+	yard.spawn_guard(1)
+	await _ticks(2)
+	await _save("developer_room")
+	# Keep the later combat captures focused on the original single guard.
+	for guard in yard.get_guards():
+		if guard != enemy:
+			yard.remove_guard(guard)
 	yard.get_node("HUD/PauseMenu").set_open(false)
 	root.push_input(pointer, true)
 	await _ticks(2)
@@ -39,6 +47,13 @@ func _capture() -> void:
 	enemy.set_physics_process(true)
 	await _ticks(8)
 	await _save("aim")
+	player.global_position = Vector2(1280, 610)
+	await _ticks(4)
+	enemy.set_physics_process(false)
+	await _save("guard_turn")
+	player.global_position = Vector2(1170, 440)
+	enemy.get_node("Aim").global_rotation = PI
+	enemy._desired_angle = PI
 	enemy.set_physics_process(false)
 	player.get_node("Aim/Weapon").try_fire(enemy.global_position, player)
 	await _save("shot")
@@ -92,7 +107,7 @@ func _capture() -> void:
 	player.take_damage(1000.0)
 	await _ticks(20)
 	await _save("death")
-	print("Visual captures saved: yard, pause_menu, aim, shot, ammo_shot, ammo_hidden, empty, reload, health_damage, health_settled, active_reload_window, active_reload_success, active_reload_miss, victory, death")
+	print("Visual captures saved: yard, pause_menu, developer_room, guard_turn, aim, shot, ammo_shot, ammo_hidden, empty, reload, health_damage, health_settled, active_reload_window, active_reload_success, active_reload_miss, victory, death")
 	quit()
 
 

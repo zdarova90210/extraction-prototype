@@ -1,15 +1,18 @@
 extends Node2D
 ## Local scene wiring only; gameplay objects do not depend on this map.
 
+signal guards_changed
+
+const GUARD_SCENE = preload("res://scenes/enemy.tscn")
+const MAX_GUARDS: int = 8
+
 @onready var target: StaticBody2D = $Target
-@onready var status: Label = $HUD/TargetStatus
 @onready var player: CharacterBody2D = $Player
-@onready var enemy: CharacterBody2D = $Enemy
 @onready var weapon: Node2D = $Player/Aim/Weapon
-@onready var combat_status: Label = $HUD/CombatStatus
 @onready var death_screen: Control = $HUD/DeathScreen
 
 var _hurt_time: float = 0.0
+var _guards: Array[CharacterBody2D] = []
 
 
 func _ready() -> void:
@@ -17,15 +20,14 @@ func _ready() -> void:
 	$HUD/AimCursor.bind(player, weapon)
 	$HUD/WeaponReadout.bind(weapon)
 	$HUD/PauseMenu.toggled.connect(_on_pause_toggled)
-	target.health_changed.connect(_on_target_health_changed)
 	target.destroyed.connect(_on_target_destroyed)
-	_on_target_health_changed(target.health, target.max_health)
 	player.damaged.connect(_on_player_damaged)
 	player.died.connect(_on_player_died)
 	weapon.shot_fired.connect(_on_player_shot)
-	enemy.state_changed.connect(_on_enemy_state_changed)
-	enemy.died.connect(_on_enemy_died)
-	_on_enemy_state_changed(enemy.get_state_description())
+	for guard in get_tree().get_nodes_in_group("guards"):
+		if is_ancestor_of(guard):
+			_register_guard(guard)
+	$HUD/PauseMenu/DeveloperPanel.bind(self)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -33,12 +35,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_tree().reload_current_scene()
 
 
-func _on_target_health_changed(current: float, maximum: float) -> void:
-	status.text = "МИШЕНЬ  %d / %d" % [ceili(current), ceili(maximum)]
-
-
 func _on_target_destroyed() -> void:
-	status.text = "МИШЕНЬ РАЗРУШЕНА"
 	$Navigation.rebuild_after_physics()
 
 
@@ -59,18 +56,82 @@ func _on_pause_toggled(open: bool) -> void:
 
 func _on_player_died() -> void:
 	death_screen.show()
-	combat_status.text = "БОЙ ОКОНЧЕН · Enter — повторить"
 
 
 func _on_player_shot(from: Vector2, _to: Vector2, _hit: bool) -> void:
-	enemy.hear_shot(from)
+	for guard in get_guards():
+		guard.hear_shot(from)
 
 
-func _on_enemy_state_changed(description: String) -> void:
-	if not player.is_dead:
-		combat_status.text = "ОХРАННИК / " + description
+func get_guards() -> Array[CharacterBody2D]:
+	var result: Array[CharacterBody2D] = []
+	for guard in _guards:
+		if is_instance_valid(guard) and not guard.is_queued_for_deletion():
+			result.append(guard)
+	return result
+
+
+func _register_guard(guard: CharacterBody2D) -> void:
+	_guards.append(guard)
+	guard.died.connect(_on_enemy_died)
+	guards_changed.emit()
 
 
 func _on_enemy_died() -> void:
-	if not player.is_dead:
-		combat_status.text = "СЕКТОР ЗАЧИЩЕН · Enter — повторить бой"
+	guards_changed.emit()
+
+
+func spawn_guard(marker_index: int) -> String:
+	if get_guards().size() >= MAX_GUARDS:
+		return "Лимит: 8 охранников. Удалите лишних или погибших."
+	var markers := $GuardSpawns.get_children()
+	if marker_index < 0 or marker_index >= markers.size():
+		return "Точка появления не найдена."
+	var point: Vector2 = markers[marker_index].global_position
+	var map := get_world_2d().navigation_map
+	if NavigationServer2D.map_get_iteration_id(map) == 0:
+		return "Навигация ещё загружается. Попробуйте снова."
+	if NavigationServer2D.map_get_closest_point(map, point).distance_to(point) > 6.0:
+		return "Точка вне прохода. Передвиньте маркер в редакторе."
+	var shape := CircleShape2D.new()
+	shape.radius = 19.0
+	var query := PhysicsShapeQueryParameters2D.new()
+	query.shape = shape
+	query.transform = Transform2D(0.0, point)
+	query.collision_mask = 15
+	if not get_world_2d().direct_space_state.intersect_shape(query, 1).is_empty():
+		return "Точка занята персонажем или препятствием."
+	# Also inspect transforms: multiple clicks can precede a PhysicsServer sync.
+	for guard in get_guards():
+		if not guard.is_dead and guard.global_position.distance_to(point) < 40.0:
+			return "Точка уже занята охранником."
+	if player.global_position.distance_to(point) < 40.0:
+		return "Точка занята игроком."
+	var guard := GUARD_SCENE.instantiate() as CharacterBody2D
+	guard.target = player
+	guard.position = $TestEnemies.to_local(point)
+	guard.get_node("Aim").rotation = markers[marker_index].global_rotation
+	$TestEnemies.add_child(guard)
+	_register_guard(guard)
+	return "Охранник добавлен: " + markers[marker_index].name
+
+
+func remove_guard(guard: CharacterBody2D) -> void:
+	if not is_instance_valid(guard) or guard not in _guards:
+		return
+	_guards.erase(guard)
+	guard.queue_free()
+	guards_changed.emit()
+
+
+func remove_all_guards() -> void:
+	for guard in get_guards():
+		remove_guard(guard)
+
+
+func restore_player() -> void:
+	player.restore_state()
+	death_screen.hide()
+	_hurt_time = 0.0
+	$HUD/HurtFlash.color.a = 0.0
+	$HUD/AimCursor.bind(player, weapon)

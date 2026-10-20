@@ -54,3 +54,13 @@ func take_damage(amount: float) -> void:
 		$Aim/BodyVisual.fallen = true
 		$Aim/Weapon.hide()
 		died.emit()
+
+
+func restore_state() -> void:
+	is_dead = false
+	health = max_health
+	velocity = Vector2.ZERO
+	$Aim/BodyVisual.fallen = false
+	weapon.show()
+	weapon.restore_state()
+	health_changed.emit(health, max_health)

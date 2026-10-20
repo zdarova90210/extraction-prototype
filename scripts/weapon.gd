@@ -143,6 +143,16 @@ func stop() -> void:
 	queue_redraw()
 
 
+func restore_state() -> void:
+	# Reset runtime state for a new training attempt without replacing the actor.
+	stop()
+	enabled = true
+	_cooldown = 0.0
+	_empty_feedback_cooldown = 0.0
+	ammo = magazine_size
+	ammo_changed.emit(ammo, magazine_size)
+
+
 func _draw() -> void:
 	if _flash_time > 0.0:
 		draw_colored_polygon(PackedVector2Array([

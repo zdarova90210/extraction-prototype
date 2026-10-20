@@ -8,6 +8,8 @@ signal toggled(open: bool)
 
 func _ready() -> void:
 	resume_button.pressed.connect(_on_resume)
+	$Center/Panel/Margin/Content/Developer.pressed.connect(func(): set_developer_open(true))
+	$DeveloperPanel.back_requested.connect(func(): set_developer_open(false))
 	var keys: Label = $Center/Panel/Margin/Content/Bindings/Keys
 	keys.text = "%s %s %s %s\nМышь\nЛКМ\n%s\n%s ещё раз\n%s\nEsc" % [
 		_binding("move_up"), _binding("move_left"), _binding("move_down"), _binding("move_right"),
@@ -22,6 +24,13 @@ func _binding(action: StringName) -> String:
 
 
 func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("developer_tools") and not event.is_echo():
+		if visible and $DeveloperPanel.visible:
+			set_open(false)
+		else:
+			set_developer_open(true)
+		get_viewport().set_input_as_handled()
+		return
 	if event.is_action_pressed("ui_cancel") and not event.is_echo():
 		set_open(not visible)
 		get_viewport().set_input_as_handled()
@@ -34,12 +43,25 @@ func set_open(open: bool) -> void:
 	get_tree().paused = open
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if open:
+		$Center.show()
+		$DeveloperPanel.hide()
 		resume_button.grab_focus()
 	else:
 		resume_button.release_focus()
 		# Closing help must not turn a held/clicked mouse button into a shot.
 		Input.action_release("shoot")
 	toggled.emit(open)
+
+
+func set_developer_open(open: bool) -> void:
+	if not visible:
+		set_open(true)
+	$Center.visible = not open
+	$DeveloperPanel.visible = open
+	if open:
+		$DeveloperPanel.focus_tools()
+	else:
+		resume_button.grab_focus()
 
 
 func _on_resume() -> void:
