@@ -36,7 +36,7 @@ func _record_shot(_from: Vector2, endpoint: Vector2, _hit: bool) -> void:
 
 
 func _run() -> void:
-	_check(ProjectSettings.get_setting("application/run/main_scene") == "res://scenes/test_yard.tscn", "Main scene is the editable yard")
+	_check(ProjectSettings.get_setting("application/run/main_scene") == "res://scenes/base.tscn", "Main scene is the persistent stash; yard remains directly testable")
 	_check(ProjectSettings.get_setting("rendering/renderer/rendering_method") == "gl_compatibility", "Compatibility renderer")
 	for action in ["move_left", "move_right", "move_up", "move_down", "shoot", "reload", "restart"]:
 		_check(InputMap.has_action(action) and not InputMap.action_get_events(action).is_empty(), "Input binding: " + action)

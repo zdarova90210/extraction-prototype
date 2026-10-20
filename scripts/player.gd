@@ -11,6 +11,7 @@ signal died
 var health: float = 100.0
 var is_dead: bool = false
 var input_enabled: bool = true
+var damage_enabled: bool = true
 
 @onready var aim: Node2D = $Aim
 @onready var weapon: Node2D = $Aim/Weapon
@@ -42,7 +43,7 @@ func _physics_process(_delta: float) -> void:
 
 
 func take_damage(amount: float) -> void:
-	if is_dead or amount <= 0.0:
+	if is_dead or not damage_enabled or amount <= 0.0:
 		return
 	health = maxf(0.0, health - amount)
 	$Aim/BodyVisual.flash_hit()
@@ -60,6 +61,7 @@ func take_damage(amount: float) -> void:
 
 func restore_state() -> void:
 	is_dead = false
+	damage_enabled = true
 	health = max_health
 	velocity = Vector2.ZERO
 	$Aim/BodyVisual.fallen = false

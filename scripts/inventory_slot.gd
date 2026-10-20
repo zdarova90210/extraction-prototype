@@ -4,6 +4,7 @@ extends Button
 
 signal activated(inventory: Inventory, slot: int)
 signal dropped(data: Dictionary, inventory: Inventory, slot: int)
+signal discard_requested(inventory: Inventory, slot: int)
 
 var inventory: Inventory
 var slot_index: int = -1
@@ -118,6 +119,19 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.add_theme_font_size_override("font_size", 12)
 	return label
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if not event.is_action_pressed("discard_item") or event.is_echo():
+		return
+	# Keyboard focus may belong to another slot or the Close button. This
+	# shortcut always targets the actual GUI hover, never stored selection.
+	if not is_visible_in_tree() or get_viewport().gui_get_hovered_control() != self or get_viewport().gui_is_dragging():
+		return
+	if not known or inventory.get_item(slot_index) == null:
+		return
+	get_viewport().set_input_as_handled()
+	discard_requested.emit(inventory, slot_index)
 
 
 func _get_drag_data(_position: Vector2) -> Variant:

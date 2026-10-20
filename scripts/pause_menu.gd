@@ -15,6 +15,7 @@ func _ready() -> void:
 	keys.text = "%s %s %s %s\nМышь\nЛКМ\n%s\n%s ещё раз\n%s\n%s\n%s\nEsc" % [
 		_binding("move_up"), _binding("move_left"), _binding("move_down"), _binding("move_right"),
 		_binding("reload"), _binding("reload"), _binding("interact"), _binding("inventory"), _binding("restart")]
+	$Center/Panel/Margin/Content/Note.text += "\n%s над вещью в рюкзаке — выбросить на пол." % _binding("discard_item")
 
 
 func _binding(action: StringName) -> String:

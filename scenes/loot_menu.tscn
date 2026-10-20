@@ -127,7 +127,7 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.80, 0.73, 0.59, 1)
 theme_override_font_sizes/font_size = 13
-text = "Перетащите сюда вещь из рюкзака, чтобы выбросить на пол"
+text = "Выбросить: перетащите сюда или нажмите Q над вещью в рюкзаке"
 horizontal_alignment = 1
 
 [node name="Message" type="Label" parent="Center/Panel/Margin/Content"]

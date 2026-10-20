@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Extraction Prototype — Industrial Yard"
-run/main_scene="res://scenes/test_yard.tscn"
+run/main_scene="res://scenes/base.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
 [audio]
@@ -21,6 +21,7 @@ default_bus_layout="res://default_bus_layout.tres"
 [autoload]
 
 DisplaySettings="*res://scripts/display_settings.gd"
+RaidProgress="*res://scripts/raid_progress.gd"
 
 [display]
 
@@ -86,6 +87,10 @@ interact={
 inventory={
 "deadzone": 0.2,
 "events": [Object(InputEventKey,"physical_keycode":4194306)]
+}
+discard_item={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":81)]
 }
 
 [layer_names]

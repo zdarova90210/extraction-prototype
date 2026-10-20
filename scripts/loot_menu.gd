@@ -135,6 +135,7 @@ func _fill_grid(grid: GridContainer, inventory: Inventory, taking: bool) -> void
 			cell.drop_validator = _can_drop
 			cell.activated.connect(_activate_slot)
 			cell.dropped.connect(_drop_slot)
+			cell.discard_requested.connect(_discard_hovered)
 			grid.add_child(cell)
 	for index in range(inventory.capacity):
 		grid.get_child(index).configure(inventory, index, not taking or _container.is_discovered(index))
@@ -197,6 +198,10 @@ func _can_discard(data: Dictionary) -> bool:
 	return visible and not _player.is_dead and data.has_all(["inventory", "slot", "item"]) \
 		and data.inventory == _backpack and data.slot is int \
 		and _backpack.get_item(data.slot) != null and _backpack.get_item(data.slot) == data.item
+
+
+func _discard_hovered(inventory: Inventory, slot: int) -> void:
+	_discard({"inventory": inventory, "slot": slot, "item": inventory.get_item(slot)})
 
 
 func _discard(data: Dictionary) -> void:

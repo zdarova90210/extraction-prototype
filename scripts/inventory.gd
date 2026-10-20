@@ -4,7 +4,7 @@ extends Node
 
 signal changed
 
-@export_range(1, 32, 1) var capacity: int = 6
+@export_range(1, 100, 1) var capacity: int = 6
 @export var starting_items: Array[ItemDefinition] = []
 var _slots: Array[ItemDefinition] = []
 var item_count: int:
@@ -36,6 +36,23 @@ func get_items() -> Array[ItemDefinition]:
 
 func get_item(slot: int) -> ItemDefinition:
 	return _slots[slot] if slot >= 0 and slot < _slots.size() else null
+
+
+func snapshot_slots() -> Array[ItemDefinition]:
+	return _slots.duplicate()
+
+
+func replace_slots(slots: Array[ItemDefinition], notify: bool = true) -> void:
+	assert(slots.size() == capacity)
+	_slots.assign(slots)
+	if notify:
+		changed.emit()
+
+
+func clear(notify: bool = true) -> void:
+	_slots.fill(null)
+	if notify:
+		changed.emit()
 
 
 func first_empty_slot() -> int:

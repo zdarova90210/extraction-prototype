@@ -13,11 +13,13 @@ if (-not (Test-Path -LiteralPath $GodotPath -PathType Leaf)) {
 $previousAppData = $env:APPDATA
 $previousLocalAppData = $env:LOCALAPPDATA
 $previousDisplayTest = $env:EXTRACTION_TEST_DISPLAY
+$previousProgressTest = $env:EXTRACTION_TEST_PROGRESS
 try {
     # Scope editor settings and user data to this validation process only.
     $env:APPDATA = Join-Path $projectRoot '.godot-home\Roaming'
     $env:LOCALAPPDATA = Join-Path $projectRoot '.godot-home\Local'
     $env:EXTRACTION_TEST_DISPLAY = '1'
+    $env:EXTRACTION_TEST_PROGRESS = '1'
     $artifactDirectory = Join-Path $projectRoot 'artifacts'
     New-Item -ItemType Directory -Force -Path $env:APPDATA,$env:LOCALAPPDATA,$artifactDirectory | Out-Null
     # Test captures are not game assets and must not be imported by Godot.
@@ -38,7 +40,7 @@ try {
             Write-Output $log
             throw "$Name failed (exit $($process.ExitCode)). See $logPath"
         }
-        if ($Name -in @('gameplay', 'combat', 'combat_realtime', 'balance', 'balance_realtime', 'tactics', 'tactics_realtime', 'circling', 'circling_realtime', 'developer', 'loot', 'loot_slots', 'ground_loot', 'loot_tooltip', 'feedback', 'health_bar', 'ammo_feedback', 'active_reload', 'hud_menu', 'display', 'display_native') -and $log -notmatch 'RESULT: \d+ checks, 0 failures') {
+        if ($Name -in @('gameplay', 'combat', 'combat_realtime', 'balance', 'balance_realtime', 'tactics', 'tactics_realtime', 'circling', 'circling_realtime', 'developer', 'loot', 'loot_slots', 'ground_loot', 'quick_discard', 'loot_tooltip', 'progress', 'stash_migration', 'raid_cycle', 'progress_writer', 'progress_reader', 'raid_visual', 'feedback', 'health_bar', 'ammo_feedback', 'active_reload', 'hud_menu', 'display', 'display_native') -and $log -notmatch 'RESULT: \d+ checks, 0 failures') {
             Write-Output $log
             throw "$Name checks did not reach completion. See $logPath"
         }
@@ -66,6 +68,12 @@ try {
     Invoke-GodotCheck 'loot' @('--headless', '--fixed-fps', '60', '--quit-after', '1800', '--script', 'res://tests/loot_test.gd')
     Invoke-GodotCheck 'loot_slots' @('--headless', '--fixed-fps', '60', '--quit-after', '1800', '--script', 'res://tests/loot_slots_test.gd')
     Invoke-GodotCheck 'ground_loot' @('--headless', '--fixed-fps', '60', '--quit-after', '2400', '--script', 'res://tests/ground_loot_test.gd')
+    Invoke-GodotCheck 'quick_discard' @('--headless', '--fixed-fps', '60', '--quit-after', '1800', '--script', 'res://tests/quick_discard_test.gd')
+    Invoke-GodotCheck 'progress' @('--headless', '--fixed-fps', '60', '--quit-after', '1800', '--script', 'res://tests/progress_test.gd')
+    Invoke-GodotCheck 'stash_migration' @('--headless', '--fixed-fps', '60', '--quit-after', '1800', '--script', 'res://tests/stash_migration_test.gd')
+    Invoke-GodotCheck 'raid_cycle' @('--headless', '--fixed-fps', '60', '--quit-after', '3000', '--script', 'res://tests/raid_cycle_test.gd')
+    Invoke-GodotCheck 'progress_writer' @('--headless', '--fixed-fps', '60', '--quit-after', '300', '--script', 'res://tests/progress_restart_test.gd', '--', '--write-profile')
+    Invoke-GodotCheck 'progress_reader' @('--headless', '--fixed-fps', '60', '--quit-after', '300', '--script', 'res://tests/progress_restart_test.gd')
     Invoke-GodotCheck 'feedback' @('--headless', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/feedback_test.gd')
     Invoke-GodotCheck 'health_bar' @('--headless', '--fixed-fps', '60', '--quit-after', '600', '--script', 'res://tests/health_bar_test.gd')
     Invoke-GodotCheck 'ammo_feedback' @('--headless', '--fixed-fps', '60', '--quit-after', '600', '--script', 'res://tests/ammo_feedback_test.gd')
@@ -81,6 +89,7 @@ try {
     if ($Visual) {
         Invoke-GodotCheck 'visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/visual_check.gd')
         Invoke-GodotCheck 'loot_tooltip' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/loot_tooltip_test.gd')
+        Invoke-GodotCheck 'raid_visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/raid_visual.gd')
         Invoke-GodotCheck 'display_visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/display_visual.gd')
         Invoke-GodotCheck 'display_native' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1200', '--script', 'res://tests/display_native_test.gd')
     }
@@ -90,4 +99,5 @@ finally {
     $env:APPDATA = $previousAppData
     $env:LOCALAPPDATA = $previousLocalAppData
     $env:EXTRACTION_TEST_DISPLAY = $previousDisplayTest
+    $env:EXTRACTION_TEST_PROGRESS = $previousProgressTest
 }
