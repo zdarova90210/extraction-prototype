@@ -20,6 +20,9 @@ func _ready() -> void:
 	$HUD/AimCursor.bind(player, weapon)
 	$HUD/WeaponReadout.bind(weapon)
 	$HUD/PauseMenu.toggled.connect(_on_pause_toggled)
+	$HUD/LootMenu.toggled.connect(_on_pause_toggled)
+	$HUD/PauseMenu.gameplay_overlay = $HUD/LootMenu
+	$HUD/LootMenu.bind(player)
 	target.destroyed.connect(_on_target_destroyed)
 	player.damaged.connect(_on_player_damaged)
 	player.died.connect(_on_player_died)
@@ -31,7 +34,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("restart") and not event.is_echo():
+	if event.is_action_pressed("restart") and not event.is_echo() and not $HUD/LootMenu.visible:
 		get_tree().reload_current_scene()
 
 
@@ -48,9 +51,14 @@ func _on_player_damaged() -> void:
 	_hurt_time = 0.3
 
 
-func _on_pause_toggled(open: bool) -> void:
+func _on_pause_toggled(_open: bool) -> void:
+	var open: bool = $HUD/PauseMenu.visible or $HUD/LootMenu.visible
+	player.input_enabled = not open
 	$HUD/AimCursor.visible = not open
-	if not open:
+	$HUD/AimCursor.set_process(not open)
+	if open:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	else:
 		$HUD/AimCursor.sync_pointer()
 
 

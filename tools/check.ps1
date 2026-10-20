@@ -38,7 +38,7 @@ try {
             Write-Output $log
             throw "$Name failed (exit $($process.ExitCode)). See $logPath"
         }
-        if ($Name -in @('gameplay', 'combat', 'combat_realtime', 'balance', 'balance_realtime', 'tactics', 'tactics_realtime', 'circling', 'circling_realtime', 'developer', 'feedback', 'health_bar', 'ammo_feedback', 'active_reload', 'hud_menu', 'display', 'display_native') -and $log -notmatch 'RESULT: \d+ checks, 0 failures') {
+        if ($Name -in @('gameplay', 'combat', 'combat_realtime', 'balance', 'balance_realtime', 'tactics', 'tactics_realtime', 'circling', 'circling_realtime', 'developer', 'loot', 'loot_slots', 'ground_loot', 'loot_tooltip', 'feedback', 'health_bar', 'ammo_feedback', 'active_reload', 'hud_menu', 'display', 'display_native') -and $log -notmatch 'RESULT: \d+ checks, 0 failures') {
             Write-Output $log
             throw "$Name checks did not reach completion. See $logPath"
         }
@@ -63,6 +63,9 @@ try {
     Invoke-GodotCheck 'tactics' @('--headless', '--fixed-fps', '60', '--quit-after', '2400', '--script', 'res://tests/tactics_test.gd')
     Invoke-GodotCheck 'circling' @('--headless', '--fixed-fps', '60', '--quit-after', '1800', '--script', 'res://tests/circling_test.gd')
     Invoke-GodotCheck 'developer' @('--headless', '--fixed-fps', '60', '--quit-after', '1200', '--script', 'res://tests/developer_test.gd')
+    Invoke-GodotCheck 'loot' @('--headless', '--fixed-fps', '60', '--quit-after', '1800', '--script', 'res://tests/loot_test.gd')
+    Invoke-GodotCheck 'loot_slots' @('--headless', '--fixed-fps', '60', '--quit-after', '1800', '--script', 'res://tests/loot_slots_test.gd')
+    Invoke-GodotCheck 'ground_loot' @('--headless', '--fixed-fps', '60', '--quit-after', '2400', '--script', 'res://tests/ground_loot_test.gd')
     Invoke-GodotCheck 'feedback' @('--headless', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/feedback_test.gd')
     Invoke-GodotCheck 'health_bar' @('--headless', '--fixed-fps', '60', '--quit-after', '600', '--script', 'res://tests/health_bar_test.gd')
     Invoke-GodotCheck 'ammo_feedback' @('--headless', '--fixed-fps', '60', '--quit-after', '600', '--script', 'res://tests/ammo_feedback_test.gd')
@@ -76,7 +79,8 @@ try {
         Invoke-GodotCheck 'circling_realtime' @('--headless', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/circling_test.gd', '--', '--async-navigation')
     }
     if ($Visual) {
-        Invoke-GodotCheck 'visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/visual_check.gd')
+        Invoke-GodotCheck 'visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/visual_check.gd')
+        Invoke-GodotCheck 'loot_tooltip' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/loot_tooltip_test.gd')
         Invoke-GodotCheck 'display_visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/display_visual.gd')
         Invoke-GodotCheck 'display_native' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1200', '--script', 'res://tests/display_native_test.gd')
     }

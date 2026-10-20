@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
 [ext_resource type="Script" path="res://scripts/weapon.gd" id="2_weapon"]
@@ -7,6 +7,8 @@
 [ext_resource type="AudioStream" path="res://assets/audio/player_hit.wav" id="5_hit"]
 [ext_resource type="Script" path="res://scripts/actor_health_bar.gd" id="6_health"]
 [ext_resource type="Script" path="res://scripts/ammo_feedback.gd" id="7_ammo"]
+[ext_resource type="Script" path="res://scripts/inventory.gd" id="8_inventory"]
+[ext_resource type="Script" path="res://scripts/loot_interaction.gd" id="9_interaction"]
 
 [sub_resource type="CircleShape2D" id="Shape_player"]
 radius = 15.0
@@ -80,3 +82,9 @@ theme_override_colors/font_shadow_color = Color(0.02, 0.035, 0.035, 0.95)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 text = "12 / 12"
+
+[node name="Inventory" type="Node" parent="."]
+script = ExtResource("8_inventory")
+
+[node name="LootInteraction" type="Node" parent="."]
+script = ExtResource("9_interaction")

@@ -84,14 +84,14 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.77, 0.57, 1)
 theme_override_constants/line_spacing = 8
 theme_override_font_sizes/font_size = 15
-text = "W A S D\nМышь\nЛКМ\nR\nR ещё раз\nEnter\nEsc"
+text = "W A S D\nМышь\nЛКМ\nR\nR ещё раз\nE\nTab\nEnter\nEsc"
 
 [node name="Actions" type="Label" parent="Center/Panel/Margin/Content/Bindings"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.82, 0.87, 0.82, 1)
 theme_override_constants/line_spacing = 8
 theme_override_font_sizes/font_size = 15
-text = "Движение\nПрицеливание\nСтрельба\nПерезарядка\nПопытка в зелёном секторе\nНовый бой\nПауза / продолжить"
+text = "Движение\nПрицеливание\nСтрельба\nПерезарядка\nПопытка в зелёном секторе\nКонтейнер рядом\nРюкзак\nНовый бой\nПауза / продолжить"
 
 [node name="Note" type="Label" parent="Center/Panel/Margin/Content"]
 layout_mode = 2

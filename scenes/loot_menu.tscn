@@ -1,0 +1,153 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/loot_menu.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/inventory_drop_zone.gd" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+bg_color = Color(0.055, 0.085, 0.09, 0.97)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.36, 0.45, 0.36, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_left = 6
+corner_radius_bottom_right = 6
+
+[sub_resource type="StyleBoxFlat" id="DropZone"]
+bg_color = Color(0.15, 0.13, 0.10, 0.65)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.43, 0.36, 0.25, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_left = 3
+corner_radius_bottom_right = 3
+
+[node name="LootMenu" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1")
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(760, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Panel")
+
+[node name="Margin" type="MarginContainer" parent="Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 22
+
+[node name="Content" type="VBoxContainer" parent="Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Center/Panel/Margin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.91, 0.86, 1)
+theme_override_font_sizes/font_size = 24
+text = "ДОБЫЧА"
+
+[node name="Columns" type="HBoxContainer" parent="Center/Panel/Margin/Content"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Backpack" type="VBoxContainer" parent="Center/Panel/Margin/Content/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Center/Panel/Margin/Content/Columns/Backpack"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "РЮКЗАК · 0 / 6"
+
+[node name="Hint" type="Label" parent="Center/Panel/Margin/Content/Columns/Backpack"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Перетащите для смены слота"
+
+[node name="Grid" type="GridContainer" parent="Center/Panel/Margin/Content/Columns/Backpack"]
+layout_mode = 2
+columns = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
+[node name="Source" type="VBoxContainer" parent="Center/Panel/Margin/Content/Columns"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Center/Panel/Margin/Content/Columns/Source"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.83, 0.76, 0.57, 1)
+theme_override_font_sizes/font_size = 17
+text = "КОНТЕЙНЕР"
+
+[node name="Hint" type="Label" parent="Center/Panel/Margin/Content/Columns/Source"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Нажмите найденный предмет, чтобы взять"
+
+[node name="Grid" type="GridContainer" parent="Center/Panel/Margin/Content/Columns/Source"]
+layout_mode = 2
+columns = 4
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
+[node name="DropZone" type="PanelContainer" parent="Center/Panel/Margin/Content"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_styles/panel = SubResource("DropZone")
+script = ExtResource("2")
+
+[node name="Caption" type="Label" parent="Center/Panel/Margin/Content/DropZone"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.80, 0.73, 0.59, 1)
+theme_override_font_sizes/font_size = 13
+text = "Перетащите сюда вещь из рюкзака, чтобы выбросить на пол"
+horizontal_alignment = 1
+
+[node name="Message" type="Label" parent="Center/Panel/Margin/Content"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.73, 0.79, 0.70, 1)
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 2
+
+[node name="Actions" type="HBoxContainer" parent="Center/Panel/Margin/Content"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="TakeAll" type="Button" parent="Center/Panel/Margin/Content/Actions"]
+custom_minimum_size = Vector2(180, 38)
+layout_mode = 2
+text = "Забрать всё"
+
+[node name="Close" type="Button" parent="Center/Panel/Margin/Content/Actions"]
+custom_minimum_size = Vector2(180, 38)
+layout_mode = 2
+text = "Закрыть · E / Tab / Esc"

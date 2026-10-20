@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scripts/test_yard.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/yard_floor.gd" id="2"]
@@ -10,6 +10,12 @@
 [ext_resource type="Script" path="res://scripts/aim_cursor.gd" id="8"]
 [ext_resource type="PackedScene" path="res://scenes/weapon_readout.tscn" id="9_readout"]
 [ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="10_pause"]
+[ext_resource type="PackedScene" path="res://scenes/loot_container.tscn" id="11_loot"]
+[ext_resource type="Script" path="res://scripts/item_definition.gd" id="12_item"]
+[ext_resource type="Resource" path="res://resources/items/metal.tres" id="13_metal"]
+[ext_resource type="Resource" path="res://resources/items/wire.tres" id="14_wire"]
+[ext_resource type="Resource" path="res://resources/items/electronics.tres" id="15_electronics"]
+[ext_resource type="PackedScene" path="res://scenes/loot_menu.tscn" id="16_lootmenu"]
 
 [sub_resource type="NavigationPolygon" id="Navigation_runtime"]
 agent_radius = 18.0
@@ -133,6 +139,22 @@ position = Vector2(1190, 540)
 
 [node name="TestEnemies" type="Node2D" parent="."]
 
+[node name="LootContainers" type="Node2D" parent="."]
+
+[node name="Supply" parent="LootContainers" instance=ExtResource("11_loot")]
+position = Vector2(650, 690)
+display_name = "Складской ящик"
+
+[node name="Inventory" parent="LootContainers/Supply" index="1"]
+starting_items = Array[ExtResource("12_item")]([ExtResource("13_metal"), ExtResource("13_metal"), ExtResource("14_wire"), ExtResource("15_electronics")])
+
+[node name="Service" parent="LootContainers" instance=ExtResource("11_loot")]
+position = Vector2(1430, 820)
+display_name = "Сервисный ящик"
+
+[node name="Inventory" parent="LootContainers/Service" index="1"]
+starting_items = Array[ExtResource("12_item")]([ExtResource("15_electronics"), ExtResource("15_electronics"), ExtResource("14_wire"), ExtResource("14_wire")])
+
 [node name="GuardSpawns" type="Node2D" parent="."]
 
 [node name="Север" type="Marker2D" parent="GuardSpawns"]
@@ -188,6 +210,8 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.75, 0.10, 0.05, 0)
 
+[node name="LootMenu" parent="HUD" instance=ExtResource("16_lootmenu")]
+
 [node name="DeathScreen" type="ColorRect" parent="HUD"]
 visible = false
 anchors_preset = 15
@@ -215,3 +239,5 @@ vertical_alignment = 1
 
 [editable path="Player"]
 [editable path="Enemy"]
+[editable path="LootContainers/Supply"]
+[editable path="LootContainers/Service"]

@@ -10,6 +10,7 @@ signal died
 
 var health: float = 100.0
 var is_dead: bool = false
+var input_enabled: bool = true
 
 @onready var aim: Node2D = $Aim
 @onready var weapon: Node2D = $Aim/Weapon
@@ -22,7 +23,8 @@ func _ready() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if is_dead:
+	if is_dead or not input_enabled:
+		velocity = Vector2.ZERO
 		return
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	velocity = direction * move_speed

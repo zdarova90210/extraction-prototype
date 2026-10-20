@@ -2,6 +2,7 @@ extends Control
 ## Local pause and help screen. Input settings themselves stay in Input Map.
 
 signal toggled(open: bool)
+var gameplay_overlay: Control
 
 @onready var resume_button: Button = $Center/Panel/Margin/Content/Resume
 
@@ -11,9 +12,9 @@ func _ready() -> void:
 	$Center/Panel/Margin/Content/Developer.pressed.connect(func(): set_developer_open(true))
 	$DeveloperPanel.back_requested.connect(func(): set_developer_open(false))
 	var keys: Label = $Center/Panel/Margin/Content/Bindings/Keys
-	keys.text = "%s %s %s %s\nМышь\nЛКМ\n%s\n%s ещё раз\n%s\nEsc" % [
+	keys.text = "%s %s %s %s\nМышь\nЛКМ\n%s\n%s ещё раз\n%s\n%s\n%s\nEsc" % [
 		_binding("move_up"), _binding("move_left"), _binding("move_down"), _binding("move_right"),
-		_binding("reload"), _binding("reload"), _binding("restart")]
+		_binding("reload"), _binding("reload"), _binding("interact"), _binding("inventory"), _binding("restart")]
 
 
 func _binding(action: StringName) -> String:
@@ -32,7 +33,10 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	if event.is_action_pressed("ui_cancel") and not event.is_echo():
-		set_open(not visible)
+		if not visible and is_instance_valid(gameplay_overlay) and gameplay_overlay.visible:
+			gameplay_overlay.close_menu()
+		else:
+			set_open(not visible)
 		get_viewport().set_input_as_handled()
 
 
@@ -40,6 +44,8 @@ func set_open(open: bool) -> void:
 	if open == visible:
 		return
 	visible = open
+	if open and is_instance_valid(gameplay_overlay):
+		gameplay_overlay.close_menu()
 	get_tree().paused = open
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if open:
