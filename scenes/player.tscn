@@ -1,14 +1,19 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
 [ext_resource type="Script" path="res://scripts/weapon.gd" id="2_weapon"]
+[ext_resource type="Script" path="res://scripts/actor_visual.gd" id="3_visual"]
+[ext_resource type="PackedScene" path="res://scenes/weapon_audio.tscn" id="4_audio"]
+[ext_resource type="AudioStream" path="res://assets/audio/player_hit.wav" id="5_hit"]
+[ext_resource type="Script" path="res://scripts/actor_health_bar.gd" id="6_health"]
+[ext_resource type="Script" path="res://scripts/ammo_feedback.gd" id="7_ammo"]
 
 [sub_resource type="CircleShape2D" id="Shape_player"]
 radius = 15.0
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
-collision_mask = 5
+collision_mask = 13
 motion_mode = 1
 script = ExtResource("1_player")
 
@@ -22,16 +27,12 @@ color = Color(0.025, 0.04, 0.04, 0.6)
 
 [node name="Aim" type="Node2D" parent="."]
 
-[node name="Body" type="Polygon2D" parent="Aim"]
-polygon = PackedVector2Array(-14, -10, 8, -15, 16, -8, 16, 9, 5, 15, -14, 10)
-color = Color(0.53, 0.64, 0.60, 1)
-
-[node name="Vest" type="Polygon2D" parent="Aim"]
-polygon = PackedVector2Array(-11, -8, 1, -10, 5, 0, 1, 10, -11, 8)
-color = Color(0.23, 0.34, 0.33, 1)
+[node name="BodyVisual" type="Node2D" parent="Aim"]
+script = ExtResource("3_visual")
 
 [node name="Weapon" type="Node2D" parent="Aim"]
 script = ExtResource("2_weapon")
+active_reload_enabled = true
 
 [node name="Barrel" type="Polygon2D" parent="Aim/Weapon"]
 polygon = PackedVector2Array(6, -5, 31, -5, 31, 1, 6, 1)
@@ -44,6 +45,35 @@ color = Color(0.65, 0.58, 0.42, 1)
 [node name="Muzzle" type="Marker2D" parent="Aim/Weapon"]
 position = Vector2(32, -2)
 
+[node name="Audio" parent="Aim/Weapon" instance=ExtResource("4_audio")]
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true
 position_smoothing_speed = 7.0
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+
+[node name="HitAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_hit")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="HealthBar" type="Node2D" parent="."]
+position = Vector2(0, -40)
+z_index = 5
+script = ExtResource("6_health")
+
+[node name="AmmoFeedback" type="Node2D" parent="."]
+position = Vector2(24, 20)
+z_index = 5
+script = ExtResource("7_ammo")
+
+[node name="Readout" type="Label" parent="AmmoFeedback"]
+offset_right = 65.0
+offset_bottom = 21.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_shadow_color = Color(0.02, 0.035, 0.035, 0.95)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+text = "12 / 12"

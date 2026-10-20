@@ -38,13 +38,18 @@ func _record_shot(_from: Vector2, endpoint: Vector2, _hit: bool) -> void:
 func _run() -> void:
 	_check(ProjectSettings.get_setting("application/run/main_scene") == "res://scenes/test_yard.tscn", "Main scene is the editable yard")
 	_check(ProjectSettings.get_setting("rendering/renderer/rendering_method") == "gl_compatibility", "Compatibility renderer")
-	for action in ["move_left", "move_right", "move_up", "move_down", "shoot", "restart"]:
+	for action in ["move_left", "move_right", "move_up", "move_down", "shoot", "reload", "restart"]:
 		_check(InputMap.has_action(action) and not InputMap.action_get_events(action).is_empty(), "Input binding: " + action)
 	var yard := YARD.instantiate()
 	root.add_child(yard)
 	current_scene = yard
+	# Isolate the original ballistics/movement regression fixture from the live duel.
+	yard.get_node("Enemy").process_mode = Node.PROCESS_MODE_DISABLED
+	yard.get_node("Obstacles/CombatCover").queue_free()
 	var player: CharacterBody2D = yard.get_node("Player")
 	var weapon: Node2D = player.get_node("Aim/Weapon")
+	weapon.magazine_size = 100
+	weapon.ammo = 100
 	var target: StaticBody2D = yard.get_node("Target")
 	var camera: Camera2D = player.get_node("Camera2D")
 	camera.position_smoothing_enabled = false
@@ -152,7 +157,7 @@ func _run() -> void:
 	await _ticks(2)
 	_check(target.is_destroyed and is_zero_approx(target.health), "Lethal shot destroys target")
 	_check(target.collision_layer == 0 and target.get_node("CollisionShape2D").disabled, "Wreck no longer blocks shots or movement")
-	_check("РАЗРУШЕНА" in yard.get_node("HUD/Bottom/Status").text, "HUD receives destruction signal")
+	_check("РАЗРУШЕНА" in yard.get_node("HUD/TargetStatus").text, "HUD receives destruction signal")
 	target.take_damage(500.0)
 	_check(is_zero_approx(target.health), "Destroyed target ignores further damage")
 	await _ticks(15)
@@ -175,7 +180,7 @@ func _run() -> void:
 	restart.pressed = true
 	root.push_input(restart)
 	await _ticks(4)
-	_check(current_scene != yard and current_scene.get_node("Target").health == 100.0, "R reloads map and restores target")
+	_check(current_scene != yard and current_scene.get_node("Target").health == 100.0, "Enter reloads map and restores target")
 	_check(current_scene.get_node("Player").position == Vector2(650, 565), "Restart restores spawn")
 	print("RESULT: %d checks, %d failures" % [_checks, _failures])
 	quit(0 if _failures == 0 else 1)
