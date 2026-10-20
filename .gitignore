@@ -1,0 +1,13 @@
+# Godot's generated imports, editor state and caches.
+.godot/
+.godot-home/
+# Build output and local verification captures/logs.
+builds/
+artifacts/
+*.log
+*.tmp
+# Local export credentials (keep export_presets.cfg if added later).
+export_credentials.cfg
+.DS_Store
+Thumbs.db
+# Keep *.gd.uid and source asset *.import sidecars in version control.
