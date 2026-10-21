@@ -62,6 +62,15 @@ func first_empty_slot() -> int:
 	return -1
 
 
+func consume_item(slot: int, expected_item: ItemDefinition) -> bool:
+	# A delayed action must never consume whatever happens to occupy its old slot.
+	if expected_item == null or get_item(slot) != expected_item:
+		return false
+	_slots[slot] = null
+	changed.emit()
+	return true
+
+
 func find_item_index(item_id: StringName) -> int:
 	for index in range(_slots.size()):
 		if _slots[index] != null and _slots[index].id == item_id:

@@ -6,6 +6,7 @@ signal health_changed(current: float, maximum: float)
 signal destroyed
 
 @export_range(1.0, 2000.0, 1.0) var max_health: float = 100.0
+@export var impact_cue: SoundCue = preload("res://resources/audio/combat/metal.tres")
 
 var health: float = 100.0
 var is_destroyed: bool = false
@@ -15,6 +16,10 @@ var _hit_time: float = 0.0
 func _ready() -> void:
 	health = max_health
 	queue_redraw()
+
+
+func get_impact_cue() -> SoundCue:
+	return impact_cue
 
 
 func take_damage(amount: float) -> void:

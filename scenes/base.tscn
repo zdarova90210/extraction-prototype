@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/base.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/inventory_drop_zone.gd" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/inventory_audio.tscn" id="3_audio"]
+[ext_resource type="PackedScene" path="res://scenes/settings_menu.tscn" id="4_settings"]
 
 [node name="Base" type="Control"]
 layout_mode = 3
@@ -149,6 +151,11 @@ custom_minimum_size = Vector2(140, 42)
 layout_mode = 2
 text = "Выйти из игры"
 
+[node name="Settings" type="Button" parent="Margin/Content/Actions"]
+custom_minimum_size = Vector2(120, 42)
+layout_mode = 2
+text = "Настройки"
+
 [node name="ResetConfirm" type="ConfirmationDialog" parent="."]
 title = "Сброс прогресса"
 dialog_text = "Удалить все вещи из схрона и неразобранную добычу?"
@@ -159,3 +166,7 @@ cancel_button_text = "Отмена"
 title = "Удаление предмета"
 ok_button_text = "Удалить"
 cancel_button_text = "Отмена"
+
+[node name="InventoryAudio" parent="." instance=ExtResource("3_audio")]
+
+[node name="SettingsMenu" parent="." instance=ExtResource("4_settings")]

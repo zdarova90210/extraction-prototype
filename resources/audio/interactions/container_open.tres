@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SoundCue" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/sound_cue.gd" id="1"]
+[ext_resource type="AudioStream" path="res://assets/audio/interactions/container_wood_open.wav" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"container_open"
+clips = Array[AudioStream]([ExtResource("2")])
+volume_db = 0.0
+pitch_variation = 0.01

@@ -1,0 +1,311 @@
+{
+  "origin": "ElevenLabs Sound Effects; generated and selected by project owner",
+  "license": "Owner-provided generated assets, not represented as CC0/CC BY",
+  "source_folder": "C:\\zdarova90210\\game-projects\\assets\\sounds",
+  "format": "48000 Hz mono PCM16 WAV; uncompressed Godot import",
+  "processing": "Stereo average after phase check; DC removal; 5 ms RMS windows with relative -40 dB boundary, 8 ms head pre-roll and 80 ms tail padding; 0.2 ms / 8 ms edge fades; scalar active-energy gain bounded by prior peak cap; no compression or gameplay timing changes",
+  "recordings": [
+    {
+      "output": "weapon_ready.wav",
+      "source": "guard_ready.wav",
+      "source_sha256": "6693cb1dcfa4de24eb5ee0d7c4ffcc26e070ee1a548263df04f02e4fb236361f",
+      "output_sha256": "9a7ce3a1fe72473bf09326648b193d828c75c97b7ecf5bfe9d27db315be22a32",
+      "rank": 0,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 1.73,
+      "dc_removed": -0.0007330905596415202,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.21206293372943363,
+      "output_seconds": 1.73,
+      "peak": 0.21221192341705306,
+      "active_rms_before_gain": 0.8297848384247527,
+      "target_reference_active_rms": 0.17596660720055712,
+      "profile": "guard_ready"
+    },
+    {
+      "output": "reload_timing.wav",
+      "source": "reload_timing.wav",
+      "source_sha256": "7555b4d7510f744628681b95c037612f1989b2348ff2c2d78539b4524064119e",
+      "output_sha256": "3ee2cf958839a02d422cdea1aff52040712ad308b2252547c97651df3513dcd8",
+      "rank": 0,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.805,
+      "dc_removed": 2.5974909464518227e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.7053948562803372,
+      "output_seconds": 0.805,
+      "peak": 0.5999755859375,
+      "active_rms_before_gain": 0.1538432337308276,
+      "target_reference_active_rms": 0.2819543441988961,
+      "profile": "reload_timing"
+    },
+    {
+      "output": "concrete_01.wav",
+      "source": "impact_concrete.wav",
+      "source_sha256": "2c3a07e199f697b0d2d4c69754d881c929782730f2fa057795bf29cd0578d0b2",
+      "output_sha256": "b808a4b1a61fc665a49b9dfe634c7ffb09a579986eeac38462becc8bbde422d4",
+      "rank": 0,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.6065,
+      "dc_removed": 8.269894676701188e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 1.1580446781805616,
+      "output_seconds": 0.6065,
+      "peak": 0.719970703125,
+      "active_rms_before_gain": 0.10884603909625241,
+      "target_reference_active_rms": 0.3576529595186636,
+      "profile": "concrete"
+    },
+    {
+      "output": "metal_01.wav",
+      "source": "impact_metal.wav",
+      "source_sha256": "f9f8659aea47202c2967f83c41c9e3e499d3f704ca2ac5a41a52a5304cb1c4df",
+      "output_sha256": "ae33355de23131817c122758d053c58d3dc296c9908014bb2101a83fe5ccc3ac",
+      "rank": 0,
+      "weight": 4,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.6,
+      "dc_removed": -5.848363848563307e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 4.154478090903928,
+      "output_seconds": 0.6,
+      "peak": 0.719970703125,
+      "active_rms_before_gain": 0.05054573086466187,
+      "target_reference_active_rms": 0.21422845896234655,
+      "profile": "metal"
+    },
+    {
+      "output": "metal_02.wav",
+      "source": "impact_metal-2.wav",
+      "source_sha256": "461a3232ed067ebfac1d9771969232c4993e2e3739fcd487c2de33d1d739855e",
+      "output_sha256": "e14b5ffd43d7d2723320843a24b1dd075e35f17444cc97cb8ac45883b320c803",
+      "rank": 1,
+      "weight": 3,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.6065,
+      "dc_removed": -1.239593162022963e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 8.295363563324633,
+      "output_seconds": 0.6065,
+      "peak": 0.5369302114420298,
+      "active_rms_before_gain": 0.02582508377444612,
+      "target_reference_active_rms": 0.21422845896234655,
+      "profile": "metal"
+    },
+    {
+      "output": "metal_03.wav",
+      "source": "impact_metal-3.wav",
+      "source_sha256": "1aba279923901a71a24724c09b7b2827dff9febc872ec1954ec81af7f7867291",
+      "output_sha256": "82e9b4c61a02a2cd26d20e827a62b1f777899832cef7200a054490f5400ef0a1",
+      "rank": 2,
+      "weight": 2,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.49,
+      "dc_removed": -5.7482529420320656e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 6.74976287805657,
+      "output_seconds": 0.49,
+      "peak": 0.6816478497437721,
+      "active_rms_before_gain": 0.031738664429057456,
+      "target_reference_active_rms": 0.21422845896234655,
+      "profile": "metal"
+    },
+    {
+      "output": "metal_04.wav",
+      "source": "impact_metal-4.wav",
+      "source_sha256": "2361b3228e70a54d2d84c5b462bdfef1fc55a03a350421821350492ae7b7e3c3",
+      "output_sha256": "6f42228d00ad7800c29e6af837e386c78498cf005a85be9e5e966a03639151c2",
+      "rank": 3,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.6065,
+      "dc_removed": 1.0067697867288404e-05,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 23.74556569639082,
+      "output_seconds": 0.6065,
+      "peak": 0.5472394183747666,
+      "active_rms_before_gain": 0.009021830084044195,
+      "target_reference_active_rms": 0.21422845896234655,
+      "profile": "metal"
+    },
+    {
+      "output": "wood_01.wav",
+      "source": "impact_wood.wav",
+      "source_sha256": "42ec34d6404a3f8455d1ba6d78ef12f1623f61e727f7bcb06fddeb230b5ff761",
+      "output_sha256": "7160d4931602969aa9e46cd13c5fe9c1486834dcd0d0ea5f9f7f60e77e91f193",
+      "rank": 0,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.265,
+      "dc_removed": -0.00032575512430306876,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.44435831377101015,
+      "output_seconds": 0.265,
+      "peak": 0.4444895050291917,
+      "active_rms_before_gain": 0.5038889373703598,
+      "target_reference_active_rms": 0.2239072385377592,
+      "profile": "wood"
+    },
+    {
+      "output": "body_01.wav",
+      "source": "actor_hit.wav",
+      "source_sha256": "9343179dd45290873d0a5dbdd64a6d4d9a3ef91b03ab4ee1d55a9aa574d775a5",
+      "output_sha256": "f5b5f96f57d5647c7398d6dd5abb714b0ac2ff3ffee91abfdff4965e8aa1742b",
+      "rank": 0,
+      "weight": 3,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.6865,
+      "dc_removed": -0.0008874561173674492,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.2814208762033946,
+      "output_seconds": 0.6865,
+      "peak": 0.2816620365979607,
+      "active_rms_before_gain": 0.8318267687491148,
+      "target_reference_active_rms": 0.23409341811081438,
+      "profile": "actor_hit"
+    },
+    {
+      "output": "body_02.wav",
+      "source": "actor_hit-2.wav",
+      "source_sha256": "5fad440c34cab4a10c3fc9b36dfbdef72a2610b47d54f60592314dbb5c07a9b1",
+      "output_sha256": "83a071f44513d8bece6a29880c08424e58eb193debcbe8c108382a611e4d3b7b",
+      "rank": 1,
+      "weight": 2,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.41,
+      "dc_removed": 0.0007937825631967996,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.30613986166140394,
+      "output_seconds": 0.41,
+      "peak": 0.3063828701454902,
+      "active_rms_before_gain": 0.7646616707814607,
+      "target_reference_active_rms": 0.23409341811081438,
+      "profile": "actor_hit"
+    },
+    {
+      "output": "body_03.wav",
+      "source": "actor_hit-3.wav",
+      "source_sha256": "134d1ec71b883b970c175b92bffa60ea8c36e4a4b845511b261dd989704a516c",
+      "output_sha256": "827898d7edb21bc4aa3a8c6c9b0c81e18d09e45256ba07025f8faa41d89364b4",
+      "rank": 2,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.6865,
+      "dc_removed": -0.0007553318224650154,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.27667823426590643,
+      "output_seconds": 0.6865,
+      "peak": 0.27687877459120125,
+      "active_rms_before_gain": 0.846085413013858,
+      "target_reference_active_rms": 0.23409341811081438,
+      "profile": "actor_hit"
+    },
+    {
+      "output": "player_damage.wav",
+      "source": "player_damage.wav",
+      "source_sha256": "a51cf6b76037213e25f05e71ea69148f92510cde56d8af7aace51a1adf7aab8b",
+      "output_sha256": "bf65d28a4994a6737a7af676a07c0d9c66a59836f2cec8bd7ed5f05abbad5afa",
+      "rank": 0,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.385,
+      "dc_removed": 0.00012583824059545892,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.3428707096166208,
+      "output_seconds": 0.385,
+      "peak": 0.34291385586347073,
+      "active_rms_before_gain": 0.6827454534467665,
+      "target_reference_active_rms": 0.23409341811081438,
+      "profile": "player_damage"
+    }
+  ],
+  "playback_profiles": {
+    "actor_hit": {
+      "volume_db": -10.0,
+      "priority_weights": "3, 2, 1"
+    },
+    "concrete": {
+      "volume_db": -13.0,
+      "priority_weights": "single recording"
+    },
+    "metal": {
+      "volume_db": -12.0,
+      "priority_weights": "4, 3, 2, 1"
+    },
+    "player_damage": {
+      "volume_db": -6.0,
+      "priority_weights": "single recording"
+    },
+    "reload_timing": {
+      "volume_db": -19.0,
+      "priority_weights": "single recording"
+    },
+    "wood": {
+      "volume_db": -11.0,
+      "priority_weights": "single recording"
+    }
+  }
+}

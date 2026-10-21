@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundCue" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/sound_cue.gd" id="1"]
+[ext_resource type="AudioStream" path="res://assets/audio/combat/metal_01.wav" id="2"]
+[ext_resource type="AudioStream" path="res://assets/audio/combat/metal_02.wav" id="3"]
+[ext_resource type="AudioStream" path="res://assets/audio/combat/metal_03.wav" id="4"]
+[ext_resource type="AudioStream" path="res://assets/audio/combat/metal_04.wav" id="5"]
+
+[resource]
+script = ExtResource("1")
+id = &"metal"
+clips = Array[AudioStream]([ExtResource("2"), ExtResource("3"), ExtResource("4"), ExtResource("5")])
+clip_weights = PackedFloat32Array(4, 3, 2, 1)
+volume_db = -12.0
+pitch_variation = 0.01

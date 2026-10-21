@@ -1,0 +1,68 @@
+{
+  "origin": "ElevenLabs Sound Effects; generated and selected by project owner",
+  "license": "Owner-provided generated assets, not represented as CC0/CC BY",
+  "source_folder": "C:\\zdarova90210\\game-projects\\assets\\sounds",
+  "processing": "Full duration and attack, stereo PCM16 48 kHz preserved; scalar gain by strongest 100 ms RMS, peak cap 0.8; 5 ms final fade only. No pitch, filters, dynamic compression or gameplay timing changes. Primary unsuffixed files. External masters unchanged.",
+  "recordings": [
+    {
+      "output": "raid_start.wav",
+      "source": "raid_start.wav",
+      "source_sha256": "0571335990b5a92e586a7ec2881b0189a90e2e6639acdd4ecc3a4fdc35c94fa0",
+      "output_sha256": "d1de4a26b2910b9796ff6783dbaf7c56b05ef7b91bdc61413f0ae92104ede0eb",
+      "seconds": 2.0,
+      "channels": 2,
+      "sample_rate": 48000,
+      "gain_linear": 0.08489449898420721,
+      "target_rms100": 0.035,
+      "peak": 0.08489449898420721
+    },
+    {
+      "output": "raid_success.wav",
+      "source": "raid_success.wav",
+      "source_sha256": "ce7875144cab5ffc36537e545dac0ce913a1a5579b4ece3b8d509c60d796848a",
+      "output_sha256": "c09d22210534900bd0653865c66e19839bda4339e29fbbc64b11ff74e2da5291",
+      "seconds": 4.0,
+      "channels": 2,
+      "sample_rate": 48000,
+      "gain_linear": 0.09389829162294935,
+      "target_rms100": 0.035,
+      "peak": 0.09181790344795358
+    },
+    {
+      "output": "raid_failure.wav",
+      "source": "raid_failure.wav",
+      "source_sha256": "c70f8ddadf630f31c539770d103c30c5c140f413dd19ea87dc673e811047e0a9",
+      "output_sha256": "df05af2fddfd85bae4a1ff22bc9ded89e8e724a01dc3e16e288c3f5a0b195230",
+      "seconds": 4.0,
+      "channels": 2,
+      "sample_rate": 48000,
+      "gain_linear": 0.07123253710794249,
+      "target_rms100": 0.035,
+      "peak": 0.07123253710794249
+    },
+    {
+      "output": "extraction_pulse.wav",
+      "source": "extraction_pulse.wav",
+      "source_sha256": "106dc257dbba4c3681071d5b72cc967b4685ba78b950f217407d085d3a4c6813",
+      "output_sha256": "666526173381d7df40365ce42cfc7e35f7493ace8e5a99d542bf48031c6982a7",
+      "seconds": 1.0,
+      "channels": 2,
+      "sample_rate": 48000,
+      "gain_linear": 0.26454885112906956,
+      "target_rms100": 0.028,
+      "peak": 0.06962491736258228
+    },
+    {
+      "output": "extraction_cancel.wav",
+      "source": "extraction_cancel.wav",
+      "source_sha256": "c20d937284802b351fd43a3b09da18371231710fc3b8336ed7ad1840e9cd576f",
+      "output_sha256": "9d7f8f7b906f9a4f9080e7e7b308e16829f0802ea7df3dcf461a728d1777974c",
+      "seconds": 1.2,
+      "channels": 2,
+      "sample_rate": 48000,
+      "gain_linear": 0.2820048976891434,
+      "target_rms100": 0.028,
+      "peak": 0.0618692996059342
+    }
+  ]
+}

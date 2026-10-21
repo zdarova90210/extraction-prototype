@@ -17,6 +17,10 @@ func _ready() -> void:
 	content.get_node("Actions/Clear").pressed.connect(_clear_guards)
 	content.get_node("Actions/Restore").pressed.connect(_restore_player)
 	content.get_node("Actions/Restart").pressed.connect(_restart)
+	content.get_node("Actions/HealTest").pressed.connect(func(): message.text = _yard.prepare_healing_test())
+	content.get_node("Actions/LootTest").pressed.connect(func(): message.text = _yard.restore_test_loot())
+	content.get_node("Toggles/GuardsActive").toggled.connect(_toggle_guards)
+	content.get_node("Toggles/Immortal").toggled.connect(_toggle_immortality)
 	content.get_node("Back").pressed.connect(func(): back_requested.emit())
 
 
@@ -55,6 +59,8 @@ func selected_guard() -> CharacterBody2D:
 
 
 func refresh() -> void:
+	content.get_node("Toggles/GuardsActive").set_pressed_no_signal(_yard.guards_active)
+	content.get_node("Toggles/Immortal").set_pressed_no_signal(_yard.player.prevent_death)
 	var selected := selected_guard() if guards.item_count > 0 else null
 	guards.clear()
 	var living := 0
@@ -95,6 +101,16 @@ func _clear_guards() -> void:
 func _restore_player() -> void:
 	_yard.restore_player()
 	message.text = "Здоровье и магазин игрока восстановлены."
+
+
+func _toggle_guards(active: bool) -> void:
+	_yard.set_guards_active(active)
+	message.text = "Охранники активны." if active else "Охранники остановлены, включая оружие и звуки."
+
+
+func _toggle_immortality(active: bool) -> void:
+	_yard.set_immortality(active)
+	message.text = "Бессмертие: попадания работают, здоровье не ниже 1 HP." if active else "Бессмертие выключено: игрок может погибнуть."
 
 
 func _restart() -> void:

@@ -2,8 +2,10 @@ extends CharacterBody2D
 ## One guard: finite perception, last known position, navigation and timed bursts.
 
 signal health_changed(current: float, maximum: float)
+signal damaged
 signal state_changed(description: String)
 signal died
+signal moved(distance: float)
 
 enum State { PATROL, INVESTIGATE, SEARCH, AIM, BURST, RELOAD, DEAD }
 
@@ -31,6 +33,7 @@ enum State { PATROL, INVESTIGATE, SEARCH, AIM, BURST, RELOAD, DEAD }
 
 var health: float = 100.0
 var is_dead: bool = false
+var behavior_enabled: bool = true
 var state: State = State.PATROL
 var last_known_position: Vector2 = Vector2.ZERO
 var _state_time: float = 0.0
@@ -81,12 +84,20 @@ func can_see_target() -> bool:
 
 
 func hear_shot(origin: Vector2) -> void:
-	if is_dead or global_position.distance_to(origin) > hearing_range:
+	if is_dead or not behavior_enabled or global_position.distance_to(origin) > hearing_range:
 		return
 	if state in [State.PATROL, State.INVESTIGATE, State.SEARCH] and not _sees_target:
 		last_known_position = origin
 		_memory_time = memory_duration
 		_change_state(State.INVESTIGATE)
+
+
+func set_behavior_enabled(active: bool) -> void:
+	behavior_enabled = active
+	# Freeze AI, weapon timers and spatial audio together; SceneTree pause stays with PauseMenu.
+	process_mode = Node.PROCESS_MODE_INHERIT if active else Node.PROCESS_MODE_DISABLED
+	velocity = Vector2.ZERO
+	queue_redraw()
 
 
 func _physics_process(delta: float) -> void:
@@ -172,6 +183,7 @@ func _physics_process(delta: float) -> void:
 		if _state_time <= 0.0:
 			_change_state(State.RELOAD if weapon.ammo <= 0 else State.BURST)
 	move_and_slide()
+	moved.emit(get_position_delta().length())
 	if state == State.AIM:
 		var direction := Vector2.RIGHT.rotated(aim.global_rotation)
 		_warning_end = global_position + direction * weapon.max_range
@@ -238,7 +250,8 @@ func _change_state(next: State) -> void:
 				_preparation = 0.0
 			_prepared_position = last_known_position
 			_state_time = aim_duration * (1.0 - _preparation)
-			$ReadyAudio.play()
+			if behavior_enabled:
+				$ReadyAudio.play()
 		State.BURST:
 			# Fire where the weapon actually points; never snap the body at firing.
 			_burst_direction = Vector2.RIGHT.rotated(aim.global_rotation)
@@ -286,6 +299,7 @@ func take_damage(amount: float) -> void:
 	health = maxf(0.0, health - amount)
 	$Aim/BodyVisual.flash_hit()
 	health_changed.emit(health, max_health)
+	damaged.emit()
 	if health > 0.0 and state == State.PATROL:
 		# An impact raises suspicion without revealing the shooter's hidden position.
 		_change_state(State.SEARCH)
@@ -303,7 +317,7 @@ func take_damage(amount: float) -> void:
 
 
 func _draw() -> void:
-	if is_dead:
+	if is_dead or not behavior_enabled:
 		return
 	if state == State.AIM:
 		var progress := _preparation

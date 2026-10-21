@@ -41,6 +41,8 @@ func _run() -> void:
 	for action in ["move_left", "move_right", "move_up", "move_down", "shoot", "reload", "restart"]:
 		_check(InputMap.has_action(action) and not InputMap.action_get_events(action).is_empty(), "Input binding: " + action)
 	var yard := YARD.instantiate()
+	yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
+	yard.play_start_audio = false
 	root.add_child(yard)
 	current_scene = yard
 	# Isolate the original ballistics/movement regression fixture from the live duel.

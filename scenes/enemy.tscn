@@ -1,12 +1,16 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/actor_visual.gd" id="2"]
 [ext_resource type="Script" path="res://scripts/weapon.gd" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/weapon_audio.tscn" id="4"]
-[ext_resource type="AudioStream" path="res://assets/audio/guard_shot.wav" id="5"]
-[ext_resource type="AudioStream" path="res://assets/audio/guard_ready.wav" id="6"]
+[ext_resource type="Resource" path="res://resources/audio/weapons/rifle_shot.tres" id="5"]
+[ext_resource type="AudioStream" path="res://assets/audio/combat/weapon_ready.wav" id="6"]
 [ext_resource type="Script" path="res://scripts/actor_health_bar.gd" id="7_health"]
+[ext_resource type="PackedScene" path="res://scenes/footstep_audio.tscn" id="8_footsteps"]
+[ext_resource type="Resource" path="res://resources/audio/weapons/rifle_reload_start.tres" id="9_reload"]
+[ext_resource type="Resource" path="res://resources/audio/weapons/rifle_reload_finish.tres" id="10_reload"]
+[ext_resource type="PackedScene" path="res://scenes/actor_damage_audio.tscn" id="11_damage"]
 
 [sub_resource type="CircleShape2D" id="BodyShape"]
 radius = 15.0
@@ -51,16 +55,19 @@ color = Color(0.10, 0.15, 0.16, 1)
 position = Vector2(34, -2)
 
 [node name="Audio" parent="Aim/Weapon" instance=ExtResource("4")]
-shot_stream = ExtResource("5")
-shot_volume_db = -5.0
+shot_cue = ExtResource("5")
+reload_start_cue = ExtResource("9_reload")
+reload_finish_cue = ExtResource("10_reload")
 
 [node name="ReadyAudio" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6")
-volume_db = -8.0
-bus = &"SFX"
+volume_db = -2.0
+bus = &"EnemyWeapons"
 max_distance = 950.0
 attenuation = 1.5
 panning_strength = 0.7
+
+[node name="HitAudio" parent="." instance=ExtResource("11_damage")]
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 6.0
@@ -83,3 +90,6 @@ position = Vector2(0, -40)
 z_index = 5
 script = ExtResource("7_health")
 fill_color = Color(0.807843, 0.584314, 0.447059, 1)
+
+[node name="Footsteps" parent="." instance=ExtResource("8_footsteps")]
+volume_db = -12.0

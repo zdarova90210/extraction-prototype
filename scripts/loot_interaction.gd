@@ -2,6 +2,8 @@ extends Node
 ## Shared gaze selection for containers and floor loot, plus safe world drops.
 
 signal interacted(container: StaticBody2D)
+signal item_dropped(point: Vector2)
+signal item_picked_up(point: Vector2)
 const GROUND_ITEM = preload("res://scenes/ground_item.tscn")
 
 @export_range(48.0, 160.0, 4.0, "suffix:px") var reach: float = 96.0
@@ -58,6 +60,7 @@ func drop_item(slot: int) -> bool:
 	if not backpack.transfer_to(ground.inventory, slot):
 		ground.free()
 		return false
+	item_dropped.emit(ground.global_position)
 	return true
 
 
@@ -108,6 +111,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if is_instance_valid(container):
 			get_viewport().set_input_as_handled()
 			if container is GroundItem:
-				container.pick_up(player.get_node("Inventory"))
+				var point := container.global_position
+				if container.pick_up(player.get_node("Inventory")):
+					item_picked_up.emit(point)
 			else:
 				interacted.emit(container)

@@ -37,6 +37,8 @@ func _run() -> void:
 	var guard: CharacterBody2D = yard.get_node("Enemy")
 	guard.set_physics_process(false)
 	var bag: Inventory = player.get_node("Inventory")
+	bag.clear() # This persistence scenario carries only its explicitly selected loot.
+	player.restore_state()
 	var box: Inventory = yard.get_node("LootContainers/Supply/Inventory")
 	for slot in range(3):
 		box.transfer_to(bag, slot)
@@ -74,6 +76,8 @@ func _run() -> void:
 	player.set_physics_process(false)
 	yard.get_node("Enemy").set_physics_process(false)
 	bag = player.get_node("Inventory")
+	bag.clear()
+	player.restore_state()
 	_check(profile.stash.item_count == 3 and bag.item_count == 0 and player.health == player.max_health, "New raid retains stash and resets only raid state")
 	box = yard.get_node("LootContainers/Supply/Inventory")
 	box.transfer_to(bag, 0)
@@ -92,6 +96,8 @@ func _run() -> void:
 	player.set_physics_process(false)
 	yard.get_node("Enemy").set_physics_process(false)
 	bag = player.get_node("Inventory")
+	bag.clear()
+	player.restore_state()
 	yard.get_node("LootContainers/Supply/Inventory").transfer_to(bag, 0)
 	profile.save_path = "user://missing_cycle_directory/profile.json"
 	zone = yard.get_node("ExtractionZone")
@@ -119,6 +125,8 @@ func _run() -> void:
 	player.set_physics_process(false)
 	yard.get_node("Enemy").set_physics_process(false)
 	bag = player.get_node("Inventory")
+	bag.clear()
+	player.restore_state()
 	box = yard.get_node("LootContainers/Supply/Inventory")
 	box.transfer_to(bag, 0)
 	box.transfer_to(bag, 1)

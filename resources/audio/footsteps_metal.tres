@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="FootstepProfile" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/footstep_profile.gd" id="1"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/metal/step_01.wav" id="2"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/metal/step_02.wav" id="3"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/metal/step_03.wav" id="4"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/metal/step_04.wav" id="5"]
+
+[resource]
+script = ExtResource("1")
+surface_id = &"metal"
+clips = Array[AudioStream]([ExtResource("2"), ExtResource("3"), ExtResource("4"), ExtResource("5")])
+gain_db = -2.0

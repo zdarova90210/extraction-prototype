@@ -1,0 +1,156 @@
+extends "res://tests/loot_slots_test.gd"
+## Actual H input, physics timing, interruption, item ownership and persistence.
+
+const MEDKIT = preload("res://resources/items/medkit.tres")
+const METAL = preload("res://resources/items/metal.tres")
+
+
+func _seed(player: CharacterBody2D, health: float = 30.0) -> void:
+	player.restore_state()
+	player.input_enabled = true
+	player.health = health
+	player.health_changed.emit(health, player.max_health)
+	var slots: Array[ItemDefinition] = [MEDKIT, null, MEDKIT, null, METAL, null]
+	player.get_node("Inventory").replace_slots(slots)
+
+
+func _run() -> void:
+	var yard := YARD.instantiate() as Node2D
+	yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
+	yard.play_start_audio = false
+	NavigationServer2D.region_set_use_async_iterations(yard.get_node("Navigation").get_rid(), false)
+	root.add_child(yard)
+	current_scene = yard
+	yard.get_node("Enemy").set_physics_process(false)
+	var player: CharacterBody2D = yard.get_node("Player")
+	var pack: Inventory = player.get_node("Inventory")
+	var use: Node = player.get_node("ItemUse")
+	var feedback: Node2D = player.get_node("ItemUseFeedback")
+	var weapon: Node2D = player.get_node("Aim/Weapon")
+	var box: Inventory = yard.get_node("LootContainers/Supply/Inventory")
+	await _ticks(3)
+	_check(box.get_item(1) == MEDKIT and MEDKIT.healing_amount == 40.0 and MEDKIT.use_duration == 3.0, "First crate contains a configurable 40 HP / 3 second medkit")
+	_check(box.transfer_to(pack, 1, 3), "Medkit uses ordinary inventory ownership transfer")
+	await _key(KEY_H)
+	_check(not use.is_using and pack.get_item(3) == MEDKIT, "Full HP rejects H without consuming the medkit")
+	player.take_damage(70)
+	await _key(KEY_H)
+	_check(use.is_using and pack.get_item(3) == MEDKIT and player.health == 30.0, "Real H starts application without immediate healing or consumption")
+	await _ticks(2)
+	_check(feedback.visible and "Лечение" in feedback.get_node("Readout").text and feedback.get_parent() == player, "Timed feedback is local to character and outside rotating Aim")
+	Input.action_press("shoot")
+	Input.action_press("reload")
+	await _ticks(5)
+	Input.action_release("shoot")
+	Input.action_release("reload")
+	_check(weapon.ammo == weapon.magazine_size and not weapon.is_reloading, "Application blocks firing and reload controls")
+	await _ticks(165)
+	_check(use.is_using and player.health == 30.0 and pack.get_item(3) == MEDKIT, "No HP or consumption before the three second deadline")
+	await _ticks(12)
+	_check(not use.is_using and player.health == 70.0 and pack.get_item(3) == null, "Completion heals exactly 40 HP and empties the original slot")
+	await _ticks(10)
+	_check(player.health == 70.0 and pack.item_count == 0, "Completed use cannot apply or consume twice")
+	await _key(KEY_H)
+	_check(not use.is_using and "Нет аптечки" in feedback._message, "Empty backpack gives local no-medkit feedback")
+
+	_seed(player, 85.0)
+	await _key(KEY_H)
+	await _ticks(185)
+	_check(player.health == 100.0 and pack.item_count == 2 and pack.get_item(2) == MEDKIT and pack.get_item(4) == METAL, "Healing clamps to maximum and consumes only one medkit without shifting other slots")
+	_check(not use.request_use(4) and not use.request_use(-1), "Nonmedical and invalid slots cannot be used as a medkit")
+	_seed(player)
+	await _key(KEY_H)
+	player.restore_health(100.0)
+	await _ticks(185)
+	_check(not use.is_using and player.health == 100.0 and pack.item_count == 3, "Becoming fully healed before completion does not waste the selected medkit")
+	_seed(player)
+	await _key(KEY_H)
+	await _ticks(175)
+	player.take_damage(1)
+	await _ticks(10)
+	_check(not use.is_using and player.health == 29.0 and pack.item_count == 3, "Damage immediately before completion cancels without partial healing or consumption")
+
+	_seed(player)
+	await _key(KEY_H)
+	await _ticks(40)
+	await _key(KEY_H)
+	await _ticks(190)
+	_check(not use.is_using and player.health == 30.0 and pack.item_count == 3, "Repeated H cancels without delayed healing or lost items")
+	await _key(KEY_H)
+	var event := InputEventKey.new()
+	event.physical_keycode = KEY_H
+	event.pressed = true
+	event.echo = true
+	root.push_input(event, true)
+	_check(use.is_using, "Keyboard autorepeat does not cancel an application")
+	var before: Vector2 = player.global_position
+	Input.action_press("move_right")
+	await _ticks(3)
+	Input.action_release("move_right")
+	await _ticks(2)
+	_check(not use.is_using and player.global_position.x > before.x and player.health == 30.0 and pack.item_count == 3, "Movement cancels and allows immediate retreat without consuming a medkit")
+	await _key(KEY_H)
+	player.take_damage(5)
+	await _ticks(185)
+	_check(not use.is_using and player.health == 25.0 and pack.item_count == 3, "Damage interrupts application without healing later")
+
+	_seed(player)
+	await _key(KEY_H)
+	await _ticks(30)
+	await _key(KEY_ESCAPE)
+	var elapsed: float = use.progress
+	await _ticks(190)
+	_check(paused and use.is_using and is_equal_approx(use.progress, elapsed) and pack.item_count == 3, "Pause freezes application and preserves item ownership")
+	await _key(KEY_ESCAPE)
+	await _ticks(155)
+	_check(not paused and not use.is_using and player.health == 70.0 and pack.item_count == 2, "Resume finishes only the remaining application time")
+
+	_seed(player)
+	await _key(KEY_H)
+	await _key(KEY_TAB)
+	_check(yard.get_node("HUD/LootMenu").visible and not use.is_using and pack.item_count == 3, "Opening live backpack cancels application without spending an item")
+	await _key(KEY_H)
+	_check(not use.is_using and player.health == 30.0, "H cannot start healing through inventory UI")
+	await _key(KEY_ESCAPE)
+	weapon.ammo = 1
+	weapon.request_reload()
+	await _key(KEY_H)
+	_check(not use.is_using and weapon.is_reloading and pack.item_count == 3, "Reloading and healing cannot overlap")
+	weapon.restore_state()
+	await _key(KEY_H)
+	pack.move_slot(0, 1)
+	await _ticks(185)
+	_check(not use.is_using and player.health == 30.0 and pack.get_item(1) == MEDKIT and pack.item_count == 3, "Moving selected item cancels delayed application instead of consuming another slot")
+	_check(not pack.consume_item(4, MEDKIT) and pack.get_item(4) == METAL, "Inventory refuses consumption when expected item does not match")
+
+	_seed(player)
+	await _key(KEY_H)
+	player.restore_state()
+	await _ticks(185)
+	_check(not use.is_using and pack.item_count == 3 and player.health == 100.0, "Developer restore cancels pending application")
+	_seed(player)
+	await _key(KEY_H)
+	player.take_damage(1000)
+	await _ticks(185)
+	_check(player.is_dead and not use.is_using and player.health == 0.0 and pack.item_count == 0, "Death cannot finish healing or preserve the raid backpack")
+	_check(player.restore_health(40.0) == 0.0 and player.is_dead, "Healing API cannot resurrect the dead")
+
+	# Exercise the real save catalogue with a fresh isolated profile, not owner data.
+	var profile: Node = load("res://scripts/raid_progress.gd").new()
+	root.add_child(profile)
+	profile.save_path = "user://healing_test_profile.json"
+	_seed(player)
+	profile.begin_raid()
+	await _key(KEY_H)
+	_check(profile.finish_raid(pack) and pack.item_count == 0, "Unspent medkits extract through normal atomic raid transfer")
+	_check(not use.is_using and player.health == 30.0, "Extraction of a medkit cancels its pending application without granting HP")
+	var reader: Node = load("res://scripts/raid_progress.gd").new()
+	root.add_child(reader)
+	_check(reader.load_profile(profile.save_path) and reader.stash.get_item(0) == MEDKIT and reader.stash.get_item(1) == MEDKIT, "Medkit stable ID survives profile write and reload")
+	_check(reader.stash.get_item(0).healing_amount == 40.0, "Loaded medkit retains its reusable item definition")
+	profile.queue_free()
+	reader.queue_free()
+	yard.queue_free()
+	await _ticks(2)
+	print("RESULT: %d checks, %d failures" % [_checks, _failures])
+	quit(0 if _failures == 0 else 1)

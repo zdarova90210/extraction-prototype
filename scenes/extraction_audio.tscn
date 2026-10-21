@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/extraction_audio.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/sound_player_ui.tscn" id="2"]
+[ext_resource type="Resource" path="res://resources/audio/raid/extraction_pulse.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/audio/raid/extraction_cancel.tres" id="4"]
+
+[node name="Audio" type="Node"]
+script = ExtResource("1")
+pulse_cue = ExtResource("3")
+cancel_cue = ExtResource("4")
+
+[node name="Pulse" parent="." instance=ExtResource("2")]
+audio_bus = &"Interface"
+
+[node name="Cancel" parent="." instance=ExtResource("2")]
+audio_bus = &"Interface"

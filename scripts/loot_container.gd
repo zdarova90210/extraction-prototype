@@ -3,6 +3,7 @@ extends StaticBody2D
 ## Saved world object; its Inventory owns runtime loot, not shared resources.
 
 @export var display_name: String = "Ящик"
+@export var impact_cue: SoundCue = preload("res://resources/audio/combat/wood.tres")
 @export var size: Vector2 = Vector2(40, 28):
 	set(value):
 		size = value.max(Vector2(20, 16))
@@ -12,6 +13,9 @@ extends StaticBody2D
 @export_range(0.15, 3.0, 0.05, "suffix:s") var search_item_duration: float = 1.5
 signal discovery_changed
 signal search_progress_changed
+signal opened
+signal closed
+signal item_discovered(slot: int)
 var _highlighted: bool = false
 var _discovered: Array[bool] = []
 var _search_active: bool = false
@@ -27,6 +31,12 @@ var current_search_slot: int:
 		if not _search_active:
 			return -1
 		return _search_slot if _search_slot >= 0 else _next_unknown()
+var is_searching: bool:
+	get: return _search_active and has_unknown_items
+
+
+func get_impact_cue() -> SoundCue:
+	return impact_cue
 
 
 func _ready() -> void:
@@ -49,7 +59,28 @@ func is_discovered(slot: int) -> bool:
 
 
 func set_searching(active: bool) -> void:
+	if active == _search_active:
+		return
 	_search_active = active
+	if active:
+		opened.emit()
+	else:
+		closed.emit()
+
+
+func reset_test_contents() -> void:
+	# Explicit developer action only; opening a container never replenishes it.
+	set_searching(false)
+	_search_slot = -1
+	_search_elapsed = 0.0
+	_discovered.fill(false)
+	var slots: Array[ItemDefinition] = []
+	slots.resize(inventory.capacity)
+	for index in range(mini(slots.size(), inventory.starting_items.size())):
+		slots[index] = inventory.starting_items[index]
+	inventory.replace_slots(slots)
+	discovery_changed.emit()
+	search_progress_changed.emit()
 
 
 func _next_unknown() -> int:
@@ -68,10 +99,12 @@ func _physics_process(delta: float) -> void:
 		return
 	_search_elapsed += delta
 	if _search_elapsed >= search_item_duration:
+		var discovered_slot := _search_slot
 		_discovered[_search_slot] = true
 		_search_slot = -1
 		_search_elapsed = 0.0
 		discovery_changed.emit()
+		item_discovered.emit(discovered_slot)
 	search_progress_changed.emit()
 
 

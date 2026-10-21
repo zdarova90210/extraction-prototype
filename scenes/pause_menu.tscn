@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/pause_menu.gd" id="1"]
-[ext_resource type="PackedScene" path="res://scenes/display_options.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/settings_menu.tscn" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/developer_panel.tscn" id="3_dev"]
 
 [sub_resource type="StyleBoxFlat" id="Panel"]
@@ -84,14 +84,14 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.77, 0.57, 1)
 theme_override_constants/line_spacing = 8
 theme_override_font_sizes/font_size = 15
-text = "W A S D\nМышь\nЛКМ\nR\nR ещё раз\nE\nTab\nEnter\nEsc"
+text = "W A S D\nМышь\nЛКМ\nR\nR ещё раз\nH\nE\nTab\nEnter\nEsc"
 
 [node name="Actions" type="Label" parent="Center/Panel/Margin/Content/Bindings"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.82, 0.87, 0.82, 1)
 theme_override_constants/line_spacing = 8
 theme_override_font_sizes/font_size = 15
-text = "Движение\nПрицеливание\nСтрельба\nПерезарядка\nПопытка в зелёном секторе\nКонтейнер рядом\nРюкзак\nНовый бой\nПауза / продолжить"
+text = "Движение\nПрицеливание\nСтрельба\nПерезарядка\nПопытка в зелёном секторе\nАптечка / отмена лечения\nКонтейнер рядом\nРюкзак\nНовый бой\nПауза / продолжить"
 
 [node name="Note" type="Label" parent="Center/Panel/Margin/Content"]
 layout_mode = 2
@@ -99,8 +99,10 @@ theme_override_colors/font_color = Color(0.60, 0.69, 0.64, 1)
 theme_override_font_sizes/font_size = 13
 text = "Промах по сектору не замедляет перезарядку."
 
-[node name="DisplayOptions" parent="Center/Panel/Margin/Content" instance=ExtResource("2")]
+[node name="Settings" type="Button" parent="Center/Panel/Margin/Content"]
+custom_minimum_size = Vector2(0, 34)
 layout_mode = 2
+text = "Настройки"
 
 [node name="Resume" type="Button" parent="Center/Panel/Margin/Content"]
 custom_minimum_size = Vector2(0, 40)
@@ -114,3 +116,5 @@ layout_mode = 2
 text = "Комната разработчика · F2"
 
 [node name="DeveloperPanel" parent="." instance=ExtResource("3_dev")]
+
+[node name="SettingsMenu" parent="." instance=ExtResource("2")]

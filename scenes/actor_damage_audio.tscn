@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/sound_player_2d.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/actor_damage_audio.gd" id="2"]
+[ext_resource type="Resource" path="res://resources/audio/combat/actor_hit.tres" id="3"]
+
+[node name="HitAudio" instance=ExtResource("1")]
+script = ExtResource("2")
+audio_bus = &"Impacts"
+damage_cue = ExtResource("3")

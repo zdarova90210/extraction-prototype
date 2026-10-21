@@ -35,7 +35,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Panel" type="PanelContainer" parent="Center"]
-custom_minimum_size = Vector2(560, 0)
+custom_minimum_size = Vector2(660, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("Panel")
 
@@ -48,7 +48,7 @@ theme_override_constants/margin_bottom = 22
 
 [node name="Content" type="VBoxContainer" parent="Center/Panel/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 10
 
 [node name="Title" type="Label" parent="Center/Panel/Margin/Content"]
 layout_mode = 2
@@ -68,7 +68,7 @@ theme_override_font_sizes/font_size = 15
 text = "Охранники: 1 / 8 · живы: 1"
 
 [node name="Guards" type="ItemList" parent="Center/Panel/Margin/Content"]
-custom_minimum_size = Vector2(0, 150)
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 
@@ -115,12 +115,38 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Начать комнату заново"
 
+[node name="HealTest" type="Button" parent="Center/Panel/Margin/Content/Actions"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Повторить тест лечения"
+
+[node name="LootTest" type="Button" parent="Center/Panel/Margin/Content/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Восстановить лут контейнеров"
+
+[node name="Toggles" type="HBoxContainer" parent="Center/Panel/Margin/Content"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="GuardsActive" type="CheckButton" parent="Center/Panel/Margin/Content/Toggles"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+button_pressed = true
+text = "Охранники активны"
+
+[node name="Immortal" type="CheckButton" parent="Center/Panel/Margin/Content/Toggles"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Бессмертие · минимум 1 HP"
+
 [node name="Message" type="Label" parent="Center/Panel/Margin/Content"]
 custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.77, 0.57, 1)
 theme_override_font_sizes/font_size = 14
-text = "Точки появления можно двигать в редакторе: GuardSpawns."
+text = "Тестовые инструменты не меняют схрон и настройки звука."
 autowrap_mode = 2
 
 [node name="Back" type="Button" parent="Center/Panel/Margin/Content"]

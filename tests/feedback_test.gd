@@ -2,7 +2,7 @@ extends SceneTree
 ## Event integration and actual mixer capture, using real-time Dummy audio.
 
 const YARD = preload("res://scenes/test_yard.tscn")
-const SOUND_NAMES = ["player_shot", "guard_shot", "dry_fire", "reload_start", "reload_finish", "guard_ready", "player_hit", "active_reload_success"]
+const SOUND_NAMES = ["weapons/carbine_shot_01", "weapons/carbine_shot_02", "weapons/carbine_shot_03", "weapons/rifle_shot_01", "weapons/rifle_shot_02", "weapons/rifle_shot_03", "weapons/rifle_shot_04", "weapons/dry_trigger", "weapons/carbine_reload_start", "weapons/carbine_reload_finish", "weapons/rifle_reload_start", "weapons/rifle_reload_finish", "combat/weapon_ready", "combat/reload_timing", "combat/concrete_01", "combat/metal_01", "combat/metal_02", "combat/metal_03", "combat/metal_04", "combat/wood_01", "combat/body_01", "combat/body_02", "combat/body_03", "combat/player_damage"]
 
 var _checks: int = 0
 var _failures: int = 0
@@ -46,12 +46,13 @@ func _capture_peak(capture: AudioEffectCapture) -> float:
 
 
 func _run() -> void:
+	_test_weighted_selection()
 	for name: String in SOUND_NAMES:
 		var stream := load("res://assets/audio/" + name + ".wav") as AudioStreamWAV
-		_check(stream != null and stream.get_length() > 0.05 and stream.get_length() < 0.5, "Sound imports with a short valid duration: " + name)
+		_check(stream != null and stream.get_length() > 0.05 and stream.get_length() < 2.1, "Sound imports with a short valid duration: " + name)
 		if stream == null:
 			continue
-		_check(stream.format == AudioStreamWAV.FORMAT_16_BITS and stream.mix_rate == 44100 and not stream.stereo, "Sound keeps uncompressed mono PCM: " + name)
+		_check(stream.format == AudioStreamWAV.FORMAT_16_BITS and stream.mix_rate == 48000 and not stream.stereo, "Sound keeps uncompressed mono PCM: " + name)
 		var peak := 0
 		for offset in range(0, stream.data.size(), 2):
 			peak = maxi(peak, absi(stream.data.decode_s16(offset)))
@@ -65,6 +66,8 @@ func _run() -> void:
 	capture.buffer_length = 1.0
 	AudioServer.add_bus_effect(bus, capture)
 	var yard := YARD.instantiate()
+	yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
+	yard.play_start_audio = false
 	root.add_child(yard)
 	current_scene = yard
 	var player: CharacterBody2D = yard.get_node("Player")
@@ -77,7 +80,81 @@ func _run() -> void:
 	audio.cue_played.connect(_record_cue)
 	await _ticks(4)
 	_check(player.get_node("AudioListener2D").is_current(), "Audio listener follows player, including camera edges")
-	_check(audio.shot_stream != guard.get_node("Aim/Weapon/Audio").shot_stream, "Player and guard use different shot sounds")
+	var guard_audio: Node2D = guard.get_node("Aim/Weapon/Audio")
+	var player_bus := AudioServer.get_bus_index(&"PlayerWeapons")
+	_check(player_bus >= 0 and AudioServer.get_bus_send(player_bus) == &"SFX" and audio.shot_audio.bus == &"PlayerWeapons" and audio.action_audio.bus == &"PlayerWeapons" and guard_audio.shot_audio.bus == &"EnemyWeapons", "Player and enemy weapons use independent categories under shared SFX")
+	_check(audio.shot_cue != guard_audio.shot_cue and audio.reload_start_cue != guard_audio.reload_start_cue and audio.reload_finish_cue != guard_audio.reload_finish_cue, "Carbine and rifle have separate shot and reload profiles")
+	var randomizer := audio.shot_audio.stream as AudioStreamRandomizer
+	_check(randomizer != null and randomizer.streams_count == 3 and randomizer.playback_mode == AudioStreamRandomizer.PLAYBACK_RANDOM_NO_REPEATS, "Carbine uses all three new replacement shots without immediate repeats")
+	_check(guard_audio.shot_audio.stream is AudioStreamRandomizer and guard_audio.shot_audio.stream.streams_count == 4, "Rifle selects from four owner-selected shots")
+	_check(randomizer.get_stream_probability_weight(0) > randomizer.get_stream_probability_weight(1), "Native weapon selector preserves the owner's descending variant priorities")
+	var additional := preload("res://scenes/enemy.tscn").instantiate()
+	yard.add_child(additional)
+	additional.set_physics_process(false)
+	var additional_audio: Node2D = additional.get_node("Aim/Weapon/Audio")
+	_check(additional_audio.shot_cue == guard_audio.shot_cue and additional_audio.shot_audio.stream != guard_audio.shot_audio.stream, "Actors share immutable source cues but own separate playback selection state")
+	additional.free()
+	# Exercise every native variant, rather than allowing a random quiet shot to
+	# hide behind an impact. Raised footsteps should still stay below gunfire.
+	var footsteps: Node2D = player.get_node("Footsteps")
+	capture.clear_buffer()
+	player.moved.emit(footsteps.step_distance)
+	await _ticks(40)
+	var step_peak := _capture_peak(capture)
+	footsteps.stop()
+	var selection_mode := randomizer.playback_mode
+	var pitch_variation := randomizer.random_pitch
+	randomizer.playback_mode = AudioStreamRandomizer.PLAYBACK_SEQUENTIAL
+	randomizer.random_pitch = 1.0
+	for index in range(randomizer.streams_count):
+		audio.shot_audio.stop()
+		await _ticks(6)
+		capture.clear_buffer()
+		audio._on_shot(Vector2.ZERO, Vector2.RIGHT, false)
+		await _ticks(12)
+		var variant_peak := _capture_peak(capture)
+		_check(step_peak > 0.001 and variant_peak > step_peak and variant_peak < 0.9, "Carbine variant %d remains above the newly raised footsteps without clipping in the actual mixer" % (index + 1))
+	audio.shot_audio.stop()
+	randomizer.playback_mode = selection_mode
+	randomizer.random_pitch = pitch_variation
+	audio._on_shot(Vector2.ZERO, Vector2.RIGHT, false)
+	await _ticks(4)
+	var first_tail: AudioStreamPlayback = audio.shot_audio.get_stream_playback()
+	audio._on_shot(Vector2.ZERO, Vector2.RIGHT, false)
+	await _ticks(4)
+	_check(audio.shot_audio.stream == randomizer and first_tail.is_playing(), "Another shot preserves its predecessor tail without replacing the stream")
+	audio.shot_audio.stop()
+	_cues.clear()
+	capture.clear_buffer()
+	var master := AudioServer.get_bus_index(&"Master")
+	var output := AudioEffectCapture.new()
+	output.buffer_length = 1.2
+	AudioServer.add_bus_effect(master, output)
+	var simultaneous: Array[Node2D] = []
+	for index in range(8):
+		var actor := preload("res://scenes/enemy.tscn").instantiate()
+		yard.add_child(actor)
+		actor.set_physics_process(false)
+		actor.global_position = player.global_position + Vector2(80, 0)
+		# Align the same recorded transient to exercise worst-case summation.
+		actor.get_node("Aim/Weapon/Audio/Shot").stream.playback_mode = AudioStreamRandomizer.PLAYBACK_SEQUENTIAL
+		actor.get_node("Aim/Weapon/Audio/Shot").volume_db += 12.0
+		simultaneous.append(actor)
+	await _ticks(6)
+	capture.clear_buffer()
+	output.clear_buffer()
+	for actor in simultaneous:
+		actor.get_node("Aim/Weapon").shot_fired.emit(Vector2.ZERO, Vector2.RIGHT, false)
+	await _ticks(55)
+	var raw_mix := _capture_peak(capture) * db_to_linear(AudioServer.get_bus_volume_db(bus))
+	var limited_mix := _capture_peak(output)
+	_check(raw_mix > 1.0, "Eight synchronized boosted rifle shots exercise an actual overload before output protection")
+	_check(limited_mix > 0.01 and limited_mix <= db_to_linear(-1.0) + 0.001, "Master limiter keeps simultaneous gunfire audible below its -1 dB ceiling")
+	for actor in simultaneous:
+		actor.free()
+	AudioServer.remove_bus_effect(master, AudioServer.get_bus_effect_count(master) - 1)
+	await _ticks(8)
+	capture.clear_buffer()
 	_check(not cursor.is_empty_feedback_active, "Loaded gun has no empty-magazine warning")
 	weapon.ammo = 1
 	capture.clear_buffer()
@@ -159,7 +236,7 @@ func _run() -> void:
 	weapon.request_reload()
 	var completions := int(_cues.get(&"reload_finish", 0))
 	player.take_damage(1000.0)
-	_check(player.get_node("HitAudio").playing, "Player damage requests its impact sound")
+	_check(player.get_node("HitAudio").is_playing(), "Player damage requests its impact sound")
 	await _ticks(100)
 	_check(int(_cues.get(&"reload_finish", 0)) == completions, "Death during reload never plays a false success cue")
 	previous_count = _empty_count
@@ -168,3 +245,31 @@ func _run() -> void:
 	AudioServer.remove_bus_effect(bus, 0)
 	print("RESULT: %d checks, %d failures" % [_checks, _failures])
 	quit(0 if _failures == 0 else 1)
+
+
+func _test_weighted_selection() -> void:
+	var cue := SoundCue.new()
+	var first := AudioStreamWAV.new()
+	var second := AudioStreamWAV.new()
+	var third := AudioStreamWAV.new()
+	cue.clips.assign([first, null, second, third])
+	cue.clip_weights = PackedFloat32Array([8.0, 100.0, 3.0, 1.0])
+	var counts := {first: 0, second: 0, third: 0}
+	var previous: AudioStream
+	var valid := true
+	seed(62419)
+	for iteration in range(8000):
+		var selected := cue.choose(previous)
+		valid = valid and selected != null and selected != previous
+		if counts.has(selected):
+			counts[selected] += 1
+		previous = selected
+	_check(valid, "Weighted selection skips empty entries and never immediately repeats a variant")
+	_check(counts[first] > counts[second] and counts[second] > counts[third], "Owner's preferred recording occurs more often over repeated weighted selection")
+	_check(cue.clips.size() == 4 and cue.clip_weights == PackedFloat32Array([8.0, 100.0, 3.0, 1.0]), "Selection never removes or rewrites shared recordings or weights")
+	cue.clip_weights = PackedFloat32Array([NAN, 99.0, -1.0, 0.0])
+	_check(cue.weight_at(0) == 1.0 and cue.weight_at(2) == 1.0 and cue.weight_at(3) == 1.0 and cue.weight_at(-1) == 1.0 and cue.weight_at(100) == 1.0, "Missing, invalid and nonpositive priority values use safe equal weights")
+	cue.clips.assign([first])
+	_check(cue.choose(first) == first, "A single recording can play repeatedly without a missing event")
+	cue.clips.assign([null])
+	_check(cue.choose(null) == null, "An empty profile safely produces no recording")

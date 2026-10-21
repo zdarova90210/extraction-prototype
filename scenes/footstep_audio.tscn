@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/footstep_audio.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/audio/footsteps_concrete.tres" id="2"]
+
+[node name="Footsteps" type="Node2D"]
+script = ExtResource("1")
+default_profile = ExtResource("2")
+
+[node name="Left" type="AudioStreamPlayer2D" parent="."]
+bus = &"Footsteps"
+max_distance = 620.0
+attenuation = 1.8
+panning_strength = 0.7
+
+[node name="Right" type="AudioStreamPlayer2D" parent="."]
+bus = &"Footsteps"
+max_distance = 620.0
+attenuation = 1.8
+panning_strength = 0.7

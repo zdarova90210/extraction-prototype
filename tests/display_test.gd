@@ -31,6 +31,8 @@ func _ticks(count: int) -> void:
 func _run() -> void:
 	var settings: Node = root.get_node("DisplaySettings")
 	var yard := load("res://scenes/test_yard.tscn").instantiate() as Node2D
+	yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
+	yard.play_start_audio = false
 	root.add_child(yard)
 	current_scene = yard
 	yard.get_node("Player").set_physics_process(false)

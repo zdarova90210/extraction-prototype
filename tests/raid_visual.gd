@@ -86,6 +86,8 @@ func _capture() -> void:
 	bag.free()
 	profile.reset_progress()
 	var yard := load("res://scenes/test_yard.tscn").instantiate() as Node2D
+	yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
+	yard.play_start_audio = false
 	root.add_child(yard)
 	current_scene = yard
 	var player: CharacterBody2D = yard.get_node("Player")

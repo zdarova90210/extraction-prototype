@@ -1,14 +1,19 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
 [ext_resource type="Script" path="res://scripts/weapon.gd" id="2_weapon"]
 [ext_resource type="Script" path="res://scripts/actor_visual.gd" id="3_visual"]
 [ext_resource type="PackedScene" path="res://scenes/weapon_audio.tscn" id="4_audio"]
-[ext_resource type="AudioStream" path="res://assets/audio/player_hit.wav" id="5_hit"]
+[ext_resource type="PackedScene" path="res://scenes/actor_damage_audio.tscn" id="5_hit"]
 [ext_resource type="Script" path="res://scripts/actor_health_bar.gd" id="6_health"]
 [ext_resource type="Script" path="res://scripts/ammo_feedback.gd" id="7_ammo"]
 [ext_resource type="Script" path="res://scripts/inventory.gd" id="8_inventory"]
 [ext_resource type="Script" path="res://scripts/loot_interaction.gd" id="9_interaction"]
+[ext_resource type="Script" path="res://scripts/item_use.gd" id="10_use"]
+[ext_resource type="Script" path="res://scripts/item_use_feedback.gd" id="11_use_feedback"]
+[ext_resource type="PackedScene" path="res://scenes/footstep_audio.tscn" id="12_footsteps"]
+[ext_resource type="PackedScene" path="res://scenes/interaction_audio.tscn" id="13_interactions"]
+[ext_resource type="Resource" path="res://resources/audio/combat/player_damage.tres" id="14_damage"]
 
 [sub_resource type="CircleShape2D" id="Shape_player"]
 radius = 15.0
@@ -51,6 +56,7 @@ color = Color(0.65, 0.58, 0.42, 1)
 position = Vector2(32, -2)
 
 [node name="Audio" parent="Aim/Weapon" instance=ExtResource("4_audio")]
+audio_bus = &"PlayerWeapons"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true
@@ -58,10 +64,8 @@ position_smoothing_speed = 7.0
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
 
-[node name="HitAudio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_hit")
-volume_db = -8.0
-bus = &"SFX"
+[node name="HitAudio" parent="." instance=ExtResource("5_hit")]
+damage_cue = ExtResource("14_damage")
 
 [node name="HealthBar" type="Node2D" parent="."]
 position = Vector2(0, -40)
@@ -88,3 +92,28 @@ script = ExtResource("8_inventory")
 
 [node name="LootInteraction" type="Node" parent="."]
 script = ExtResource("9_interaction")
+
+[node name="ItemUse" type="Node" parent="."]
+script = ExtResource("10_use")
+
+[node name="Footsteps" parent="." instance=ExtResource("12_footsteps")]
+
+[node name="InteractionAudio" parent="." instance=ExtResource("13_interactions")]
+
+[node name="ItemUseFeedback" type="Node2D" parent="."]
+position = Vector2(0, 30)
+z_index = 6
+script = ExtResource("11_use_feedback")
+
+[node name="Readout" type="Label" parent="ItemUseFeedback"]
+offset_left = -95.0
+offset_top = 6.0
+offset_right = 95.0
+offset_bottom = 26.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.78, 0.92, 0.83, 1)
+theme_override_colors/font_shadow_color = Color(0.02, 0.035, 0.035, 0.95)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 13
+horizontal_alignment = 1

@@ -9,7 +9,8 @@ const MAX_PENDING_CAPACITY: int = 36 # All excess from the previous 50+6 profile
 const CATALOG: Dictionary = {
 	&"metal": preload("res://resources/items/metal.tres"),
 	&"wire": preload("res://resources/items/wire.tres"),
-	&"electronics": preload("res://resources/items/electronics.tres")
+	&"electronics": preload("res://resources/items/electronics.tres"),
+	&"medkit": preload("res://resources/items/medkit.tres")
 }
 var stash: Inventory
 var pending: Inventory

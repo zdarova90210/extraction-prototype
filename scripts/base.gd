@@ -1,6 +1,8 @@
 extends Control
 ## The stash view owns no items; every change is saved by RaidProgress first.
 
+signal item_moved
+
 @onready var content: VBoxContainer = $Margin/Content
 @onready var progress: Node = get_node("/root/RaidProgress")
 @onready var stash_grid: GridContainer = $Margin/Content/Columns/Stash/Grid
@@ -16,12 +18,34 @@ func _ready() -> void:
 	content.get_node("Actions/Start").pressed.connect(_start_raid)
 	content.get_node("Actions/Reset").pressed.connect(func(): $ResetConfirm.popup_centered())
 	content.get_node("Actions/Quit").pressed.connect(func(): get_tree().quit())
+	content.get_node("Actions/Settings").pressed.connect(_open_settings)
+	$SettingsMenu.back_requested.connect(_close_settings)
 	content.get_node("Columns/Side/DeleteZone").drop_validator = _valid_payload
 	content.get_node("Columns/Side/DeleteZone").item_dropped.connect(_request_discard)
 	$ResetConfirm.confirmed.connect(func(): progress.reset_progress())
 	$DeleteConfirm.confirmed.connect(_confirm_discard)
 	_refresh()
 	content.get_node("Actions/Start").grab_focus()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel") and not event.is_echo() and not $DeleteConfirm.visible and not $ResetConfirm.visible:
+		if $SettingsMenu.visible:
+			_close_settings()
+		else:
+			_open_settings()
+		get_viewport().set_input_as_handled()
+
+
+func _open_settings() -> void:
+	$Margin.hide()
+	$SettingsMenu.open()
+
+
+func _close_settings() -> void:
+	$SettingsMenu.close()
+	$Margin.show()
+	content.get_node("Actions/Settings").grab_focus()
 
 
 func _refresh() -> void:
@@ -78,12 +102,14 @@ func _can_drop(data: Dictionary, destination: Inventory, slot: int) -> bool:
 
 func _drop(data: Dictionary, destination: Inventory, slot: int) -> void:
 	if _can_drop(data, destination, slot):
-		progress.move_item(data.inventory, data.slot, slot)
+		if progress.move_item(data.inventory, data.slot, slot):
+			item_moved.emit()
 
 
 func _activate(inventory: Inventory, slot: int) -> void:
 	if inventory == progress.pending and progress.stash.first_empty_slot() >= 0:
-		progress.move_item(inventory, slot, progress.stash.first_empty_slot())
+		if progress.move_item(inventory, slot, progress.stash.first_empty_slot()):
+			item_moved.emit()
 
 
 func _request_discard(data: Dictionary) -> void:

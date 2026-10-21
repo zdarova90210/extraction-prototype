@@ -13,6 +13,8 @@ func _total_items(yard: Node2D) -> int:
 
 func _run() -> void:
 	var yard := YARD.instantiate() as Node2D
+	yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
+	yard.play_start_audio = false
 	NavigationServer2D.region_set_use_async_iterations(yard.get_node("Navigation").get_rid(), false)
 	root.add_child(yard)
 	current_scene = yard
@@ -40,7 +42,8 @@ func _run() -> void:
 	for index in range(2):
 		other.inventory.transfer_to(pack, index)
 	var conservation := [true]
-	pack.changed.connect(func(): conservation[0] = conservation[0] and _total_items(yard) == 8)
+	var initial_total := _total_items(yard)
+	pack.changed.connect(func(): conservation[0] = conservation[0] and _total_items(yard) == initial_total)
 	await _key(KEY_TAB)
 	var grid: GridContainer = menu.backpack_panel.get_node("Grid")
 	var zone: Control = menu.content.get_node("DropZone")
@@ -64,7 +67,7 @@ func _run() -> void:
 	_check(spaced, "Repeated drops use different positions with 28px spacing")
 	_check(reachable, "Dropped items are reachable and not placed through walls")
 	_check(floor_items[0].inventory.capacity == 1 and floor_items[0].inventory.item_count == 1 and not floor_items[0] is CollisionObject2D, "Floor item owns one item without blocking movement or navigation")
-	_check(conservation[0] and _total_items(yard) == 8, "Drop signals always observe conserved item ownership")
+	_check(conservation[0] and _total_items(yard) == initial_total, "Drop signals always observe conserved item ownership")
 	await _key(KEY_TAB)
 	var selected: GroundItem = floor_items[0]
 	player.get_node("Aim").look_at(selected.global_position)
@@ -106,11 +109,11 @@ func _run() -> void:
 	await _ticks(1)
 	await _key(KEY_E)
 	_check(pack.item_count == 6 and get_nodes_in_group("ground_items").size() == 2, "Previously rejected floor item can be picked up after freeing space")
-	_check(conservation[0] and _total_items(yard) == 8, "All drop and pickup operations preserve total items")
+	_check(conservation[0] and _total_items(yard) == initial_total, "All drop and pickup operations preserve total items")
 	player.take_damage(1000.0)
 	_check(not interaction.drop_item(0), "Dead player cannot discard inventory")
 	await _key(KEY_ENTER)
 	await _ticks(3)
-	_check(current_scene != yard and get_nodes_in_group("ground_items").is_empty() and current_scene.get_node("Player/Inventory").item_count == 0, "Restart clears floor loot along with backpack and restores authored scene")
+	_check(current_scene != yard and get_nodes_in_group("ground_items").is_empty() and current_scene.get_node("Player/Inventory").item_count == 2, "Restart restores authored scene and two-medkit loadout, clearing floor loot")
 	print("RESULT: %d checks, %d failures" % [_checks, _failures])
 	quit(0 if _failures == 0 else 1)

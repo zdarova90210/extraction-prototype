@@ -9,12 +9,14 @@ var gameplay_overlay: Control
 
 func _ready() -> void:
 	resume_button.pressed.connect(_on_resume)
+	$Center/Panel/Margin/Content/Settings.pressed.connect(func(): set_settings_open(true))
+	$SettingsMenu.back_requested.connect(func(): set_settings_open(false))
 	$Center/Panel/Margin/Content/Developer.pressed.connect(func(): set_developer_open(true))
 	$DeveloperPanel.back_requested.connect(func(): set_developer_open(false))
 	var keys: Label = $Center/Panel/Margin/Content/Bindings/Keys
-	keys.text = "%s %s %s %s\nМышь\nЛКМ\n%s\n%s ещё раз\n%s\n%s\n%s\nEsc" % [
+	keys.text = "%s %s %s %s\nМышь\nЛКМ\n%s\n%s ещё раз\n%s\n%s\n%s\n%s\nEsc" % [
 		_binding("move_up"), _binding("move_left"), _binding("move_down"), _binding("move_right"),
-		_binding("reload"), _binding("reload"), _binding("interact"), _binding("inventory"), _binding("restart")]
+		_binding("reload"), _binding("reload"), _binding("use_item"), _binding("interact"), _binding("inventory"), _binding("restart")]
 	$Center/Panel/Margin/Content/Note.text += "\n%s над вещью в рюкзаке — выбросить на пол." % _binding("discard_item")
 
 
@@ -34,7 +36,9 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		return
 	if event.is_action_pressed("ui_cancel") and not event.is_echo():
-		if not visible and is_instance_valid(gameplay_overlay) and gameplay_overlay.visible:
+		if visible and $SettingsMenu.visible:
+			set_settings_open(false)
+		elif not visible and is_instance_valid(gameplay_overlay) and gameplay_overlay.visible:
 			gameplay_overlay.close_menu()
 		else:
 			set_open(not visible)
@@ -54,6 +58,7 @@ func set_open(open: bool) -> void:
 		$DeveloperPanel.hide()
 		resume_button.grab_focus()
 	else:
+		$SettingsMenu.close()
 		resume_button.release_focus()
 		# Closing help must not turn a held/clicked mouse button into a shot.
 		Input.action_release("shoot")
@@ -63,12 +68,25 @@ func set_open(open: bool) -> void:
 func set_developer_open(open: bool) -> void:
 	if not visible:
 		set_open(true)
+	$SettingsMenu.close()
 	$Center.visible = not open
 	$DeveloperPanel.visible = open
 	if open:
 		$DeveloperPanel.focus_tools()
 	else:
 		resume_button.grab_focus()
+
+
+func set_settings_open(open: bool) -> void:
+	if not visible:
+		set_open(true)
+	$Center.visible = not open
+	$DeveloperPanel.hide()
+	if open:
+		$SettingsMenu.open()
+	else:
+		$SettingsMenu.close()
+		$Center/Panel/Margin/Content/Settings.grab_focus()
 
 
 func _on_resume() -> void:

@@ -6,7 +6,24 @@ func _initialize() -> void:
 
 
 func _capture() -> void:
+	var default_room := load("res://scenes/test_yard.tscn").instantiate() as Node2D
+	root.add_child(default_room)
+	current_scene = default_room
+	default_room.set_guards_active(false)
+	await _ticks(5)
+	await _save("audio_test_room")
+	var overview: Camera2D = default_room.get_node("Player/Camera2D")
+	overview.position_smoothing_enabled = false
+	overview.position = Vector2(430, -5)
+	overview.zoom = Vector2(0.55, 0.55)
+	overview.force_update_scroll()
+	await _ticks(3)
+	await _save("audio_test_overview")
+	default_room.free()
+	await _ticks(2)
 	var yard := load("res://scenes/test_yard.tscn").instantiate() as Node2D
+	yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
+	yard.play_start_audio = false
 	root.add_child(yard)
 	current_scene = yard
 	var player: CharacterBody2D = yard.get_node("Player")
@@ -61,6 +78,12 @@ func _capture() -> void:
 	yard.get_node("HUD/PauseMenu").set_open(true)
 	await _ticks(2)
 	await _save("pause_menu")
+	yard.get_node("HUD/PauseMenu").set_settings_open(true)
+	await _ticks(3)
+	await _save("audio_settings")
+	yard.get_node("HUD/PauseMenu/SettingsMenu/Center/Panel/Margin/Content/Tabs").current_tab = 1
+	await _ticks(2)
+	await _save("display_settings")
 	yard.get_node("HUD/PauseMenu").set_developer_open(true)
 	yard.spawn_guard(1)
 	await _ticks(2)
@@ -141,7 +164,7 @@ func _capture() -> void:
 	player.take_damage(1000.0)
 	await _ticks(20)
 	await _save("death")
-	print("Visual captures saved: yard, loot_hint, loot_search, loot_first_item, loot_container, loot_tooltip, backpack_loot, backpack_drop, ground_loot, pause_menu, developer_room, guard_turn, aim, shot, ammo_shot, ammo_hidden, empty, reload, health_damage, health_settled, active_reload_window, active_reload_success, active_reload_miss, victory, death")
+	print("Visual captures saved: yard, loot_hint, loot_search, loot_first_item, loot_container, loot_tooltip, backpack_loot, backpack_drop, ground_loot, pause_menu, audio_settings, display_settings, developer_room, guard_turn, aim, shot, ammo_shot, ammo_hidden, empty, reload, health_damage, health_settled, active_reload_window, active_reload_success, active_reload_miss, victory, death")
 	quit()
 
 

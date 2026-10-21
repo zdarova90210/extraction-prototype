@@ -1,0 +1,31 @@
+{
+  "source": {
+    "file": "sources/warehouse_bed_elevenlabs.wav",
+    "original_filename": "Seamless_stereo_ambi_#3-1792576876862.wav",
+    "origin": "ElevenLabs Sound Effects; generated and selected by project owner",
+    "generation_prompt": "Exact export prompt not independently recorded; see AUDIO_PROMPTS.md for current generation recipes",
+    "license": "User-provided generated asset; not represented as CC0",
+    "sha256": "e0ba6932643dcc3014a32963d18193a675ea40c8618a32f6f4c18741493b5b24",
+    "sample_rate": 48000,
+    "channels": 2,
+    "format": "WAV PCM16",
+    "seconds": 30.0
+  },
+  "output": {
+    "file": "warehouse_bed_loop.ogg",
+    "format": "OGG Vorbis",
+    "encoder": "libsndfile default Vorbis quality",
+    "sample_rate": 48000,
+    "channels": 2,
+    "seconds": 30.0,
+    "processing": "Format conversion only; no gain, filtering, envelope or crossfade applied",
+    "sha256": "d3fb52fea73d9bdf5f18ee8b7047ce77cd911bd96af215087f8853def556a195"
+  },
+  "playback": {
+    "loop": true,
+    "random_start": true,
+    "fade_in_seconds": 2.5,
+    "player_volume_db": -4,
+    "ambience_bus_db": -6
+  }
+}

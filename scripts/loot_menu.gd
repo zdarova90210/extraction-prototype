@@ -2,6 +2,7 @@ extends Control
 ## Live-world inventory UI. No pauses, item ownership or combat rules live here.
 
 signal toggled(open: bool)
+signal item_moved
 
 var _player: CharacterBody2D
 var _backpack: Inventory
@@ -153,6 +154,8 @@ func _activate_slot(inventory: Inventory, slot: int) -> void:
 	else:
 		success = _container.take_to(_backpack, slot)
 	message.text = "Предмет перемещён." if success else "Нет свободного места или предмет ещё не найден."
+	if success:
+		item_moved.emit()
 
 
 func _can_drop(data: Dictionary, destination: Inventory, target_slot: int) -> bool:
@@ -174,23 +177,29 @@ func _drop_slot(data: Dictionary, destination: Inventory, target_slot: int) -> v
 	if not _can_drop(data, destination, target_slot):
 		return
 	var source: Inventory = data.inventory
+	var success: bool
 	if source == destination:
-		source.move_slot(data.slot, target_slot)
+		success = source.move_slot(data.slot, target_slot)
 	elif source == _backpack:
-		_container.store_from(_backpack, data.slot, target_slot)
+		success = _container.store_from(_backpack, data.slot, target_slot)
 	else:
-		_container.take_to(_backpack, data.slot, target_slot)
-	message.text = "Предмет перемещён."
+		success = _container.take_to(_backpack, data.slot, target_slot)
+	message.text = "Предмет перемещён." if success else "Не удалось переместить предмет."
+	if success:
+		item_moved.emit()
 
 
 func _take_all() -> void:
 	if not _source_available():
 		close_menu()
 		return
+	var moved := false
 	for slot in range(_container.inventory.capacity):
 		if _backpack.is_full:
 			break
-		_container.take_to(_backpack, slot)
+		moved = _container.take_to(_backpack, slot) or moved
+	if moved:
+		item_moved.emit()
 	message.text = "Рюкзак заполнен." if _backpack.is_full else "Найденные предметы забраны."
 
 

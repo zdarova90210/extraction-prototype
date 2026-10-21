@@ -2,6 +2,7 @@ extends Node2D
 ## One physics ray per shot: nearest solid object stops both damage and tracer.
 
 signal shot_fired(from: Vector2, to: Vector2, hit: bool)
+signal hit_registered(point: Vector2, collider: Object)
 signal ammo_changed(loaded: int, capacity: int)
 signal reload_changed(active: bool)
 signal empty_triggered
@@ -94,6 +95,8 @@ func try_fire(aim_position: Vector2, shooter: CollisionObject2D) -> bool:
 	if not result.is_empty():
 		endpoint = result["position"]
 		var collider: Object = result["collider"]
+		# Notify presentation before damage can disable/free the struck body.
+		hit_registered.emit(endpoint, collider)
 		if collider.has_method("take_damage"):
 			collider.take_damage(damage)
 	var muzzle_distance := origin.distance_to(muzzle.global_position)

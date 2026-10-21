@@ -68,6 +68,8 @@ func _finish_search(container: StaticBody2D) -> void:
 
 func _run() -> void:
 	var yard := YARD.instantiate() as Node2D
+	yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
+	yard.play_start_audio = false
 	NavigationServer2D.region_set_use_async_iterations(yard.get_node("Navigation").get_rid(), false)
 	root.add_child(yard)
 	current_scene = yard
@@ -91,7 +93,7 @@ func _run() -> void:
 	for container in [first, second]:
 		for item in container.inventory.get_items():
 			ids[item.id] = true
-	_check(ids.size() == 3, "Loot uses three shared item definitions with stable IDs")
+	_check(ids.size() == 4 and ids.has(&"medkit"), "Loot uses four shared item definitions including the medkit")
 	_check(first.get_node("Hint").visible and interaction.can_reach(first), "Nearest reachable box shows a local E hint")
 	var cover := COVER.instantiate() as StaticBody2D
 	cover.position = Vector2(603, 690)
@@ -162,7 +164,7 @@ func _run() -> void:
 	await _click(_item_button(pack_list, &"metal"))
 	_check(backpack.item_count == 5 and second.inventory.item_count == 3, "Clicking backpack item returns one item to current container")
 	await _click(_item_button(source_list, &"wire"))
-	_check(backpack.item_count == 6 and second.inventory.item_count == 2 and backpack.find_item_index(&"metal") >= 0, "Freed slot can be used to choose different loot")
+	_check(backpack.item_count == 6 and second.inventory.item_count == 2 and backpack.find_item_index(&"medkit") >= 0, "Freed slot can be used to choose different loot without losing the medkit")
 	await _key(KEY_F2)
 	_check(paused and pause.visible and pause.get_node("DeveloperPanel").visible and not menu.visible, "F2 replaces loot with developer tools using a single pause owner")
 	await _key(KEY_F2)
@@ -198,7 +200,7 @@ func _run() -> void:
 	await _key(KEY_ENTER)
 	await _ticks(4)
 	var fresh := current_scene
-	_check(fresh != yard and fresh.get_node("Player/Inventory").item_count == 0 and fresh.get_node("LootContainers/Supply/Inventory").item_count == 4, "Restart creates empty backpack and restores saved container contents")
+	_check(fresh != yard and fresh.get_node("Player/Inventory").item_count == 2 and fresh.get_node("LootContainers/Supply/Inventory").item_count == 4, "Restart creates starting test backpack and restores saved container contents")
 	_check(not fresh.has_node("HUD/Top") and not fresh.has_node("HUD/TargetStatus"), "Loot does not reintroduce a service panel at top of gameplay")
 	print("RESULT: %d checks, %d failures" % [_checks, _failures])
 	quit(0 if _failures == 0 else 1)

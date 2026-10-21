@@ -14,12 +14,14 @@ $previousAppData = $env:APPDATA
 $previousLocalAppData = $env:LOCALAPPDATA
 $previousDisplayTest = $env:EXTRACTION_TEST_DISPLAY
 $previousProgressTest = $env:EXTRACTION_TEST_PROGRESS
+$previousAudioTest = $env:EXTRACTION_TEST_AUDIO
 try {
     # Scope editor settings and user data to this validation process only.
     $env:APPDATA = Join-Path $projectRoot '.godot-home\Roaming'
     $env:LOCALAPPDATA = Join-Path $projectRoot '.godot-home\Local'
     $env:EXTRACTION_TEST_DISPLAY = '1'
     $env:EXTRACTION_TEST_PROGRESS = '1'
+    $env:EXTRACTION_TEST_AUDIO = '1'
     $artifactDirectory = Join-Path $projectRoot 'artifacts'
     New-Item -ItemType Directory -Force -Path $env:APPDATA,$env:LOCALAPPDATA,$artifactDirectory | Out-Null
     # Test captures are not game assets and must not be imported by Godot.
@@ -40,11 +42,11 @@ try {
             Write-Output $log
             throw "$Name failed (exit $($process.ExitCode)). See $logPath"
         }
-        if ($Name -in @('gameplay', 'combat', 'combat_realtime', 'balance', 'balance_realtime', 'tactics', 'tactics_realtime', 'circling', 'circling_realtime', 'developer', 'loot', 'loot_slots', 'ground_loot', 'quick_discard', 'loot_tooltip', 'progress', 'stash_migration', 'raid_cycle', 'progress_writer', 'progress_reader', 'raid_visual', 'feedback', 'health_bar', 'ammo_feedback', 'active_reload', 'hud_menu', 'display', 'display_native') -and $log -notmatch 'RESULT: \d+ checks, 0 failures') {
+        if ($Name -in @('gameplay', 'combat', 'combat_realtime', 'balance', 'balance_realtime', 'tactics', 'tactics_realtime', 'circling', 'circling_realtime', 'developer', 'loot', 'loot_slots', 'ground_loot', 'quick_discard', 'loot_tooltip', 'progress', 'stash_migration', 'raid_cycle', 'progress_writer', 'progress_reader', 'raid_visual', 'feedback', 'combat_audio', 'raid_audio', 'ambience', 'health_bar', 'ammo_feedback', 'active_reload', 'healing', 'healing_visual', 'footsteps', 'footstep_audio', 'interaction', 'interaction_audio', 'hud_menu', 'audio_settings', 'display', 'display_native') -and $log -notmatch 'RESULT: \d+ checks, 0 failures') {
             Write-Output $log
             throw "$Name checks did not reach completion. See $logPath"
         }
-        if ($Name -eq 'visual' -and $log -notmatch 'Visual captures saved:') {
+        if ($Name -in @('visual', 'footstep_visual') -and $log -notmatch 'Visual captures saved:') {
             Write-Output $log
             throw "Visual captures did not reach completion. See $logPath"
         }
@@ -75,10 +77,19 @@ try {
     Invoke-GodotCheck 'progress_writer' @('--headless', '--fixed-fps', '60', '--quit-after', '300', '--script', 'res://tests/progress_restart_test.gd', '--', '--write-profile')
     Invoke-GodotCheck 'progress_reader' @('--headless', '--fixed-fps', '60', '--quit-after', '300', '--script', 'res://tests/progress_restart_test.gd')
     Invoke-GodotCheck 'feedback' @('--headless', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/feedback_test.gd')
+    Invoke-GodotCheck 'combat_audio' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/combat_audio_test.gd')
+    Invoke-GodotCheck 'raid_audio' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/raid_audio_test.gd')
+    Invoke-GodotCheck 'ambience' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/ambience_test.gd')
     Invoke-GodotCheck 'health_bar' @('--headless', '--fixed-fps', '60', '--quit-after', '600', '--script', 'res://tests/health_bar_test.gd')
     Invoke-GodotCheck 'ammo_feedback' @('--headless', '--fixed-fps', '60', '--quit-after', '600', '--script', 'res://tests/ammo_feedback_test.gd')
     Invoke-GodotCheck 'active_reload' @('--headless', '--fixed-fps', '60', '--quit-after', '2400', '--script', 'res://tests/active_reload_test.gd')
+    Invoke-GodotCheck 'healing' @('--headless', '--fixed-fps', '60', '--quit-after', '4200', '--script', 'res://tests/healing_test.gd')
+    Invoke-GodotCheck 'footsteps' @('--headless', '--fixed-fps', '60', '--quit-after', '2400', '--script', 'res://tests/footstep_test.gd')
+    Invoke-GodotCheck 'footstep_audio' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/footstep_audio_test.gd')
+    Invoke-GodotCheck 'interaction' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '3600', '--script', 'res://tests/interaction_test.gd')
+    Invoke-GodotCheck 'interaction_audio' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/interaction_audio_test.gd')
     Invoke-GodotCheck 'hud_menu' @('--headless', '--fixed-fps', '60', '--quit-after', '1800', '--script', 'res://tests/hud_menu_test.gd')
+    Invoke-GodotCheck 'audio_settings' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/audio_settings_test.gd')
     Invoke-GodotCheck 'display' @('--headless', '--fixed-fps', '60', '--quit-after', '900', '--script', 'res://tests/display_test.gd')
     if ($Realtime) {
         Invoke-GodotCheck 'combat_realtime' @('--headless', '--max-fps', '60', '--quit-after', '3600', '--script', 'res://tests/combat_test.gd', '--', '--async-navigation')
@@ -90,6 +101,8 @@ try {
         Invoke-GodotCheck 'visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/visual_check.gd')
         Invoke-GodotCheck 'loot_tooltip' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/loot_tooltip_test.gd')
         Invoke-GodotCheck 'raid_visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/raid_visual.gd')
+        Invoke-GodotCheck 'healing_visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/healing_visual.gd')
+        Invoke-GodotCheck 'footstep_visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/footstep_visual.gd')
         Invoke-GodotCheck 'display_visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/display_visual.gd')
         Invoke-GodotCheck 'display_native' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1200', '--script', 'res://tests/display_native_test.gd')
     }
@@ -100,4 +113,5 @@ finally {
     $env:LOCALAPPDATA = $previousLocalAppData
     $env:EXTRACTION_TEST_DISPLAY = $previousDisplayTest
     $env:EXTRACTION_TEST_PROGRESS = $previousProgressTest
+    $env:EXTRACTION_TEST_AUDIO = $previousAudioTest
 }

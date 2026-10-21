@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SoundCue" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/sound_cue.gd" id="1"]
+[ext_resource type="AudioStream" path="res://assets/audio/weapons/carbine_reload_start.wav" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"carbine_reload_start"
+clips = Array[AudioStream]([ExtResource("2")])
+volume_db = -5.0
+pitch_variation = 0.01

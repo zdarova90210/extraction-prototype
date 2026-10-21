@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundCue" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/sound_cue.gd" id="1"]
+[ext_resource type="AudioStream" path="res://assets/audio/interactions/item_move_01.wav" id="2"]
+[ext_resource type="AudioStream" path="res://assets/audio/interactions/item_move_02.wav" id="3"]
+[ext_resource type="AudioStream" path="res://assets/audio/interactions/item_move_03.wav" id="4"]
+[ext_resource type="AudioStream" path="res://assets/audio/interactions/item_move_04.wav" id="5"]
+
+[resource]
+script = ExtResource("1")
+id = &"move"
+clips = Array[AudioStream]([ExtResource("2"), ExtResource("3"), ExtResource("4"), ExtResource("5")])
+clip_weights = PackedFloat32Array(4, 3, 2, 1)
+volume_db = 0.0
+pitch_variation = 0.01

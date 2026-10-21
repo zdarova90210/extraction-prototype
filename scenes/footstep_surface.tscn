@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/footstep_surface.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/audio/footsteps_metal.tres" id="2"]
+
+[node name="MetalDeck" type="Node2D"]
+z_index = -8
+script = ExtResource("1")
+profile = ExtResource("2")

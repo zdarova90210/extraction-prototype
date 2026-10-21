@@ -17,6 +17,8 @@ func _dialog_click(dialog: Window, button: Button) -> void:
 
 func _run() -> void:
 	var yard := YARD.instantiate() as Node2D
+	yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
+	yard.play_start_audio = false
 	NavigationServer2D.region_set_use_async_iterations(yard.get_node("Navigation").get_rid(), false)
 	root.add_child(yard)
 	current_scene = yard

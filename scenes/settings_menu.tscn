@@ -1,0 +1,83 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/settings_menu.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/audio_options.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/display_options.tscn" id="3"]
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+bg_color = Color(0.055, 0.085, 0.09, 0.99)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.28, 0.37, 0.34, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_left = 6
+corner_radius_bottom_right = 6
+
+[node name="SettingsMenu" type="Control"]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Shade" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.015, 0.025, 0.025, 0.86)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(760, 610)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Panel")
+
+[node name="Margin" type="MarginContainer" parent="Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 22
+
+[node name="Content" type="VBoxContainer" parent="Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Center/Panel/Margin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.91, 0.86, 1)
+theme_override_font_sizes/font_size = 24
+text = "НАСТРОЙКИ"
+
+[node name="Tabs" type="TabContainer" parent="Center/Panel/Margin/Content"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AudioOptions" parent="Center/Panel/Margin/Content/Tabs" instance=ExtResource("2")]
+layout_mode = 2
+
+[node name="DisplayOptions" parent="Center/Panel/Margin/Content/Tabs" instance=ExtResource("3")]
+layout_mode = 2
+
+[node name="Back" type="Button" parent="Center/Panel/Margin/Content"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+text = "Назад"

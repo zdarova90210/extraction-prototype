@@ -1,0 +1,23 @@
+[gd_scene load_steps=8 format=3]
+[ext_resource type="Script" path="res://scripts/interaction_audio.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/sound_player_2d.tscn" id="2"]
+[ext_resource type="Resource" path="res://resources/audio/interactions/heal_start.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/audio/interactions/heal_process.tres" id="4"]
+[ext_resource type="Resource" path="res://resources/audio/interactions/heal_finish.tres" id="5"]
+[ext_resource type="Resource" path="res://resources/audio/interactions/drop.tres" id="6"]
+[ext_resource type="Resource" path="res://resources/audio/interactions/pickup.tres" id="7"]
+
+[node name="InteractionAudio" type="Node2D"]
+script = ExtResource("1")
+heal_start_cue = ExtResource("3")
+heal_process_cue = ExtResource("4")
+heal_finish_cue = ExtResource("5")
+drop_cue = ExtResource("6")
+pickup_cue = ExtResource("7")
+
+[node name="HealAction" parent="." instance=ExtResource("2")]
+[node name="HealProcess" parent="." instance=ExtResource("2")]
+[node name="Drop" parent="." instance=ExtResource("2")]
+top_level = true
+[node name="Pickup" parent="." instance=ExtResource("2")]
+top_level = true

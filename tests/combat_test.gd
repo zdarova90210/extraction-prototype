@@ -40,6 +40,8 @@ func _fresh() -> void:
 		_yard.queue_free()
 		await _ticks(2)
 	_yard = YARD.instantiate()
+	_yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
+	_yard.play_start_audio = false
 	if not _async_navigation:
 		NavigationServer2D.region_set_use_async_iterations(_yard.get_node("Navigation").get_rid(), false)
 	root.add_child(_yard)
@@ -124,7 +126,7 @@ func _run() -> void:
 	root.push_input(restart)
 	await _ticks(4)
 	_yard = current_scene
-	_check(_yard.get_node("Player").health == 100.0 and _yard.get_node("Player/Aim/Weapon").ammo == 12, "Enter restores player health and magazine")
+	_check(_yard.get_node("Player").health == 10.0 and _yard.get_node("Player/Aim/Weapon").ammo == 12, "Enter restores audio-test starting health and full magazine")
 	_check(not _yard.get_node("Enemy").is_dead, "Enter restores guard")
 
 	await _fresh()

@@ -1,0 +1,18 @@
+[gd_scene load_steps=7 format=3]
+[ext_resource type="Script" path="res://scripts/loot_audio.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/sound_player_2d.tscn" id="2"]
+[ext_resource type="Resource" path="res://resources/audio/interactions/container_open.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/audio/interactions/container_close.tres" id="4"]
+[ext_resource type="Resource" path="res://resources/audio/interactions/search.tres" id="5"]
+[ext_resource type="Resource" path="res://resources/audio/interactions/reveal.tres" id="6"]
+
+[node name="Audio" type="Node2D"]
+script = ExtResource("1")
+open_cue = ExtResource("3")
+close_cue = ExtResource("4")
+search_cue = ExtResource("5")
+reveal_cue = ExtResource("6")
+
+[node name="Action" parent="." instance=ExtResource("2")]
+[node name="Search" parent="." instance=ExtResource("2")]
+[node name="Reveal" parent="." instance=ExtResource("2")]

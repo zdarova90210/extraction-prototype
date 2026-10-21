@@ -34,15 +34,18 @@ func _ready() -> void:
 	var actor := get_parent()
 	actor.health_changed.connect(_on_health_changed)
 	# Child _ready runs before the actor initializes its exported maximum health.
-	actor.ready.connect(_initialize_from_actor, CONNECT_ONE_SHOT)
+	actor.ready.connect(reset_from_actor, CONNECT_ONE_SHOT)
 
 
-func _initialize_from_actor() -> void:
+func reset_from_actor() -> void:
 	var actor := get_parent()
 	maximum_health = maxf(1.0, actor.max_health)
 	current_health = clampf(actor.health, 0.0, maximum_health)
 	trail_health = current_health
 	_catchup_from = current_health
+	_hold_remaining = 0.0
+	_catchup_elapsed = 0.0
+	visible = current_health > 0.0
 	queue_redraw()
 
 

@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/raid_audio.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/audio/raid/raid_start.tres" id="2"]
+[ext_resource type="Resource" path="res://resources/audio/raid/raid_success.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/audio/raid/raid_failure.tres" id="4"]
+
+[node name="RaidAudio" type="Node"]
+script = ExtResource("1")
+audio_bus = &"Interface"
+start_cue = ExtResource("2")
+success_cue = ExtResource("3")
+failure_cue = ExtResource("4")
+
+[node name="A" type="AudioStreamPlayer" parent="."]
+bus = &"Interface"
+
+[node name="B" type="AudioStreamPlayer" parent="."]
+bus = &"Interface"

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemDefinition" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/item_definition.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/items/medkit.svg" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"medkit"
+display_name = "Аптечка"
+description = "Восстанавливает 40 HP за 3 секунды. Применение: H, стоя на месте. Движение, урон или повторное H отменяют лечение без расхода."
+icon = ExtResource("2")
+healing_amount = 40.0
+use_duration = 3.0

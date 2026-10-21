@@ -3,6 +3,10 @@ extends Area2D
 ## World-local extraction countdown. Does not decide rewards or scene changes.
 
 signal completed
+signal countdown_started
+signal countdown_stopped
+signal countdown_cancelled
+signal countdown_progress(progress: float)
 @export var size: Vector2 = Vector2(160, 100):
 	set(value):
 		size = value.max(Vector2(60, 60))
@@ -14,6 +18,7 @@ var elapsed: float = 0.0
 var _player: CharacterBody2D
 var _finished: bool = false
 var _failure: String = ""
+var _counting: bool = false
 
 
 func _ready() -> void:
@@ -22,7 +27,10 @@ func _ready() -> void:
 
 
 func bind(player: CharacterBody2D) -> void:
+	if is_instance_valid(_player) and _player.died.is_connected(_on_player_died):
+		_player.died.disconnect(_on_player_died)
 	_player = player
+	_player.died.connect(_on_player_died)
 
 
 func contains_player() -> bool:
@@ -33,22 +41,45 @@ func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint() or _finished:
 		return
 	if not contains_player() or _player.is_dead:
+		_end_countdown(is_instance_valid(_player) and not _player.is_dead)
 		elapsed = 0.0
 		_failure = ""
 	elif _failure.is_empty():
+		if not _counting:
+			_counting = true
+			countdown_started.emit()
 		elapsed = minf(duration, elapsed + delta)
+		countdown_progress.emit(elapsed / duration)
 		if elapsed >= duration:
 			_finished = true
+			_end_countdown(false)
 			completed.emit()
 	_update_status()
 	queue_redraw()
 
 
 func save_failed(message: String) -> void:
+	_end_countdown(false)
 	_finished = false
 	elapsed = 0.0
 	_failure = message + "\nВыйдите из зоны и попробуйте снова."
 	_update_status()
+
+
+func _end_countdown(cancelled: bool) -> void:
+	if not _counting:
+		return
+	_counting = false
+	countdown_stopped.emit()
+	if cancelled:
+		countdown_cancelled.emit()
+
+
+func _on_player_died() -> void:
+	_end_countdown(false)
+	elapsed = 0.0
+	_update_status()
+	queue_redraw()
 
 
 func _update_status() -> void:

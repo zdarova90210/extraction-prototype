@@ -38,6 +38,8 @@ func _fresh() -> void:
 		_yard.queue_free()
 		await _ticks(2)
 	_yard = YARD.instantiate()
+	_yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
+	_yard.play_start_audio = false
 	if not _async_navigation:
 		NavigationServer2D.region_set_use_async_iterations(_yard.get_node("Navigation").get_rid(), false)
 	root.add_child(_yard)

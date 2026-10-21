@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundCue" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/sound_cue.gd" id="1"]
+[ext_resource type="AudioStream" path="res://assets/audio/weapons/carbine_shot_01.wav" id="2"]
+[ext_resource type="AudioStream" path="res://assets/audio/weapons/carbine_shot_02.wav" id="3"]
+
+[ext_resource type="AudioStream" path="res://assets/audio/weapons/carbine_shot_03.wav" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = &"carbine_shot"
+clips = Array[AudioStream]([ExtResource("2"), ExtResource("3"), ExtResource("4")])
+clip_weights = PackedFloat32Array(3, 2, 1)
+volume_db = -3.0
+pitch_variation = 0.01

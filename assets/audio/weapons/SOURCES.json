@@ -1,0 +1,316 @@
+{
+  "origin": "ElevenLabs Sound Effects; generated and selected by project owner",
+  "license": "Owner-provided generated assets, not represented as CC0/CC BY",
+  "source_folder": "C:\\zdarova90210\\game-projects\\assets\\sounds",
+  "format": "48000 Hz mono PCM16 WAV; uncompressed Godot import",
+  "processing": "Per-recording processing takes precedence. Carbine shots: full source, stereo average, uniform 0.8 gain; no attack/tail edits or matching to old recordings. Other sounds retain prior DC removal, energy-based trim, short edge fades and scalar gain matched to the previous mix.",
+  "recordings": [
+    {
+      "output": "carbine_shot_01.wav",
+      "source": "carbine_shot.wav",
+      "source_sha256": "01a4269a93d80effbd5982690e8c5117ae3bf8b1d91b45e3472ebf0a8b47d10b",
+      "output_sha256": "9421b523fdc5ff397ebe689abdc087535d3ebd211ab9493eb4898caf07ca1026",
+      "rank": 0,
+      "weight": 3,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "mono_loss_db": -2.09,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.8065,
+      "dc_removed": 0.0,
+      "edge_fades_seconds": [
+        0.0,
+        0.0
+      ],
+      "gain_linear": 0.8,
+      "output_seconds": 0.8065,
+      "peak": 0.5857666015625,
+      "profile": "carbine_shot",
+      "processing": "New replacement bank supplied by owner: complete 0.8065-second recording, phase-checked stereo average and uniform 0.8 gain. No attack/tail crop, filters, pitch edit or matching to old recording energy."
+    },
+    {
+      "output": "carbine_shot_02.wav",
+      "source": "carbine_shot-2.wav",
+      "source_sha256": "08afd96955f22c563446b56f7ee6a7e8a652cb5b4cff98e3c03725f168c817f5",
+      "output_sha256": "0ac8c65dadfd59168749715b73bb369f8d11f54c4845c09c45175ca2696578bd",
+      "rank": 1,
+      "weight": 2,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "mono_loss_db": -3.04,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.8065,
+      "dc_removed": 0.0,
+      "edge_fades_seconds": [
+        0.0,
+        0.0
+      ],
+      "gain_linear": 0.8,
+      "output_seconds": 0.8065,
+      "peak": 0.48306884765625,
+      "profile": "carbine_shot",
+      "processing": "New replacement bank supplied by owner: complete 0.8065-second recording, phase-checked stereo average and uniform 0.8 gain. No attack/tail crop, filters, pitch edit or matching to old recording energy."
+    },
+    {
+      "output": "carbine_shot_03.wav",
+      "source": "carbine_shot-3.wav",
+      "source_sha256": "2be5300bfad9538cab83d6ccf4cf184d4b8a54a2e4641936f01a89f730850c53",
+      "output_sha256": "2bd40c88a75984ea26fca37c9a475263b064c1dcc3f1f40a830cb2308551730b",
+      "rank": 2,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "mono_loss_db": -1.32,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.8065,
+      "dc_removed": 0.0,
+      "edge_fades_seconds": [
+        0.0,
+        0.0
+      ],
+      "gain_linear": 0.8,
+      "output_seconds": 0.8065,
+      "peak": 0.64658203125,
+      "profile": "carbine_shot",
+      "processing": "New replacement bank supplied by owner: complete 0.8065-second recording, phase-checked stereo average and uniform 0.8 gain. No attack/tail crop, filters, pitch edit or matching to old recording energy."
+    },
+    {
+      "output": "rifle_shot_01.wav",
+      "source": "rifle_shot.wav",
+      "source_sha256": "16e1fe91d1c1926872b32915866baa7304f56f870dd41cea48fc6e35dd9c4b2a",
+      "output_sha256": "7fb89f45cf75a9ed3f472a9ca4ab732bc13d8971a0b879e867dd9833d970342f",
+      "rank": 0,
+      "weight": 4,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.76,
+      "dc_removed": -0.0007976967493693033,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.30078350509406593,
+      "output_seconds": 0.76,
+      "peak": 0.3010142599342279,
+      "active_rms_before_gain": 0.7568874231990166,
+      "target_reference_active_rms": 0.22765925211141586,
+      "profile": "rifle_shot"
+    },
+    {
+      "output": "rifle_shot_02.wav",
+      "source": "rifle_shot-2.wav",
+      "source_sha256": "4b56749105e507779c350a439b467e53de6518e43493aa2b9b05d9657098cdf7",
+      "output_sha256": "6dfc63e6a4bdb17c208e8ee34590e8775a907001c38810e6d6064613cc49c3b2",
+      "rank": 1,
+      "weight": 3,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 2.0,
+      "dc_removed": -0.0001409276326497396,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.2986562275969475,
+      "output_seconds": 2.0,
+      "peak": 0.29868920224732065,
+      "active_rms_before_gain": 0.7622786035409721,
+      "target_reference_active_rms": 0.22765925211141586,
+      "profile": "rifle_shot"
+    },
+    {
+      "output": "rifle_shot_03.wav",
+      "source": "rifle_shot-3.wav",
+      "source_sha256": "0b00da1aacc92c078aea963329dc23dd356f357fef7e22969f6bbf7d1da203bb",
+      "output_sha256": "9a488d0020fade54dfef30c6afe139e4327f59b4600951d4eed78d6a889afeaa",
+      "rank": 2,
+      "weight": 2,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.805,
+      "dc_removed": -0.00029026126861572265,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.28167492749041295,
+      "output_seconds": 0.805,
+      "peak": 0.28174809077559804,
+      "active_rms_before_gain": 0.8082339956195229,
+      "target_reference_active_rms": 0.22765925211141586,
+      "profile": "rifle_shot"
+    },
+    {
+      "output": "rifle_shot_04.wav",
+      "source": "rifle_shot-4.wav",
+      "source_sha256": "446baa52bb7b6f13403d13e800825010340e2ea56645d1e7f619c18b52d19231",
+      "output_sha256": "db5b6aaf78cca10d4c2e894ab14426d7e59584fee2359c09edee3c7c199a9f6b",
+      "rank": 3,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 2.0,
+      "dc_removed": 3.226931889851888e-05,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.7107400819800576,
+      "output_seconds": 2.0,
+      "peak": 0.5421119090634042,
+      "active_rms_before_gain": 0.32031294967518614,
+      "target_reference_active_rms": 0.22765925211141586,
+      "profile": "rifle_shot"
+    },
+    {
+      "output": "dry_trigger.wav",
+      "source": "dry_trigger.wav",
+      "source_sha256": "a7ea2a00191a1a740e9f3695e22157bf618bdf31de6d83e7c274bc145bdd7686",
+      "output_sha256": "2e2933eb70b5408acd18a478d4da74feeb01ae682387cfac8185db8d0598e7c4",
+      "rank": 0,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.442,
+      "crop_end_seconds": 0.735,
+      "dc_removed": 2.482000986735026e-05,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.6499777640298582,
+      "output_seconds": 0.293,
+      "peak": 0.649993896484375,
+      "active_rms_before_gain": 0.25606787995725516,
+      "target_reference_active_rms": 0.16683187418387138,
+      "profile": "dry_trigger"
+    },
+    {
+      "output": "carbine_reload_start.wav",
+      "source": "carbine_reload_start.wav",
+      "source_sha256": "0416b685f333df1d7ffff5e530d24441b9b8ac427841a0e296b7748e868cfcdf",
+      "output_sha256": "71077922db58217bdfa4257a87dc8ef92e395afca63d797a753ecbb82cfaab13",
+      "rank": 0,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.86,
+      "dc_removed": -1.0722478230794272e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 1.039453813511209,
+      "output_seconds": 0.86,
+      "peak": 0.719970703125,
+      "active_rms_before_gain": 0.10963711404287199,
+      "target_reference_active_rms": 0.12979525077788642,
+      "profile": "carbine_reload_start"
+    },
+    {
+      "output": "carbine_reload_finish.wav",
+      "source": "carbine_reload_finish.wav",
+      "source_sha256": "2708ea790641a8677d1a74dab56397a3e3d0f10331cac05feed0b019b550de2f",
+      "output_sha256": "cf5ff6e3b4380735eb0527c4f370384db1d764acd5f5e9e37c84509c3ea13803",
+      "rank": 0,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.545,
+      "dc_removed": -2.9919942220052083e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.8894888509229941,
+      "output_seconds": 0.545,
+      "peak": 0.719970703125,
+      "active_rms_before_gain": 0.1514709400293913,
+      "target_reference_active_rms": 0.2763893238806415,
+      "profile": "carbine_reload_finish"
+    },
+    {
+      "output": "rifle_reload_start.wav",
+      "source": "rifle_reload_start.wav",
+      "source_sha256": "56e1391d2fe09b7b9a94926d140ed582df00ffc990a37e0a743cec0a9f6fa087",
+      "output_sha256": "658b242bb1d53fe837745b1c2d889af4d0bb79f932bededaca0dcfe6429cb3c8",
+      "rank": 0,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.61,
+      "dc_removed": 8.748054504394531e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.3413994853943854,
+      "output_seconds": 0.61,
+      "peak": 0.3414024719756914,
+      "active_rms_before_gain": 0.31445428776754286,
+      "target_reference_active_rms": 0.10735453202389711,
+      "profile": "rifle_reload_start"
+    },
+    {
+      "output": "rifle_reload_finish.wav",
+      "source": "rifle_reload_finish.wav",
+      "source_sha256": "f99037a742f150af8a2fddc8d75b6dbabc4f478cc2ff462ffd49af1885635c6b",
+      "output_sha256": "96ea908d536fb04ac8a90f035a8f4ab08154d1c95cd73e557dd824c783d37db8",
+      "rank": 0,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.007,
+      "crop_end_seconds": 0.68,
+      "dc_removed": 7.010142008463541e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.7199656560635098,
+      "output_seconds": 0.673,
+      "peak": 0.719970703125,
+      "active_rms_before_gain": 0.3749591244885837,
+      "target_reference_active_rms": 0.5110850996763893,
+      "profile": "rifle_reload_finish"
+    }
+  ],
+  "playback_profiles": {
+    "carbine_reload_finish": {
+      "volume_db": -11.0,
+      "priority_weights": "single recording"
+    },
+    "carbine_reload_start": {
+      "volume_db": -8.0,
+      "priority_weights": "single recording"
+    },
+    "carbine_shot": {
+      "volume_db": -3.0,
+      "priority_weights": "3, 2, 1",
+      "note": "New three-recording bank uses -3 dB cue gain so its quietest variant stays above interaction RMS100; player calibration unchanged. No old-recording RMS matching."
+    },
+    "dry_trigger": {
+      "volume_db": -5.0,
+      "priority_weights": "single recording"
+    },
+    "rifle_reload_finish": {
+      "volume_db": -17.0,
+      "priority_weights": "single recording"
+    },
+    "rifle_reload_start": {
+      "volume_db": -7.0,
+      "priority_weights": "single recording"
+    },
+    "rifle_shot": {
+      "volume_db": -3.0,
+      "priority_weights": "4, 3, 2, 1"
+    }
+  }
+}

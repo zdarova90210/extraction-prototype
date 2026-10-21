@@ -65,6 +65,8 @@ func _fresh(radius: float, direction: float = 1.0) -> void:
 		_yard.queue_free()
 		await _ticks(2)
 	_yard = YARD.instantiate()
+	_yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
+	_yard.play_start_audio = false
 	if not _async_navigation:
 		NavigationServer2D.region_set_use_async_iterations(_yard.get_node("Navigation").get_rid(), false)
 	root.add_child(_yard)
@@ -75,7 +77,7 @@ func _fresh(radius: float, direction: float = 1.0) -> void:
 	_guard.set_physics_process(false)
 	_guard.patrol_start = null
 	_guard.patrol_end = null
-	_guard.global_position = Vector2(400, 600) # Clear part of the saved yard.
+	_guard.global_position = Vector2(1850, 400) # Clear part of the saved yard.
 	_player.global_position = _guard.global_position + Vector2(radius, 0)
 	_guard.aim.global_rotation = 0.0
 	_guard._desired_angle = 0.0
@@ -117,12 +119,12 @@ func _run() -> void:
 	_guard.reload_reposition_distance = 110.0
 	_start()
 	await _ticks(250)
-	_check(_shots.size() > _guard.burst_size and _guard.global_position.distance_to(Vector2(400, 600)) > 40.0, "Normal reload repositioning still allows attacks against circling")
+	_check(_shots.size() > _guard.burst_size and _guard.global_position.distance_to(Vector2(1850, 400)) > 40.0, "Normal reload repositioning still allows attacks against circling")
 
 	await _fresh(120.0)
 	var other := GUARD.instantiate() as CharacterBody2D
 	other.target = _player
-	other.position = Vector2(460, 600)
+	other.position = Vector2(1910, 400)
 	other.get_node("Aim").rotation = 0.0
 	# Weapon onready is not initialized until the scene enters the tree.
 	other.get_node("Aim/Weapon").damage = 1.0

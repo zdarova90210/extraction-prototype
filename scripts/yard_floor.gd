@@ -15,8 +15,8 @@ func _draw() -> void:
 	for y in range(0, int(size.y), 80):
 		draw_line(Vector2(0, y), Vector2(size.x, y), Color("303b3c"), 1.0)
 	# Worn service road and loading area.
-	draw_rect(Rect2(120, 425, 1500, 265), Color("303837"))
-	for x in range(170, 1560, 120):
+	draw_rect(Rect2(120, 425, size.x - 260, 265), Color("303837"))
+	for x in range(170, int(size.x) - 200, 120):
 		draw_rect(Rect2(x, 550, 58, 5), Color("8c805b"))
 	draw_rect(Rect2(940, 335, 490, 410), Color("7f7859"), false, 3.0)
 	for y in range(360, 735, 32):

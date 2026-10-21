@@ -1,0 +1,170 @@
+{
+  "origin": "ElevenLabs Sound Effects; generated and selected by project owner",
+  "license": "Owner-provided generated assets, not represented as CC0/CC BY",
+  "source_folder": "C:\\zdarova90210\\game-projects\\assets\\sounds",
+  "format": "48000 Hz mono PCM16 WAV; uncompressed Godot import",
+  "processing": "Stereo average after phase check; DC removal; 5 ms RMS windows with relative -40 dB boundary, 8 ms head pre-roll and 80 ms tail padding; 0.2 ms / 8 ms edge fades; scalar active-energy gain bounded by prior peak cap; no compression or gameplay timing changes",
+  "recordings": [
+    {
+      "output": "concrete/step_01.wav",
+      "source": "step_concrete.wav",
+      "source_sha256": "770fa314933e17b301a0f1a8f5095d6ee21363787ed3b18a512004912b2d05aa",
+      "output_sha256": "19d43839399643948c4131b8ad1c43b849d12834b77f8e1bcba8591cd6d9f867",
+      "rank": 0,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.45,
+      "dc_removed": -1.6064917723468843e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.883330622306016,
+      "output_seconds": 0.45,
+      "peak": 0.88,
+      "active_rms_before_gain": 0.1787617027823782,
+      "target_reference_active_rms": 0.30370538745057357,
+      "profile": "footsteps_concrete"
+    },
+    {
+      "output": "concrete/step_02.wav",
+      "source": "step_concrete-2.wav",
+      "source_sha256": "608e32b58f1db2242a1d39a1da552b36f89d309c8a6134d14de62b229b901066",
+      "output_sha256": "4493a849df2d5dd8750b1e03f3d116f761413379762c1027fd506d1a83ad781c",
+      "rank": 1,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.127,
+      "crop_end_seconds": 0.455,
+      "dc_removed": 2.875436823195761e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.8807147804158156,
+      "output_seconds": 0.328,
+      "peak": 0.88,
+      "active_rms_before_gain": 0.20609889309394785,
+      "target_reference_active_rms": 0.30370538745057357,
+      "profile": "footsteps_concrete"
+    },
+    {
+      "output": "concrete/step_03.wav",
+      "source": "step_concrete-3.wav",
+      "source_sha256": "25ee47c64db158567cdfd3e83d95f6abf5553c8099a229749b75ccb0c8194ad3",
+      "output_sha256": "e53e5de429b4ad30261fa27c62d3676294427d5d53062a6008223cfb21805985",
+      "rank": 2,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.012,
+      "crop_end_seconds": 0.25,
+      "dc_removed": 5.460499603363733e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 0.9669375968683103,
+      "output_seconds": 0.238,
+      "peak": 0.88,
+      "active_rms_before_gain": 0.18349317953782066,
+      "target_reference_active_rms": 0.30370538745057357,
+      "profile": "footsteps_concrete"
+    },
+    {
+      "output": "metal/step_01.wav",
+      "source": "step_metal.wav",
+      "source_sha256": "1fd08c9bd7ab91364b2010a623d5d90f1000d553639052eff5e40b83410614df",
+      "output_sha256": "0830e4b4c88fbcaf8c0026b02875ec1bc1aa9004e03da8a82e7c4a95d7c8a46e",
+      "rank": 0,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.515,
+      "dc_removed": -3.2182249534126822e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 2.702532425700495,
+      "output_seconds": 0.515,
+      "peak": 0.6085724418408288,
+      "active_rms_before_gain": 0.08522240191501342,
+      "target_reference_active_rms": 0.2303163045714037,
+      "profile": "footsteps_metal"
+    },
+    {
+      "output": "metal/step_02.wav",
+      "source": "step_metal-2.wav",
+      "source_sha256": "666b018d4b9090a300f0c3c3afde277af5ac3c91c5d6c981012752195397c1e2",
+      "output_sha256": "a13c0c471f7213352d947139f45ee42f2672b3def61d12506416198a7a03103c",
+      "rank": 1,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.6065,
+      "dc_removed": 1.0021573470561967e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 6.29854764578952,
+      "output_seconds": 0.6065,
+      "peak": 0.6524723250600178,
+      "active_rms_before_gain": 0.03656657336320485,
+      "target_reference_active_rms": 0.2303163045714037,
+      "profile": "footsteps_metal"
+    },
+    {
+      "output": "metal/step_03.wav",
+      "source": "step_metal-3.wav",
+      "source_sha256": "6f47cd9d8afd6e9dd831eb8236a3019db3ba4b8eecf5e7277c66e5b7d112a370",
+      "output_sha256": "3cab1d47e4de7c7fb5c5d7032afef19cf1cf4aa988b7320b1cc0ac99e001e26f",
+      "rank": 2,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.375,
+      "dc_removed": -1.5734708974177315e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 6.58269071551827,
+      "output_seconds": 0.375,
+      "peak": 0.8179249465465546,
+      "active_rms_before_gain": 0.03456209471512203,
+      "target_reference_active_rms": 0.2303163045714037,
+      "profile": "footsteps_metal"
+    },
+    {
+      "output": "metal/step_04.wav",
+      "source": "step_metal-4.wav",
+      "source_sha256": "981a63338fdb5386118dd708cf1bc8d663240e5317c303a7dfed3cee6021bf29",
+      "output_sha256": "f70a47ffbe11f4506c180889602544a9d60a6f1873dc87d301622556a3ca8042",
+      "rank": 3,
+      "weight": 1,
+      "source_rate": 48000,
+      "source_channels": 2,
+      "crop_start_seconds": 0.0,
+      "crop_end_seconds": 0.6065,
+      "dc_removed": -1.9849214818524147e-06,
+      "edge_fades_seconds": [
+        0.0002,
+        0.008
+      ],
+      "gain_linear": 47.44519684060118,
+      "output_seconds": 0.6065,
+      "peak": 0.6429673255405577,
+      "active_rms_before_gain": 0.004854365033939764,
+      "target_reference_active_rms": 0.2303163045714037,
+      "profile": "footsteps_metal"
+    }
+  ]
+}

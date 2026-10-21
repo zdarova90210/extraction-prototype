@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scripts/test_yard.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/yard_floor.gd" id="2"]
@@ -17,6 +17,9 @@
 [ext_resource type="Resource" path="res://resources/items/electronics.tres" id="15_electronics"]
 [ext_resource type="PackedScene" path="res://scenes/loot_menu.tscn" id="16_lootmenu"]
 [ext_resource type="PackedScene" path="res://scenes/extraction_zone.tscn" id="17_extract"]
+[ext_resource type="Resource" path="res://resources/items/medkit.tres" id="18_medkit"]
+[ext_resource type="PackedScene" path="res://scenes/footstep_surface.tscn" id="19_surface"]
+[ext_resource type="PackedScene" path="res://scenes/yard_ambience.tscn" id="20_ambience"]
 
 [sub_resource type="NavigationPolygon" id="Navigation_runtime"]
 agent_radius = 18.0
@@ -29,10 +32,20 @@ script = ExtResource("1")
 [node name="Floor" type="Node2D" parent="."]
 z_index = -10
 script = ExtResource("2")
+size = Vector2(2160, 1120)
+
+[node name="Ambience" parent="." instance=ExtResource("20_ambience")]
 
 [node name="Navigation" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("Navigation_runtime")
 script = ExtResource("7")
+walkable_bounds = Rect2(100, 100, 1960, 920)
+
+[node name="Surfaces" type="Node2D" parent="."]
+
+[node name="MetalDeck" parent="Surfaces" instance=ExtResource("19_surface")]
+position = Vector2(480, 700)
+size = Vector2(240, 96)
 
 [node name="Markings" type="Node2D" parent="."]
 
@@ -57,14 +70,14 @@ text = "ДЕПО  /  ЗОНА 04"
 [node name="Obstacles" type="Node2D" parent="."]
 
 [node name="NorthWall" parent="Obstacles" instance=ExtResource("4")]
-position = Vector2(880, 80)
+position = Vector2(1080, 80)
 kind = 0
-size = Vector2(1600, 40)
+size = Vector2(2000, 40)
 
 [node name="SouthWall" parent="Obstacles" instance=ExtResource("4")]
-position = Vector2(880, 1040)
+position = Vector2(1080, 1040)
 kind = 0
-size = Vector2(1600, 40)
+size = Vector2(2000, 40)
 
 [node name="WestWall" parent="Obstacles" instance=ExtResource("4")]
 position = Vector2(80, 560)
@@ -72,7 +85,7 @@ kind = 0
 size = Vector2(40, 920)
 
 [node name="EastWall" parent="Obstacles" instance=ExtResource("4")]
-position = Vector2(1680, 560)
+position = Vector2(2080, 560)
 kind = 0
 size = Vector2(40, 920)
 
@@ -150,7 +163,7 @@ position = Vector2(650, 690)
 display_name = "Складской ящик"
 
 [node name="Inventory" parent="LootContainers/Supply" index="1"]
-starting_items = Array[ExtResource("12_item")]([ExtResource("13_metal"), ExtResource("13_metal"), ExtResource("14_wire"), ExtResource("15_electronics")])
+starting_items = Array[ExtResource("12_item")]([ExtResource("13_metal"), ExtResource("18_medkit"), ExtResource("14_wire"), ExtResource("15_electronics")])
 
 [node name="Service" parent="LootContainers" instance=ExtResource("11_loot")]
 position = Vector2(1430, 820)
@@ -158,6 +171,34 @@ display_name = "Сервисный ящик"
 
 [node name="Inventory" parent="LootContainers/Service" index="1"]
 starting_items = Array[ExtResource("12_item")]([ExtResource("15_electronics"), ExtResource("15_electronics"), ExtResource("14_wire"), ExtResource("14_wire")])
+
+[node name="NearbyA" parent="LootContainers" instance=ExtResource("11_loot")]
+position = Vector2(420, 500)
+display_name = "Ящик с деталями"
+
+[node name="Inventory" parent="LootContainers/NearbyA" index="1"]
+starting_items = Array[ExtResource("12_item")]([ExtResource("13_metal"), ExtResource("14_wire"), ExtResource("15_electronics"), ExtResource("13_metal"), ExtResource("14_wire"), ExtResource("15_electronics")])
+
+[node name="NearbyB" parent="LootContainers" instance=ExtResource("11_loot")]
+position = Vector2(480, 500)
+display_name = "Ящик с инструментами"
+
+[node name="Inventory" parent="LootContainers/NearbyB" index="1"]
+starting_items = Array[ExtResource("12_item")]([ExtResource("15_electronics"), ExtResource("13_metal"), ExtResource("14_wire"), ExtResource("15_electronics"), ExtResource("14_wire"), ExtResource("13_metal")])
+
+[node name="Medical" parent="LootContainers" instance=ExtResource("11_loot")]
+position = Vector2(280, 880)
+display_name = "Ящик с аптечками"
+
+[node name="Inventory" parent="LootContainers/Medical" index="1"]
+starting_items = Array[ExtResource("12_item")]([ExtResource("18_medkit"), ExtResource("18_medkit"), ExtResource("14_wire"), ExtResource("18_medkit")])
+
+[node name="EastSupply" parent="LootContainers" instance=ExtResource("11_loot")]
+position = Vector2(1860, 760)
+display_name = "Дальний складской ящик"
+
+[node name="Inventory" parent="LootContainers/EastSupply" index="1"]
+starting_items = Array[ExtResource("12_item")]([ExtResource("14_wire"), ExtResource("15_electronics"), ExtResource("13_metal"), ExtResource("18_medkit"), ExtResource("13_metal"), ExtResource("15_electronics")])
 
 [node name="GuardSpawns" type="Node2D" parent="."]
 
@@ -182,7 +223,7 @@ position = Vector2(650, 565)
 [node name="Camera2D" parent="Player" index="3"]
 limit_left = 0
 limit_top = 0
-limit_right = 1760
+limit_right = 2160
 limit_bottom = 1120
 
 [node name="Enemy" parent="." node_paths=PackedStringArray("target", "patrol_start", "patrol_end") instance=ExtResource("6")]
@@ -257,3 +298,8 @@ text = "В схрон"
 [editable path="Enemy"]
 [editable path="LootContainers/Supply"]
 [editable path="LootContainers/Service"]
+
+[editable path="LootContainers/NearbyA"]
+[editable path="LootContainers/NearbyB"]
+[editable path="LootContainers/Medical"]
+[editable path="LootContainers/EastSupply"]

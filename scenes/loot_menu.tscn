@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/loot_menu.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/inventory_drop_zone.gd" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/inventory_audio.tscn" id="3_audio"]
 
 [sub_resource type="StyleBoxFlat" id="Panel"]
 bg_color = Color(0.055, 0.085, 0.09, 0.97)
@@ -151,3 +152,5 @@ text = "Забрать всё"
 custom_minimum_size = Vector2(180, 38)
 layout_mode = 2
 text = "Закрыть · E / Tab / Esc"
+
+[node name="InventoryAudio" parent="." instance=ExtResource("3_audio")]

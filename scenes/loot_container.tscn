@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/loot_container.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/inventory.gd" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/loot_audio.tscn" id="3"]
 
 [sub_resource type="RectangleShape2D" id="Shape"]
 resource_local_to_scene = true
@@ -32,3 +33,5 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 14
 horizontal_alignment = 1
+
+[node name="Audio" parent="." instance=ExtResource("3")]
