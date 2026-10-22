@@ -1,0 +1,35 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world_cover.gd" id="1"]
+[ext_resource type="Texture2D" path="res://resources/art/forest_post/rocks.tres" id="2"]
+[ext_resource type="Shader" path="res://resources/art/forest_post/cutout.gdshader" id="3"]
+[ext_resource type="Script" path="res://scripts/cover_occlusion.gd" id="4"]
+[ext_resource type="Resource" path="res://resources/audio/combat/concrete.tres" id="5"]
+
+[sub_resource type="RectangleShape2D" id="Shape"]
+size = Vector2(132,68)
+
+[sub_resource type="ShaderMaterial" id="Cutout"]
+shader = ExtResource("3")
+
+[node name="Rocks" type="StaticBody2D"]
+texture_filter = 1
+collision_layer = 1
+collision_mask = 0
+script = ExtResource("1")
+size = Vector2(132,68)
+impact_cue = ExtResource("5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("Shape")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -12)
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("2")
+material = SubResource("Cutout")
+
+[node name="Occlusion" type="Node" parent="." node_paths=PackedStringArray("visual")]
+script = ExtResource("4")
+visual = NodePath("../Sprite")
+obscured_alpha = 0.65

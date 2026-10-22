@@ -91,7 +91,7 @@ custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.66, 0.73, 0.67, 1)
 theme_override_font_sizes/font_size = 13
-text = "Перетаскивайте вещи между ячейками. Q над вещью — удаление с подтверждением.\n\nЭвакуация: зелёная зона на юго-востоке полигона, 5 секунд внутри."
+text = "Перетаскивайте вещи между ячейками. Q над вещью — удаление с подтверждением.\n\nЭвакуация: полигон — юго-восток; лесной пост — северный проход. 5 секунд внутри зоны."
 autowrap_mode = 2
 
 [node name="PendingTitle" type="Label" parent="Margin/Content/Columns/Side"]
@@ -145,6 +145,11 @@ text = "Новый рейд"
 custom_minimum_size = Vector2(280, 42)
 layout_mode = 2
 text = "Сбросить тестовый прогресс"
+
+[node name="Forest" type="Button" parent="Margin/Content/Actions"]
+custom_minimum_size = Vector2(180, 42)
+layout_mode = 2
+text = "Лесной пост · проба"
 
 [node name="Quit" type="Button" parent="Margin/Content/Actions"]
 custom_minimum_size = Vector2(140, 42)

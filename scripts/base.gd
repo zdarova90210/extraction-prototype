@@ -16,6 +16,7 @@ func _ready() -> void:
 	Input.action_release("shoot")
 	progress.changed.connect(_refresh)
 	content.get_node("Actions/Start").pressed.connect(_start_raid)
+	content.get_node("Actions/Forest").pressed.connect(_start_raid.bind("res://scenes/forest_post.tscn"))
 	content.get_node("Actions/Reset").pressed.connect(func(): $ResetConfirm.popup_centered())
 	content.get_node("Actions/Quit").pressed.connect(func(): get_tree().quit())
 	content.get_node("Actions/Settings").pressed.connect(_open_settings)
@@ -70,6 +71,7 @@ func _refresh() -> void:
 		status = "Изменения схрона сохраняются автоматически. В новый рейд вы идёте с пустым рюкзаком."
 	content.get_node("Message").text = status
 	content.get_node("Actions/Start").disabled = not progress.can_start_raid()
+	content.get_node("Actions/Forest").disabled = not progress.can_start_raid()
 
 
 func _fill_grid(grid: GridContainer, inventory: Inventory) -> void:
@@ -132,8 +134,8 @@ func _confirm_discard() -> void:
 	_discard_data = {}
 
 
-func _start_raid() -> void:
+func _start_raid(scene_path: String = "res://scenes/test_yard.tscn") -> void:
 	if not progress.can_start_raid():
 		return
 	Input.action_release("shoot")
-	get_tree().change_scene_to_file("res://scenes/test_yard.tscn")
+	get_tree().change_scene_to_file(scene_path)

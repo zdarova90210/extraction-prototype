@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="Script" path="res://scripts/test_yard.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/yard_floor.gd" id="2"]
@@ -7,20 +7,18 @@
 [ext_resource type="PackedScene" path="res://scenes/target.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://scenes/enemy.tscn" id="6"]
 [ext_resource type="Script" path="res://scripts/yard_navigation.gd" id="7"]
-[ext_resource type="Script" path="res://scripts/aim_cursor.gd" id="8"]
-[ext_resource type="PackedScene" path="res://scenes/weapon_readout.tscn" id="9_readout"]
-[ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="10_pause"]
 [ext_resource type="PackedScene" path="res://scenes/loot_container.tscn" id="11_loot"]
 [ext_resource type="Script" path="res://scripts/item_definition.gd" id="12_item"]
 [ext_resource type="Resource" path="res://resources/items/metal.tres" id="13_metal"]
 [ext_resource type="Resource" path="res://resources/items/wire.tres" id="14_wire"]
 [ext_resource type="Resource" path="res://resources/items/electronics.tres" id="15_electronics"]
-[ext_resource type="PackedScene" path="res://scenes/loot_menu.tscn" id="16_lootmenu"]
 [ext_resource type="PackedScene" path="res://scenes/extraction_zone.tscn" id="17_extract"]
 [ext_resource type="Resource" path="res://resources/items/medkit.tres" id="18_medkit"]
 [ext_resource type="PackedScene" path="res://scenes/footstep_surface.tscn" id="19_surface"]
 [ext_resource type="PackedScene" path="res://scenes/yard_ambience.tscn" id="20_ambience"]
 [ext_resource type="PackedScene" path="res://scenes/industrial_lamp.tscn" id="21_lamp"]
+
+[ext_resource type="PackedScene" path="res://scenes/raid_hud.tscn" id="22_hud"]
 
 [sub_resource type="NavigationPolygon" id="Navigation_runtime"]
 agent_radius = 18.0
@@ -238,67 +236,7 @@ target = NodePath("../Player")
 patrol_start = NodePath("../PatrolRoute/A")
 patrol_end = NodePath("../PatrolRoute/B")
 
-[node name="HUD" type="CanvasLayer" parent="."]
-
-[node name="WeaponReadout" parent="HUD" instance=ExtResource("9_readout")]
-
-[node name="AimCursor" type="Control" parent="HUD"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("8")
-
-[node name="HurtFlash" type="ColorRect" parent="HUD"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0.75, 0.10, 0.05, 0)
-
-[node name="LootMenu" parent="HUD" instance=ExtResource("16_lootmenu")]
-
-[node name="DeathScreen" type="ColorRect" parent="HUD"]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0.035, 0.05, 0.05, 0.84)
-
-[node name="Message" type="Label" parent="HUD/DeathScreen"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_colors/font_color = Color(0.88, 0.77, 0.65, 1)
-theme_override_font_sizes/font_size = 30
-text = "ВЫ ПОГИБЛИ\n\nДобыча рейда потеряна. Схрон сохранён.\nEnter — повторить тестовый бой"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="ToBase" type="Button" parent="HUD/DeathScreen"]
-anchors_preset = 12
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -110.0
-offset_top = -110.0
-offset_right = 110.0
-offset_bottom = -62.0
-text = "В схрон"
-
-[node name="PauseMenu" parent="HUD" instance=ExtResource("10_pause")]
+[node name="HUD" parent="." instance=ExtResource("22_hud")]
 
 [editable path="Player"]
 [editable path="Enemy"]

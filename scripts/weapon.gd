@@ -91,6 +91,7 @@ func try_fire(aim_position: Vector2, shooter: CollisionObject2D) -> bool:
 	# must never allow shots through it. Also detect origins inside solid shapes.
 	var query := PhysicsRayQueryParameters2D.create(origin, endpoint, hit_mask, [shooter.get_rid()])
 	query.hit_from_inside = true
+	query.collide_with_areas = true # Optional nonblocking actor silhouettes share take_damage.
 	var result := get_world_2d().direct_space_state.intersect_ray(query)
 	if not result.is_empty():
 		endpoint = result["position"]
