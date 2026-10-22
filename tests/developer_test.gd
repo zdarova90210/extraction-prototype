@@ -52,7 +52,7 @@ func _click(button: Button) -> void:
 
 
 func _run() -> void:
-	var yard := load("res://scenes/test_yard.tscn").instantiate() as Node2D
+	var yard := load("res://tests/fixtures/system_yard.tscn").instantiate() as Node2D
 	NavigationServer2D.region_set_use_async_iterations(yard.get_node("Navigation").get_rid(), false)
 	root.add_child(yard)
 	current_scene = yard
@@ -205,7 +205,7 @@ func _run() -> void:
 	_check(current_scene.get_node("LootContainers").get_child_count() == 6 and get_nodes_in_group("ground_items").is_empty() and profile.stash.snapshot_slots() == saved_stash, "Reset recreates six containers and clean floor while keeping stash")
 	current_scene.queue_free()
 	await _ticks(2)
-	var blank := load("res://scenes/test_yard.tscn").instantiate() as Node2D
+	var blank := load("res://tests/fixtures/system_yard.tscn").instantiate() as Node2D
 	blank.get_node("Enemy").free()
 	root.add_child(blank)
 	current_scene = blank
@@ -213,7 +213,7 @@ func _run() -> void:
 	_check(blank.get_guards().is_empty() and not blank.has_node("HUD/CombatStatus"), "Empty room loads without a gameplay status banner")
 	blank.queue_free()
 	await _ticks(2)
-	var multiple := load("res://scenes/test_yard.tscn").instantiate() as Node2D
+	var multiple := load("res://tests/fixtures/system_yard.tscn").instantiate() as Node2D
 	var placed := load("res://scenes/enemy.tscn").instantiate() as CharacterBody2D
 	placed.position = Vector2(1340, 740)
 	placed.target = multiple.get_node("Player")

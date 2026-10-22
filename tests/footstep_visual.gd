@@ -2,7 +2,7 @@ extends "res://tests/visual_check.gd"
 
 
 func _capture() -> void:
-	var yard := load("res://scenes/test_yard.tscn").instantiate() as Node2D
+	var yard := load("res://tests/fixtures/system_yard.tscn").instantiate() as Node2D
 	yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
 	yard.play_start_audio = false
 	root.add_child(yard)
@@ -17,14 +17,6 @@ func _capture() -> void:
 	camera.force_update_scroll()
 	await _ticks(3)
 	await _save("footstep_metal_deck")
-	player.global_position = Vector2(480, 795)
-	player.get_node("Aim").rotation = -PI * 0.5
-	camera.position = Vector2(120, -20)
-	camera.zoom = Vector2(1.6, 1.6)
-	camera.reset_smoothing()
-	camera.force_update_scroll()
-	await _ticks(3)
-	await _save("surface_height_readability")
 	player.global_position = Vector2(400, 405)
 	player.get_node("Aim").rotation = -PI * 0.5
 	camera.position = Vector2(0, -10)
@@ -39,5 +31,5 @@ func _capture() -> void:
 	await _ticks(2)
 	await _save("depot_lamp_dim")
 	yard.free()
-	print("Visual captures saved: footstep_metal_deck, surface_height_readability, depot_lamp, depot_lamp_dim")
+	print("Visual captures saved: footstep_metal_deck, depot_lamp, depot_lamp_dim")
 	quit()

@@ -1,8 +1,14 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/loot_container.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/inventory.gd" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/loot_audio.tscn" id="3"]
+
+[ext_resource type="Texture2D" path="res://resources/art/forest_dusk/chest.tres" id="chest_art"]
+[ext_resource type="Shader" path="res://resources/art/forest_dusk/cutout.gdshader" id="cutout"]
+
+[sub_resource type="ShaderMaterial" id="Cutout"]
+shader = ExtResource("cutout")
 
 [sub_resource type="RectangleShape2D" id="Shape"]
 resource_local_to_scene = true
@@ -12,6 +18,8 @@ size = Vector2(40, 28)
 collision_layer = 1
 collision_mask = 0
 script = ExtResource("1")
+texture_filter = 1
+display_name = "Припасы"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("Shape")
@@ -33,5 +41,12 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 14
 horizontal_alignment = 1
+z_index = 5
 
 [node name="Audio" parent="." instance=ExtResource("3")]
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
+scale = Vector2(0.14083832, 0.14938389)
+texture = ExtResource("chest_art")
+material = SubResource("Cutout")

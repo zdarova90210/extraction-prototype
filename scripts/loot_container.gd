@@ -143,12 +143,6 @@ func _update_contents() -> void:
 
 
 func _draw() -> void:
-	var empty := not Engine.is_editor_hint() and is_instance_valid(inventory) and inventory.item_count == 0
-	var rect := Rect2(-size * 0.5, size)
-	draw_rect(Rect2(rect.position + Vector2(3, 4), size), Color(0.02, 0.03, 0.03, 0.55))
-	draw_rect(rect, Color("75604a") if not empty else Color("514b41"))
-	draw_rect(rect, Color("efd39a") if _highlighted else Color("b39c72"), false, 2.0)
-	for x in [-size.x * 0.34, size.x * 0.34]:
-		draw_line(Vector2(x, -size.y * 0.44), Vector2(x, size.y * 0.44), Color("403d35"), 3.0)
-	draw_line(Vector2(-size.x * 0.45, -size.y * 0.12), Vector2(size.x * 0.45, -size.y * 0.12), Color("393a32"), 2.0)
-	draw_rect(Rect2(-4, -7 if not empty else -11, 8, 9), Color("ddc58d") if not empty else Color("9a8e71"))
+	var sprite := get_node_or_null("Sprite") as Sprite2D
+	if sprite != null:
+		sprite.self_modulate = Color(1.25, 1.25, 1.1) if _highlighted else Color.WHITE

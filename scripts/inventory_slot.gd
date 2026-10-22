@@ -20,21 +20,11 @@ const REVEAL_DURATION: float = 0.18
 
 
 func _init() -> void:
+	theme = preload("res://resources/ui/inventory_theme.tres")
 	custom_minimum_size = Vector2(64, 64)
 	expand_icon = true
 	icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_theme_constant_override("icon_max_width", 40)
-	var normal := StyleBoxFlat.new()
-	normal.bg_color = Color("172622")
-	normal.border_color = Color("526258")
-	normal.set_border_width_all(1)
-	normal.set_corner_radius_all(3)
-	add_theme_stylebox_override("normal", normal)
-	var hover := normal.duplicate() as StyleBoxFlat
-	hover.border_color = Color("e2c58d")
-	hover.bg_color = Color("293a31")
-	add_theme_stylebox_override("hover", hover)
-	add_theme_stylebox_override("pressed", hover)
 	pressed.connect(func(): activated.emit(inventory, slot_index))
 	visibility_changed.connect(_sync_animation)
 	set_process(false)
@@ -88,15 +78,15 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	var area := Rect2(Vector2(3, 3), size - Vector2(6, 6))
 	if _unknown:
-		draw_rect(area, Color("101917"))
+		draw_rect(area, Color("121212"))
 		# Low-contrast moving texture conceals every unknown item; only the
 		# currently searched cell has the brighter sweep tied to real progress.
 		for row in range(7):
 			var y := area.position.y + fmod(row * 9.0 + _animation_time * 9.0, area.size.y)
-			draw_line(Vector2(area.position.x + 3, y), Vector2(area.end.x - 3, y), Color(0.35, 0.43, 0.39, 0.12), 1.0)
+			draw_line(Vector2(area.position.x + 3, y), Vector2(area.end.x - 3, y), Color(0.42, 0.42, 0.42, 0.12), 1.0)
 		for dot in range(3):
 			var pulse := 0.25 + 0.2 * (sin(_animation_time * 3.0 - dot * 0.8) + 1.0) * 0.5
-			draw_circle(size * 0.5 + Vector2((dot - 1) * 8, 0), 1.7, Color(0.67, 0.73, 0.66, pulse))
+			draw_circle(size * 0.5 + Vector2((dot - 1) * 8, 0), 1.7, Color(0.70, 0.70, 0.70, pulse))
 		if searching:
 			var scan_y := lerpf(area.position.y + 5, area.end.y - 5, search_progress)
 			draw_rect(Rect2(area.position.x + 2, scan_y - 4, area.size.x - 4, 8), Color(0.88, 0.77, 0.54, 0.10))
@@ -104,7 +94,7 @@ func _draw() -> void:
 			draw_rect(area.grow(1), Color(0.88, 0.77, 0.54, 0.6), false, 1.0)
 	elif _reveal_remaining > 0.0:
 		var fade := _reveal_remaining / REVEAL_DURATION
-		draw_rect(area, Color(0.06, 0.10, 0.09, fade))
+		draw_rect(area, Color(0.07, 0.07, 0.07, fade))
 		draw_rect(area.grow(1), Color(0.88, 0.77, 0.54, fade * 0.7), false, 1.0)
 
 

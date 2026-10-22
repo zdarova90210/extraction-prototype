@@ -1,0 +1,276 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/yard_ambience.tscn" id="ambience"]
+[ext_resource type="PackedScene" path="res://scenes/loot_container.tscn" id="chest"]
+[ext_resource type="Resource" path="res://resources/items/electronics.tres" id="electronics"]
+[ext_resource type="PackedScene" path="res://scenes/extraction_zone.tscn" id="exit"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/fence.tscn" id="fence"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/ground.tscn" id="ground"]
+[ext_resource type="PackedScene" path="res://scenes/enemy.tscn" id="guard"]
+[ext_resource type="PackedScene" path="res://scenes/raid_hud.tscn" id="hud"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/hut.tscn" id="hut"]
+[ext_resource type="Script" path="res://scripts/item_definition.gd" id="item"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/logs.tscn" id="logs"]
+[ext_resource type="Resource" path="res://resources/items/medkit.tres" id="medkit"]
+[ext_resource type="Resource" path="res://resources/items/metal.tres" id="metal"]
+[ext_resource type="Script" path="res://scripts/yard_navigation.gd" id="navigation"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/pine.tscn" id="pine"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="player"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/rocks.tscn" id="rocks"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/lighting.tscn" id="dusk_light"]
+[ext_resource type="Script" path="res://scripts/raid_room.gd" id="room"]
+[ext_resource type="Resource" path="res://resources/items/wire.tres" id="wire"]
+
+[sub_resource type="NavigationPolygon" id="Navigation"]
+parsed_geometry_type = 1
+parsed_collision_mask = 5
+agent_radius = 18.0
+
+[sub_resource type="RectangleShape2D" id="HorizontalBorder"]
+size = Vector2(1560, 32)
+
+[sub_resource type="RectangleShape2D" id="VerticalBorder"]
+size = Vector2(32, 1024)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7s8al"]
+resource_local_to_scene = true
+size = Vector2(40, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hq25d"]
+resource_local_to_scene = true
+size = Vector2(40, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_opy5e"]
+resource_local_to_scene = true
+size = Vector2(40, 28)
+
+[node name="ForestDusk" type="Node2D"]
+y_sort_enabled = true
+texture_filter = 1
+script = ExtResource("room")
+guard_scene = ExtResource("guard")
+audio_test_setup = false
+
+[node name="Lighting" parent="." instance=ExtResource("dusk_light")]
+
+[node name="Ground" parent="." instance=ExtResource("ground")]
+
+[node name="Ambience" parent="." instance=ExtResource("ambience")]
+
+[node name="Navigation" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("Navigation")
+script = ExtResource("navigation")
+walkable_bounds = Rect2(32, 32, 1472, 960)
+
+[node name="Borders" type="StaticBody2D" parent="."]
+collision_mask = 0
+
+[node name="North" type="CollisionShape2D" parent="Borders"]
+position = Vector2(768, -4)
+shape = SubResource("HorizontalBorder")
+
+[node name="South" type="CollisionShape2D" parent="Borders"]
+position = Vector2(768, 1028)
+shape = SubResource("HorizontalBorder")
+
+[node name="West" type="CollisionShape2D" parent="Borders"]
+position = Vector2(-4, 512)
+shape = SubResource("VerticalBorder")
+
+[node name="East" type="CollisionShape2D" parent="Borders"]
+position = Vector2(1540, 512)
+shape = SubResource("VerticalBorder")
+
+[node name="Obstacles" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Hut" parent="Obstacles" instance=ExtResource("hut")]
+position = Vector2(350, 430)
+
+[node name="WestLogs" parent="Obstacles" instance=ExtResource("logs")]
+position = Vector2(680, 560)
+
+[node name="EastLogs" parent="Obstacles" instance=ExtResource("logs")]
+position = Vector2(1150, 650)
+
+[node name="BackRocks" parent="Obstacles" instance=ExtResource("rocks")]
+position = Vector2(780, 305)
+
+[node name="SouthRocks" parent="Obstacles" instance=ExtResource("rocks")]
+position = Vector2(280, 840)
+
+[node name="Pine1" parent="Obstacles" instance=ExtResource("pine")]
+position = Vector2(130, 210)
+
+[node name="Pine2" parent="Obstacles" instance=ExtResource("pine")]
+position = Vector2(650, 180)
+
+[node name="Pine3" parent="Obstacles" instance=ExtResource("pine")]
+position = Vector2(900, 205)
+
+[node name="Pine4" parent="Obstacles" instance=ExtResource("pine")]
+position = Vector2(1310, 210)
+
+[node name="Pine5" parent="Obstacles" instance=ExtResource("pine")]
+position = Vector2(1450, 360)
+
+[node name="Pine6" parent="Obstacles" instance=ExtResource("pine")]
+position = Vector2(1455, 620)
+
+[node name="Pine7" parent="Obstacles" instance=ExtResource("pine")]
+position = Vector2(1370, 900)
+
+[node name="Pine8" parent="Obstacles" instance=ExtResource("pine")]
+position = Vector2(1040, 915)
+
+[node name="Pine9" parent="Obstacles" instance=ExtResource("pine")]
+position = Vector2(770, 945)
+
+[node name="Pine10" parent="Obstacles" instance=ExtResource("pine")]
+position = Vector2(145, 630)
+
+[node name="Pine11" parent="Obstacles" instance=ExtResource("pine")]
+position = Vector2(100, 855)
+
+[node name="Pine12" parent="Obstacles" instance=ExtResource("pine")]
+position = Vector2(1020, 760)
+
+[node name="NorthFence1" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(200, 175)
+
+[node name="NorthFence2" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(350, 175)
+
+[node name="NorthFence3" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(500, 175)
+
+[node name="NorthFence4" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(650, 175)
+
+[node name="NorthFence5" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(800, 175)
+
+[node name="NorthFence6" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(950, 175)
+
+[node name="NorthFence7" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(1300, 175)
+
+[node name="NorthFence8" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(1450, 175)
+
+[node name="SouthFence1" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(200, 955)
+
+[node name="SouthFence2" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(350, 955)
+
+[node name="SouthFence3" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(650, 955)
+
+[node name="SouthFence4" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(800, 955)
+
+[node name="SouthFence5" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(950, 955)
+
+[node name="SouthFence6" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(1100, 955)
+
+[node name="SouthFence7" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(1250, 955)
+
+[node name="SouthFence8" parent="Obstacles" instance=ExtResource("fence")]
+position = Vector2(1400, 955)
+
+[node name="LootContainers" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="HutSupplies" parent="LootContainers" instance=ExtResource("chest")]
+position = Vector2(440, 515)
+
+[node name="CollisionShape2D" parent="LootContainers/HutSupplies" index="0"]
+shape = SubResource("RectangleShape2D_7s8al")
+
+[node name="Inventory" parent="LootContainers/HutSupplies" index="1"]
+capacity = 6
+starting_items = Array[ExtResource("item")]([ExtResource("medkit"), ExtResource("wire"), ExtResource("metal")])
+
+[node name="WoodCache" parent="LootContainers" instance=ExtResource("chest")]
+position = Vector2(820, 570)
+
+[node name="CollisionShape2D" parent="LootContainers/WoodCache" index="0"]
+shape = SubResource("RectangleShape2D_hq25d")
+
+[node name="Inventory" parent="LootContainers/WoodCache" index="1"]
+capacity = 6
+starting_items = Array[ExtResource("item")]([ExtResource("metal"), ExtResource("electronics"), ExtResource("wire")])
+
+[node name="EastSupplies" parent="LootContainers" instance=ExtResource("chest")]
+position = Vector2(1295, 650)
+
+[node name="CollisionShape2D" parent="LootContainers/EastSupplies" index="0"]
+shape = SubResource("RectangleShape2D_opy5e")
+
+[node name="Inventory" parent="LootContainers/EastSupplies" index="1"]
+capacity = 6
+starting_items = Array[ExtResource("item")]([ExtResource("medkit"), ExtResource("electronics"), ExtResource("metal")])
+
+[node name="PatrolRoute" type="Node2D" parent="."]
+
+[node name="A" type="Marker2D" parent="PatrolRoute"]
+position = Vector2(1110, 425)
+
+[node name="B" type="Marker2D" parent="PatrolRoute"]
+position = Vector2(1230, 495)
+
+[node name="TestEnemies" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="GuardSpawns" type="Node2D" parent="."]
+
+[node name="Восток" type="Marker2D" parent="GuardSpawns"]
+position = Vector2(1200, 420)
+rotation = 3.1415927
+
+[node name="Центр" type="Marker2D" parent="GuardSpawns"]
+position = Vector2(900, 530)
+rotation = 3.1415927
+
+[node name="За_домом" type="Marker2D" parent="GuardSpawns"]
+position = Vector2(350, 305)
+rotation = 1.5707963
+
+[node name="Юг" type="Marker2D" parent="GuardSpawns"]
+position = Vector2(700, 800)
+rotation = -1.5707963
+
+[node name="Player" parent="." instance=ExtResource("player")]
+position = Vector2(470, 700)
+
+[node name="Inventory" parent="Player" index="8"]
+starting_items = Array[ExtResource("item")]([ExtResource("medkit"), ExtResource("medkit")])
+
+[node name="Enemy" parent="." node_paths=PackedStringArray("target", "patrol_start", "patrol_end") instance=ExtResource("guard")]
+position = Vector2(1110, 425)
+target = NodePath("../Player")
+patrol_start = NodePath("../PatrolRoute/A")
+patrol_end = NodePath("../PatrolRoute/B")
+
+[node name="ExtractionZone" parent="." instance=ExtResource("exit")]
+position = Vector2(1120, 90)
+size = Vector2(112, 76)
+
+[node name="HUD" parent="." instance=ExtResource("hud")]
+
+[editable path="LootContainers/HutSupplies"]
+[editable path="LootContainers/WoodCache"]
+[editable path="LootContainers/EastSupplies"]
+[editable path="Player"]
+
+[node name="Camera2D" parent="Player"]
+zoom = Vector2(0.8, 0.8)
+limit_left = 0
+limit_top = 0
+limit_right = 1536
+limit_bottom = 1024

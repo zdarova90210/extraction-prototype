@@ -40,7 +40,7 @@ func _has_popup() -> bool:
 
 
 func _run() -> void:
-	var yard := load("res://scenes/test_yard.tscn").instantiate() as Node2D
+	var yard := load("res://tests/fixtures/system_yard.tscn").instantiate() as Node2D
 	yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
 	yard.play_start_audio = false
 	root.add_child(yard)

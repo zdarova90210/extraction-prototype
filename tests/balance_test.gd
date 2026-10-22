@@ -1,7 +1,7 @@
 extends SceneTree
 ## Live scenes: open duels, range, movement and reload pressure.
 
-const YARD = preload("res://scenes/test_yard.tscn")
+const YARD = preload("res://tests/fixtures/system_yard.tscn")
 var _checks: int = 0
 var _failures: int = 0
 var _yard: Node2D

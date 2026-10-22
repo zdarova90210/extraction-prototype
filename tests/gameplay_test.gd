@@ -1,8 +1,8 @@
 extends SceneTree
 ## Integration checks in the real 2D physics world, without external packages.
 
-const YARD = preload("res://scenes/test_yard.tscn")
-const OBSTACLE = preload("res://scenes/obstacle.tscn")
+const YARD = preload("res://tests/fixtures/system_yard.tscn")
+const OBSTACLE = preload("res://tests/fixtures/cover.tscn")
 
 var _failures: int = 0
 var _checks: int = 0

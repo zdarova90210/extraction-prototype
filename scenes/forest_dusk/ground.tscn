@@ -1,0 +1,44 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/forest_dusk/ground.png" id="1"]
+[ext_resource type="Shader" path="res://resources/art/forest_dusk/ground.gdshader" id="2"]
+
+[sub_resource type="ShaderMaterial" id="Grass"]
+shader = ExtResource("2")
+shader_parameter/atlas_column = 0.0
+
+[sub_resource type="ShaderMaterial" id="Dirt"]
+shader = ExtResource("2")
+shader_parameter/atlas_column = 1.0
+
+[node name="Ground" type="Node2D"]
+z_index = -20
+texture_filter = 1
+
+[node name="Grass" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-2048, -2048, 3584, -2048, 3584, 3072, -2048, 3072)
+uv = PackedVector2Array(-14192, -7096, 24836, -7096, 24836, 10644, -14192, 10644)
+texture = ExtResource("1")
+material = SubResource("Grass")
+color = Color(0.90, 0.94, 0.92, 1)
+
+[node name="Courtyard" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(185, 470, 310, 452, 470, 488, 570, 430, 720, 420, 800, 366, 1020, 355, 1100, 280, 1184, 280, 1210, 436, 1300, 490, 1350, 640, 1230, 750, 1070, 775, 970, 816, 760, 822, 620, 765, 465, 802, 340, 735, 200, 685, 155, 580)
+uv = PackedVector2Array(1281.992, 1628.477, 2148.203, 1566.109, 3256.953, 1690.844, 3949.922, 1489.883, 4989.375, 1455.234, 5543.75, 1268.133, 7068.281, 1230.02, 7622.656, 970.156, 8204.75, 970.156, 8384.922, 1510.672, 9008.594, 1697.773, 9355.078, 2217.5, 8523.516, 2598.633, 7414.766, 2685.254, 6721.797, 2827.313, 5266.563, 2848.102, 4296.406, 2650.605, 3222.305, 2778.805, 2356.094, 2546.66, 1385.938, 2373.418, 1074.102, 2009.609)
+texture = ExtResource("1")
+material = SubResource("Dirt")
+color = Color(1, 1, 1, 1)
+
+[node name="BehindHutPath" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(140, 275, 530, 260, 570, 310, 536, 364, 125, 365, 90, 325)
+uv = PackedVector2Array(970.156, 952.832, 3672.734, 900.859, 3949.922, 1074.102, 3714.313, 1261.203, 866.211, 1264.668, 623.672, 1126.074)
+texture = ExtResource("1")
+material = SubResource("Dirt")
+color = Color(0.94, 0.96, 0.96, 1)
+
+[node name="ExitPath" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(1070, 445, 1076, 90, 1165, 90, 1192, 445)
+uv = PackedVector2Array(7414.766, 1541.855, 7456.344, 311.836, 8073.086, 311.836, 8260.188, 1541.855)
+texture = ExtResource("1")
+material = SubResource("Dirt")
+color = Color(1, 1, 1, 1)

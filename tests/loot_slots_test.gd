@@ -1,7 +1,7 @@
 extends SceneTree
 ## Facing selection, incremental discovery, fixed slots and actual GUI dragging.
 
-const YARD = preload("res://scenes/test_yard.tscn")
+const YARD = preload("res://tests/fixtures/system_yard.tscn")
 const CONTAINER = preload("res://scenes/loot_container.tscn")
 var _checks: int = 0
 var _failures: int = 0

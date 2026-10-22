@@ -6,7 +6,7 @@ func _initialize() -> void:
 
 
 func _capture() -> void:
-	var default_room := load("res://scenes/test_yard.tscn").instantiate() as Node2D
+	var default_room := load("res://tests/fixtures/system_yard.tscn").instantiate() as Node2D
 	root.add_child(default_room)
 	current_scene = default_room
 	default_room.set_guards_active(false)
@@ -21,7 +21,7 @@ func _capture() -> void:
 	await _save("audio_test_overview")
 	default_room.free()
 	await _ticks(2)
-	var yard := load("res://scenes/test_yard.tscn").instantiate() as Node2D
+	var yard := load("res://tests/fixtures/system_yard.tscn").instantiate() as Node2D
 	yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
 	yard.play_start_audio = false
 	root.add_child(yard)

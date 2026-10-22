@@ -44,23 +44,23 @@ func _run() -> void:
 	enemy.get_node("HitAudio").cue_played.connect(func(_cue): _enemy_reactions += 1)
 	await _ticks(3)
 	_check(not player.get_node("HitAudio").is_playing() and not enemy.get_node("HitAudio").is_playing(), "Custom initial HP below 100 never sounds like damage")
-	var cover := preload("res://scenes/obstacle.tscn").instantiate()
+	var cover := preload("res://tests/fixtures/cover.tscn").instantiate()
 	cover.position = Vector2(100, 0)
 	cover.size = Vector2(40, 60)
 	world.add_child(cover)
 	await _ticks(3)
 	var initial_health: float = enemy.health
-	for kind in range(3):
-		cover.kind = kind
+	for material_name in ["concrete", "wood", "metal"]:
+		cover.impact_cue = load("res://resources/audio/combat/" + material_name + ".tres")
 		weapon._cooldown = 0.0
 		var before := _impacts.size()
 		_check(weapon.try_fire(enemy.position, player), "Actual ray fires toward occluded actor")
-		_check(_impacts.size() == before + 1 and _impacts.back().cue == cover.get_impact_cue(), "Nearest cover selects its material exactly once: " + str(kind))
+		_check(_impacts.size() == before + 1 and _impacts.back().cue == cover.get_impact_cue(), "Nearest cover selects its material exactly once: " + material_name)
 		_check(_impacts.back().point.is_equal_approx(Vector2(80, 0)) and enemy.health == initial_health, "Impact is at ray contact, not actor or muzzle; cover blocks damage")
-	_check(cover.get_impact_cue().id == &"metal", "Container default is metal")
+	_check(cover.get_impact_cue().id == &"metal", "Cover uses its assigned metal material")
 	cover.impact_cue = preload("res://resources/audio/combat/wood.tres")
 	_check(cover.get_impact_cue().id == &"wood", "Inspector override separates surface sound from appearance")
-	cover.impact_cue = null
+	cover.impact_cue = preload("res://resources/audio/combat/metal.tres")
 	var contact: Vector2 = _impacts.back().point
 	player.position = Vector2(0, 35)
 	await _ticks(2)
@@ -69,7 +69,7 @@ func _run() -> void:
 	var container := CONTAINER.instantiate()
 	_check(container.get_impact_cue().id == &"wood", "Loot box exposes a wooden surface")
 	container.free()
-	var target := preload("res://scenes/target.tscn").instantiate()
+	var target := preload("res://tests/fixtures/target.tscn").instantiate()
 	_check(target.get_impact_cue().id == &"metal", "Training target exposes a metal surface")
 	target.free()
 	cover.position = Vector2(100, 100)

@@ -1,28 +1,32 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/loot_menu.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/inventory_drop_zone.gd" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/inventory_audio.tscn" id="3_audio"]
+[ext_resource type="PackedScene" path="res://scenes/ui/frosted_panel.tscn" id="4_glass"]
+[ext_resource type="Theme" path="res://resources/ui/inventory_theme.tres" id="5_theme"]
 
 [sub_resource type="StyleBoxFlat" id="Panel"]
-bg_color = Color(0.055, 0.085, 0.09, 0.97)
+bg_color = Color(0, 0, 0, 0)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.36, 0.45, 0.36, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_left = 6
-corner_radius_bottom_right = 6
+border_color = Color(0.8, 0.8, 0.8, 0.24)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_left = 9
+corner_radius_bottom_right = 9
+shadow_color = Color(0, 0, 0, 0.32)
+shadow_size = 14
 
 [sub_resource type="StyleBoxFlat" id="DropZone"]
-bg_color = Color(0.15, 0.13, 0.10, 0.65)
+bg_color = Color(0.08, 0.08, 0.08, 0.45)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.43, 0.36, 0.25, 1)
+border_color = Color(0.75, 0.75, 0.75, 0.22)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_left = 3
@@ -38,6 +42,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1")
+theme = ExtResource("5_theme")
 
 [node name="Center" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -53,6 +58,9 @@ custom_minimum_size = Vector2(760, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("Panel")
 
+[node name="Backdrop" parent="Center/Panel" instance=ExtResource("4_glass")]
+layout_mode = 2
+
 [node name="Margin" type="MarginContainer" parent="Center/Panel"]
 layout_mode = 2
 theme_override_constants/margin_left = 24
@@ -66,7 +74,7 @@ theme_override_constants/separation = 16
 
 [node name="Title" type="Label" parent="Center/Panel/Margin/Content"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.86, 0.91, 0.86, 1)
+theme_override_colors/font_color = Color(0.94, 0.94, 0.94, 1)
 theme_override_font_sizes/font_size = 24
 text = "ДОБЫЧА"
 
@@ -102,7 +110,7 @@ theme_override_constants/separation = 10
 
 [node name="Title" type="Label" parent="Center/Panel/Margin/Content/Columns/Source"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.83, 0.76, 0.57, 1)
+theme_override_colors/font_color = Color(0.86, 0.86, 0.86, 1)
 theme_override_font_sizes/font_size = 17
 text = "КОНТЕЙНЕР"
 
@@ -126,7 +134,7 @@ script = ExtResource("2")
 [node name="Caption" type="Label" parent="Center/Panel/Margin/Content/DropZone"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.80, 0.73, 0.59, 1)
+theme_override_colors/font_color = Color(0.76, 0.76, 0.76, 1)
 theme_override_font_sizes/font_size = 13
 text = "Выбросить: перетащите сюда или нажмите Q над вещью в рюкзаке"
 horizontal_alignment = 1
@@ -134,7 +142,7 @@ horizontal_alignment = 1
 [node name="Message" type="Label" parent="Center/Panel/Margin/Content"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.73, 0.79, 0.70, 1)
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
 theme_override_font_sizes/font_size = 14
 autowrap_mode = 2
 

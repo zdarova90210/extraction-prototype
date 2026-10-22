@@ -1,8 +1,8 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
 [ext_resource type="Script" path="res://scripts/weapon.gd" id="2_weapon"]
-[ext_resource type="Script" path="res://scripts/actor_visual.gd" id="3_visual"]
+[ext_resource type="Script" path="res://scripts/pixel_actor_visual.gd" id="3_visual"]
 [ext_resource type="PackedScene" path="res://scenes/weapon_audio.tscn" id="4_audio"]
 [ext_resource type="PackedScene" path="res://scenes/actor_damage_audio.tscn" id="5_hit"]
 [ext_resource type="Script" path="res://scripts/actor_health_bar.gd" id="6_health"]
@@ -15,27 +15,45 @@
 [ext_resource type="PackedScene" path="res://scenes/interaction_audio.tscn" id="13_interactions"]
 [ext_resource type="Resource" path="res://resources/audio/combat/player_damage.tres" id="14_damage"]
 
+[ext_resource type="SpriteFrames" path="res://resources/art/forest_dusk/scout_frames.tres" id="pixel_frames"]
+[ext_resource type="PackedScene" path="res://scenes/gun_visual.tscn" id="pixel_gun"]
+[ext_resource type="Shader" path="res://resources/art/forest_dusk/cutout.gdshader" id="pixel_cutout"]
+[ext_resource type="Script" path="res://scripts/actor_hurtbox.gd" id="pixel_hurtbox"]
+
+[sub_resource type="CapsuleShape2D" id="HurtShape"]
+radius = 13.0
+height = 54.0
+
+[sub_resource type="ShaderMaterial" id="Cutout"]
+shader = ExtResource("pixel_cutout")
+
 [sub_resource type="CircleShape2D" id="Shape_player"]
 radius = 15.0
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["occlusion_subject"]]
 collision_layer = 2
 collision_mask = 13
 motion_mode = 1
 script = ExtResource("1_player")
+texture_filter = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("Shape_player")
 
 [node name="Shadow" type="Polygon2D" parent="."]
-position = Vector2(3, 5)
-polygon = PackedVector2Array(-14, -11, 10, -14, 17, -2, 13, 12, -10, 16, -18, 4)
-color = Color(0.025, 0.04, 0.04, 0.6)
+position = Vector2(0, 30)
+polygon = PackedVector2Array(1, 0, 0.924, 0.383, 0.707, 0.707, 0.383, 0.924, 0, 1, -0.383, 0.924, -0.707, 0.707, -0.924, 0.383, -1, 0, -0.924, -0.383, -0.707, -0.707, -0.383, -0.924, 0, -1, 0.383, -0.924, 0.707, -0.707, 0.924, -0.383)
+color = Color(0.025, 0.03, 0.03, 0.35)
+scale = Vector2(11, 3)
 
 [node name="Aim" type="Node2D" parent="."]
 
-[node name="BodyVisual" type="Node2D" parent="Aim"]
+[node name="BodyVisual" type="Node2D" parent="Aim" node_paths=PackedStringArray("contact_shadow")]
 script = ExtResource("3_visual")
+frames = ExtResource("pixel_frames")
+sprite_scale = Vector2(0.19814241, 0.19814241)
+modulate = Color(1.12, 1.12, 1.12, 1)
+contact_shadow = NodePath("../../Shadow")
 
 [node name="Weapon" type="Node2D" parent="Aim"]
 script = ExtResource("2_weapon")
@@ -43,14 +61,6 @@ damage = 20.0
 fire_rate = 3.0
 max_range = 500.0
 active_reload_enabled = true
-
-[node name="Barrel" type="Polygon2D" parent="Aim/Weapon"]
-polygon = PackedVector2Array(6, -5, 31, -5, 31, 1, 6, 1)
-color = Color(0.10, 0.15, 0.16, 1)
-
-[node name="Grip" type="Polygon2D" parent="Aim/Weapon"]
-polygon = PackedVector2Array(10, 0, 18, 0, 14, 8, 9, 8)
-color = Color(0.65, 0.58, 0.42, 1)
 
 [node name="Muzzle" type="Marker2D" parent="Aim/Weapon"]
 position = Vector2(32, -2)
@@ -117,3 +127,21 @@ theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 13
 horizontal_alignment = 1
+
+[node name="Sprite" type="Sprite2D" parent="Aim/BodyVisual"]
+scale = Vector2(0.25, 0.25)
+material = SubResource("Cutout")
+
+[node name="GunVisual" parent="Aim/Weapon" instance=ExtResource("pixel_gun")]
+scale = Vector2(1, 0.5)
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource("pixel_hurtbox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -1)
+shape = SubResource("HurtShape")

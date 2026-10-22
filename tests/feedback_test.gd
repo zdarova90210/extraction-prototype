@@ -1,7 +1,7 @@
 extends SceneTree
 ## Event integration and actual mixer capture, using real-time Dummy audio.
 
-const YARD = preload("res://scenes/test_yard.tscn")
+const YARD = preload("res://tests/fixtures/system_yard.tscn")
 const SOUND_NAMES = ["weapons/carbine_shot_01", "weapons/carbine_shot_02", "weapons/carbine_shot_03", "weapons/rifle_shot_01", "weapons/rifle_shot_02", "weapons/rifle_shot_03", "weapons/rifle_shot_04", "weapons/dry_trigger", "weapons/carbine_reload_start", "weapons/carbine_reload_finish", "weapons/rifle_reload_start", "weapons/rifle_reload_finish", "combat/weapon_ready", "combat/reload_timing", "combat/concrete_01", "combat/metal_01", "combat/metal_02", "combat/metal_03", "combat/metal_04", "combat/wood_01", "combat/body_01", "combat/body_02", "combat/body_03", "combat/player_damage"]
 
 var _checks: int = 0

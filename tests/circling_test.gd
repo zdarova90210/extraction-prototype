@@ -1,7 +1,7 @@
 extends SceneTree
 ## Reproduce circular movement with real CharacterBody2D motion and perception.
 
-const YARD = preload("res://scenes/test_yard.tscn")
+const YARD = preload("res://tests/fixtures/system_yard.tscn")
 const GUARD = preload("res://scenes/enemy.tscn")
 var _checks: int = 0
 var _failures: int = 0

@@ -31,7 +31,7 @@ func _run() -> void:
 	await _click(base.content.get_node("Actions/Start"))
 	await _ticks(4)
 	var yard: Node2D = current_scene
-	_check(yard.has_node("ExtractionZone") and profile.raid_active, "New Raid button starts playable yard with extraction")
+	_check(yard.scene_file_path == "res://scenes/forest_dusk.tscn" and profile.raid_active, "New Raid button starts the selected forest with extraction")
 	var player: CharacterBody2D = yard.get_node("Player")
 	player.set_physics_process(false)
 	var guard: CharacterBody2D = yard.get_node("Enemy")
@@ -39,7 +39,7 @@ func _run() -> void:
 	var bag: Inventory = player.get_node("Inventory")
 	bag.clear() # This persistence scenario carries only its explicitly selected loot.
 	player.restore_state()
-	var box: Inventory = yard.get_node("LootContainers/Supply/Inventory")
+	var box: Inventory = yard.get_node("LootContainers/HutSupplies/Inventory")
 	for slot in range(3):
 		box.transfer_to(bag, slot)
 	var zone: Area2D = yard.get_node("ExtractionZone")
@@ -79,7 +79,7 @@ func _run() -> void:
 	bag.clear()
 	player.restore_state()
 	_check(profile.stash.item_count == 3 and bag.item_count == 0 and player.health == player.max_health, "New raid retains stash and resets only raid state")
-	box = yard.get_node("LootContainers/Supply/Inventory")
+	box = yard.get_node("LootContainers/HutSupplies/Inventory")
 	box.transfer_to(bag, 0)
 	box.transfer_to(bag, 1)
 	player.take_damage(1000)
@@ -98,7 +98,7 @@ func _run() -> void:
 	bag = player.get_node("Inventory")
 	bag.clear()
 	player.restore_state()
-	yard.get_node("LootContainers/Supply/Inventory").transfer_to(bag, 0)
+	yard.get_node("LootContainers/HutSupplies/Inventory").transfer_to(bag, 0)
 	profile.save_path = "user://missing_cycle_directory/profile.json"
 	zone = yard.get_node("ExtractionZone")
 	zone.duration = 0.5
@@ -127,7 +127,7 @@ func _run() -> void:
 	bag = player.get_node("Inventory")
 	bag.clear()
 	player.restore_state()
-	box = yard.get_node("LootContainers/Supply/Inventory")
+	box = yard.get_node("LootContainers/HutSupplies/Inventory")
 	box.transfer_to(bag, 0)
 	box.transfer_to(bag, 1)
 	zone = yard.get_node("ExtractionZone")

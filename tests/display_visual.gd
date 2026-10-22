@@ -32,7 +32,7 @@ func _run() -> void:
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	viewport.size_2d_override_stretch = true
 	root.add_child(viewport)
-	var yard := load("res://scenes/test_yard.tscn").instantiate() as Node2D
+	var yard := load("res://tests/fixtures/system_yard.tscn").instantiate() as Node2D
 	yard.audio_test_setup = false # Isolate mechanics from the audio-room starting loadout.
 	yard.play_start_audio = false
 	viewport.add_child(yard)

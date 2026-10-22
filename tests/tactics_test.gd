@@ -1,8 +1,8 @@
 extends SceneTree
 ## Real perception and physics: repeated peeks, committed fire and finite turning.
 
-const YARD = preload("res://scenes/test_yard.tscn")
-const COVER = preload("res://scenes/obstacle.tscn")
+const YARD = preload("res://tests/fixtures/system_yard.tscn")
+const COVER = preload("res://tests/fixtures/cover.tscn")
 var _checks: int = 0
 var _failures: int = 0
 var _yard: Node2D

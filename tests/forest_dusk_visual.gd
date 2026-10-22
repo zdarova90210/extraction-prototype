@@ -1,0 +1,87 @@
+extends "res://tests/loot_slots_test.gd"
+## Render the actual scene, including doorway, behind-house fade and pixel actors.
+
+
+func _run() -> void:
+	root.size = Vector2i(1280, 720)
+	var room := load("res://scenes/forest_dusk.tscn").instantiate() as Node2D
+	room.play_start_audio = false
+	root.add_child(room)
+	current_scene = room
+	room.set_guards_active(false)
+	var player: CharacterBody2D = room.get_node("Player")
+	player.set_physics_process(false)
+	var camera: Camera2D = player.get_node("Camera2D")
+	camera.position_smoothing_enabled = false
+	player.aim.rotation = -0.4
+	camera.force_update_scroll()
+	await _ticks(10)
+	await _save_forest("forest_post")
+	await _capture_actors()
+	root.size = Vector2i(3440, 1440)
+	camera.force_update_scroll()
+	await _ticks(5)
+	await _save_forest("forest_wide")
+	root.size = Vector2i(1280, 720)
+	camera.force_update_scroll()
+	await _ticks(5)
+	player.global_position = Vector2(350, 315)
+	camera.force_update_scroll()
+	await _ticks(30)
+	await _save_forest("forest_behind_hut")
+	player.global_position = Vector2(520, 440)
+	player.aim.look_at(room.get_node("Enemy").global_position)
+	camera.force_update_scroll()
+	await _ticks(5)
+	await _save_forest("forest_cover")
+	player.global_position = Vector2(440, 580)
+	player.aim.rotation = -PI / 2
+	room.get_node("HUD/LootMenu").open_container(room.get_node("LootContainers/HutSupplies"))
+	await _ticks(96)
+	await _save_forest("forest_loot")
+	room.get_node("HUD/LootMenu").close_menu()
+	room.free()
+	await _ticks(3)
+	var base: Control = load("res://scenes/base.tscn").instantiate()
+	root.add_child(base)
+	current_scene = base
+	await _ticks(3)
+	await _save_forest("forest_base_entry")
+	print("Visual captures saved: %s post, wide, behind_hut, cover, loot, base_entry" % "dusk")
+	quit()
+
+
+func _save_forest(filename: String) -> void:
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png("res://artifacts/" + filename.replace("forest_", "dusk" + "_") + ".png")
+
+
+func _capture_actors() -> void:
+	var player: CharacterBody2D = current_scene.get_node("Player")
+	var enemy: CharacterBody2D = current_scene.get_node("Enemy")
+	var camera: Camera2D = player.get_node("Camera2D")
+	var original_player_position := player.position
+	var original_enemy_position := enemy.position
+	player.position = Vector2(700, 730)
+	enemy.position = Vector2(810, 730)
+	camera.zoom = Vector2(3, 3)
+	for facing in [0.0, PI / 2, -PI / 2]:
+		player.aim.rotation = facing
+		enemy.aim.rotation = facing
+		enemy.get_node("Aim/BodyVisual")._sync_visual()
+		camera.force_update_scroll()
+		await _ticks(4)
+		await _save_forest("forest_actors_" + str(int(rad_to_deg(facing))))
+	# Capture the reported pairing: standing player next to a real dead guard.
+	player.aim.rotation = 0.0
+	enemy.aim.rotation = 0.0
+	enemy.take_damage(1000)
+	# The capture room disables guard processing, including its hit flash timer.
+	enemy.get_node("Aim/BodyVisual")._process(0.2)
+	await _ticks(4)
+	await _save_forest("forest_contact_shadows")
+	player.position = original_player_position
+	enemy.position = original_enemy_position
+	camera.zoom = Vector2(0.8, 0.8)
+	camera.force_update_scroll()
+	await _ticks(4)
