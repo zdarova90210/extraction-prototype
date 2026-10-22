@@ -55,8 +55,8 @@ func _run() -> void:
 	var enemy: Node2D = yard.get_node("Enemy")
 	player.set_physics_process(false)
 	enemy.set_physics_process(false)
-	yard.get_node("Ambience/Bed").stop()
-	yard.get_node("Ambience").set_process(false)
+	# Measure one routed voice in isolation, including all authored ambience sources.
+	yard.get_node("Ambience").stop()
 	var weapon_audio: Node2D = player.get_node("Aim/Weapon/Audio")
 	var enemy_audio: Node2D = enemy.get_node("Aim/Weapon/Audio")
 	_check(weapon_audio.shot_audio.bus == &"PlayerWeapons" and weapon_audio.action_audio.bus == &"PlayerWeapons" and weapon_audio.dry_audio.bus == &"PlayerWeapons" and weapon_audio.timing_audio.bus == &"PlayerWeapons", "All player weapon actions share the player weapon category")

@@ -39,6 +39,9 @@ func start() -> void:
 	bed.volume_db = -60.0 if fade_in_duration > 0.0 else background_volume_db
 	if background_stream != null:
 		bed.play(_rng.randf_range(0.0, maxf(0.0, background_stream.get_length() - 0.1)))
+	for spot in _spots:
+		if is_instance_valid(spot):
+			spot.start_ambience()
 
 
 func stop() -> void:
@@ -46,7 +49,7 @@ func stop() -> void:
 	bed.stop()
 	for spot in _spots:
 		if is_instance_valid(spot):
-			spot.stop()
+			spot.stop_ambience()
 
 
 func _delay(bounds: Vector2) -> float:
@@ -80,10 +83,26 @@ func _play_random_detail() -> bool:
 	if candidates.is_empty():
 		return false
 	var spot := candidates[_rng.randi_range(0, candidates.size() - 1)]
-	var clips := spot.cue.clips.filter(func(clip): return clip != null and clip != _last_clip)
-	if clips.is_empty():
-		clips = spot.cue.clips.filter(func(clip): return clip != null)
-	var clip := clips[_rng.randi_range(0, clips.size() - 1)] as AudioStream
+	# Respect authored priorities without consuming gameplay's global RNG.
+	var choices: Array[int] = []
+	for index in range(spot.cue.clips.size()):
+		if spot.cue.clips[index] != null and spot.cue.clips[index] != _last_clip:
+			choices.append(index)
+	if choices.is_empty():
+		for index in range(spot.cue.clips.size()):
+			if spot.cue.clips[index] != null:
+				choices.append(index)
+	var total := 0.0
+	for index in choices:
+		total += spot.cue.weight_at(index)
+	var roll := _rng.randf() * total
+	var selected: int = choices.back()
+	for index in choices:
+		roll -= spot.cue.weight_at(index)
+		if roll <= 0.0:
+			selected = index
+			break
+	var clip := spot.cue.clips[selected]
 	spot.stream = clip
 	spot.volume_db = spot.cue.volume_db
 	spot.pitch_scale = _rng.randf_range(1.0 - spot.cue.pitch_variation, 1.0 + spot.cue.pitch_variation)

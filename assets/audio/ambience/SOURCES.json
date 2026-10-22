@@ -26,6 +26,69 @@
     "random_start": true,
     "fade_in_seconds": 2.5,
     "player_volume_db": -4,
-    "ambience_bus_db": -6
+    "ambience_bus_db": 0
+  },
+  "lamp_bank": {
+    "origin": "ElevenLabs Sound Effects; generated and selected by project owner",
+    "license": "Owner-provided generated assets; not represented as CC0",
+    "source_folder": "C:\\zdarova90210\\game-projects\\assets\\sounds",
+    "recordings": [
+      {
+        "source": "lamp_buzz.wav",
+        "source_sha256": "679165d23146700573a93fbc49d9f22863f95edb3f4141152b86f461e4becdcd",
+        "output": "lamp_hum.wav",
+        "output_sha256": "50a9310e9c1083e7acb1cb0b336fedeec5837502f3fc655d72f30909645e3b86",
+        "seconds": 9.88,
+        "sample_rate": 48000,
+        "channels": 1,
+        "mono_rms_ratio": 0.8986548418284142,
+        "gain_linear": 0.7099516276453958,
+        "target_rms100": 0.022,
+        "peak": 0.13026685062310614,
+        "processing": "Stereo average after phase check; 120 ms complementary linear wrap crossfade (10 to 9.88 s), seamless loop; scalar gain, no filters or pitch changes"
+      },
+      {
+        "source": "lamp_sputter.wav",
+        "source_sha256": "8fe4b13a069dcd89361d45108df8af7c15f466be0c9a76ccae66490baa18d1c4",
+        "output": "lamp_sputter_01.wav",
+        "output_sha256": "7c6ff3e3d619a92128a327f718e51078e4c60f623de45f67ac33657c9d1c8cbc",
+        "seconds": 3.0,
+        "sample_rate": 48000,
+        "channels": 1,
+        "mono_rms_ratio": 0.9988874331912061,
+        "gain_linear": 0.30068042141081625,
+        "target_rms100": 0.045,
+        "peak": 0.2976477407688401,
+        "processing": "Stereo average after phase check; Full 3-second duration; 8 ms fades at both edges; scalar gain, no filters or pitch changes"
+      },
+      {
+        "source": "lamp_sputter-2.wav",
+        "source_sha256": "92ebdbf76dd967cd3b0969d8f4c8bb3427c2e58e0b064f7e8277e319a9ca601e",
+        "output": "lamp_sputter_02.wav",
+        "output_sha256": "f1ee1a7f11f9d0c6f301044432c728cb7a58feb88b366332403a6d625019566e",
+        "seconds": 3.0,
+        "sample_rate": 48000,
+        "channels": 1,
+        "mono_rms_ratio": 0.9987369442347871,
+        "gain_linear": 0.31810274809576544,
+        "target_rms100": 0.045,
+        "peak": 0.31244314414862706,
+        "processing": "Stereo average after phase check; Full 3-second duration; 8 ms fades at both edges; scalar gain, no filters or pitch changes"
+      },
+      {
+        "source": "lamp_sputter-3.wav",
+        "source_sha256": "077d50c1ad4813eebacd64d0668d90b75481d6c8c43c710398553a9a896794d7",
+        "output": "lamp_sputter_03.wav",
+        "output_sha256": "07c748dc176fa882f31ce25b28ede7ca51c4bc2b670fdcce6899867fe04a3dd6",
+        "seconds": 3.0,
+        "sample_rate": 48000,
+        "channels": 1,
+        "mono_rms_ratio": 0.9978522604397108,
+        "gain_linear": 0.8425781050727943,
+        "target_rms100": 0.045,
+        "peak": 0.42476036736137357,
+        "processing": "Stereo average after phase check; Full 3-second duration; 8 ms fades at both edges; scalar gain, no filters or pitch changes"
+      }
+    ]
   }
 }

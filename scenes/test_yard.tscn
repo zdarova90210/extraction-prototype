@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3]
+[gd_scene load_steps=23 format=3]
 
 [ext_resource type="Script" path="res://scripts/test_yard.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/yard_floor.gd" id="2"]
@@ -20,6 +20,7 @@
 [ext_resource type="Resource" path="res://resources/items/medkit.tres" id="18_medkit"]
 [ext_resource type="PackedScene" path="res://scenes/footstep_surface.tscn" id="19_surface"]
 [ext_resource type="PackedScene" path="res://scenes/yard_ambience.tscn" id="20_ambience"]
+[ext_resource type="PackedScene" path="res://scenes/industrial_lamp.tscn" id="21_lamp"]
 
 [sub_resource type="NavigationPolygon" id="Navigation_runtime"]
 agent_radius = 18.0
@@ -35,6 +36,11 @@ script = ExtResource("2")
 size = Vector2(2160, 1120)
 
 [node name="Ambience" parent="." instance=ExtResource("20_ambience")]
+first_detail_delay = Vector2(9, 16)
+detail_interval = Vector2(18, 38)
+
+[node name="DepotLamp" parent="Ambience/Details" instance=ExtResource("21_lamp")]
+position = Vector2(370, 289)
 
 [node name="Navigation" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("Navigation_runtime")

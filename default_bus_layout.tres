@@ -1,13 +1,9 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=3]
+[gd_resource type="AudioBusLayout" format=3 uid="uid://hi3btwluuoo6"]
 
 [sub_resource type="AudioEffectHardLimiter" id="MasterLimiter"]
 ceiling_db = -1.0
-pre_gain_db = 0.0
-release = 0.1
 
 [resource]
-bus/0/name = &"Master"
-bus/0/volume_db = 0.0
 bus/0/effect/0/effect = SubResource("MasterLimiter")
 bus/0/effect/0/enabled = true
 bus/1/name = &"Mix"

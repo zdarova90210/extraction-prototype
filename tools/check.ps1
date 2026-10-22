@@ -42,7 +42,7 @@ try {
             Write-Output $log
             throw "$Name failed (exit $($process.ExitCode)). See $logPath"
         }
-        if ($Name -in @('gameplay', 'combat', 'combat_realtime', 'balance', 'balance_realtime', 'tactics', 'tactics_realtime', 'circling', 'circling_realtime', 'developer', 'loot', 'loot_slots', 'ground_loot', 'quick_discard', 'loot_tooltip', 'progress', 'stash_migration', 'raid_cycle', 'progress_writer', 'progress_reader', 'raid_visual', 'feedback', 'combat_audio', 'raid_audio', 'ambience', 'health_bar', 'ammo_feedback', 'active_reload', 'healing', 'healing_visual', 'footsteps', 'footstep_audio', 'interaction', 'interaction_audio', 'hud_menu', 'audio_settings', 'display', 'display_native') -and $log -notmatch 'RESULT: \d+ checks, 0 failures') {
+        if ($Name -in @('gameplay', 'combat', 'combat_realtime', 'balance', 'balance_realtime', 'tactics', 'tactics_realtime', 'circling', 'circling_realtime', 'developer', 'loot', 'loot_slots', 'ground_loot', 'quick_discard', 'loot_tooltip', 'progress', 'stash_migration', 'raid_cycle', 'progress_writer', 'progress_reader', 'raid_visual', 'feedback', 'combat_audio', 'raid_audio', 'ambience', 'lamp', 'health_bar', 'ammo_feedback', 'active_reload', 'healing', 'healing_visual', 'footsteps', 'footstep_audio', 'interaction', 'interaction_audio', 'hud_menu', 'audio_settings', 'display', 'display_native') -and $log -notmatch 'RESULT: \d+ checks, 0 failures') {
             Write-Output $log
             throw "$Name checks did not reach completion. See $logPath"
         }
@@ -80,6 +80,7 @@ try {
     Invoke-GodotCheck 'combat_audio' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/combat_audio_test.gd')
     Invoke-GodotCheck 'raid_audio' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/raid_audio_test.gd')
     Invoke-GodotCheck 'ambience' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/ambience_test.gd')
+    Invoke-GodotCheck 'lamp' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1200', '--script', 'res://tests/lamp_test.gd')
     Invoke-GodotCheck 'health_bar' @('--headless', '--fixed-fps', '60', '--quit-after', '600', '--script', 'res://tests/health_bar_test.gd')
     Invoke-GodotCheck 'ammo_feedback' @('--headless', '--fixed-fps', '60', '--quit-after', '600', '--script', 'res://tests/ammo_feedback_test.gd')
     Invoke-GodotCheck 'active_reload' @('--headless', '--fixed-fps', '60', '--quit-after', '2400', '--script', 'res://tests/active_reload_test.gd')

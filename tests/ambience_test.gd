@@ -77,7 +77,11 @@ func _run() -> void:
 	player.set_physics_process(false)
 	yard.get_node("Enemy").set_physics_process(false)
 	var ambience: Node2D = yard.get_node("Ambience")
-	_check(ambience.get_node("Details").get_child_count() == 0 and ambience._spots.is_empty(), "Rejected chair-like creaks and leaves are absent from the raid")
+	var lamp: AmbientSpot = ambience.get_node("Details/DepotLamp")
+	_check(ambience._spots == [lamp], "Only the visible depot lamp is registered; rejected creaks and leaves stay absent")
+	# Isolate the bed/scheduler fixture from the authored lamp, tested separately.
+	lamp.stop_ambience()
+	ambience._spots.clear()
 	_check(not ambience._play_random_detail(), "Background works safely without any authored incidental sources")
 	ambience.detail_played.connect(_record_detail)
 	ambience._detail_remaining = 100.0
