@@ -3,6 +3,8 @@ extends Node2D
 
 signal step_played(profile: FootstepProfile, clip: AudioStream)
 
+## Disable for a rig that supplies actual foot contacts through play_step().
+@export var steps_from_movement := true
 @export var default_profile: FootstepProfile
 @export_range(16.0, 200.0, 1.0, "suffix:px") var step_distance: float = 80.0
 @export_range(-40.0, 0.0, 1.0, "suffix:dB") var volume_db: float = -16.0
@@ -18,7 +20,8 @@ var _rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
-	_actor.moved.connect(_on_moved)
+	if steps_from_movement:
+		_actor.moved.connect(_on_moved)
 	_actor.died.connect(stop)
 
 
@@ -44,6 +47,12 @@ func _on_moved(distance: float) -> void:
 	if _distance < step_distance:
 		return
 	_distance = fmod(_distance, step_distance)
+	play_step()
+
+
+func play_step() -> void:
+	if _actor.is_dead:
+		return
 	var profile := profile_at(global_position)
 	if profile == null or profile.clips.is_empty():
 		return

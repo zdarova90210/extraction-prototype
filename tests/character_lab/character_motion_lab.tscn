@@ -1,0 +1,188 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tests/character_lab/lab_room.gd" id="room"]
+[ext_resource type="PackedScene" path="res://tests/character_lab/lab_actor.tscn" id="actor"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/ground.tscn" id="ground"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/rocks.tscn" id="rocks"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/stump.tscn" id="stump"]
+[ext_resource type="PackedScene" path="res://tests/fixtures/target.tscn" id="target"]
+[ext_resource type="Script" path="res://tests/character_lab/lab_target.gd" id="target_script"]
+[ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="pause"]
+[ext_resource type="Script" path="res://tests/character_lab/lab_pause.gd" id="pause_script"]
+
+[sub_resource type="RectangleShape2D" id="Horizontal"]
+size = Vector2(900, 32)
+
+[sub_resource type="RectangleShape2D" id="Vertical"]
+size = Vector2(32, 560)
+
+[sub_resource type="StyleBoxFlat" id="PanelStyle"]
+bg_color = Color(0.065, 0.075, 0.08, 0.96)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.30, 0.34, 0.34, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_left = 6
+corner_radius_bottom_right = 6
+
+[sub_resource type="CanvasItemMaterial" id="Premult"]
+blend_mode = 4
+
+[node name="CharacterMotionLab" type="Node2D"]
+script = ExtResource("room")
+
+[node name="Ground" parent="." instance=ExtResource("ground")]
+position = Vector2(-150, -200)
+
+[node name="Overcast" type="CanvasModulate" parent="."]
+color = Color(0.91, 0.94, 0.98, 1)
+
+[node name="Bounds" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="North" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(465, 144)
+shape = SubResource("Horizontal")
+
+[node name="South" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(465, 690)
+shape = SubResource("Horizontal")
+
+[node name="West" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(32, 416)
+shape = SubResource("Vertical")
+
+[node name="East" type="CollisionShape2D" parent="Bounds"]
+position = Vector2(910, 416)
+shape = SubResource("Vertical")
+
+[node name="World" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Rocks" parent="World" instance=ExtResource("rocks")]
+position = Vector2(250, 350)
+
+[node name="Stump" parent="World" instance=ExtResource("stump")]
+position = Vector2(580, 500)
+
+[node name="Actor" parent="World" instance=ExtResource("actor")]
+position = Vector2(380, 430)
+
+[node name="Targets" type="Node2D" parent="World"]
+y_sort_enabled = true
+
+[node name="Target1" parent="World/Targets" instance=ExtResource("target")]
+position = Vector2(800, 290)
+script = ExtResource("target_script")
+
+[node name="Target2" parent="World/Targets" instance=ExtResource("target")]
+position = Vector2(800, 430)
+script = ExtResource("target_script")
+
+[node name="Target3" parent="World/Targets" instance=ExtResource("target")]
+position = Vector2(800, 580)
+script = ExtResource("target_script")
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Title" type="Label" parent="UI"]
+offset_left = 26.0
+offset_top = 20.0
+offset_right = 920.0
+offset_bottom = 57.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.94, 0.95, 0.91, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.85)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 25
+text = "ПРОВЕРКА ПЕРСОНАЖА · 8 НАПРАВЛЕНИЙ"
+
+[node name="Controls" type="Label" parent="UI"]
+offset_left = 26.0
+offset_top = 64.0
+offset_right = 920.0
+offset_bottom = 119.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.94, 0.95, 0.91, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 16
+text = "WASD — ходьба · ПКМ — прицелиться · ЛКМ — огонь · R — перезарядка\nC — режим походки · F2 — сброс · Esc — пауза / громкость"
+
+[node name="Panel" type="Panel" parent="UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -326.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 678.0
+theme_override_styles/panel = SubResource("PanelStyle")
+
+[node name="Heading" type="Label" parent="UI/Panel"]
+offset_left = 20.0
+offset_top = 18.0
+offset_right = 282.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 21
+text = "ДВИЖЕНИЕ · 3×"
+
+[node name="Closeup" type="TextureRect" parent="UI/Panel"]
+material = SubResource("Premult")
+texture_filter = 1
+offset_left = 7.0
+offset_top = 72.0
+offset_right = 295.0
+offset_bottom = 336.0
+mouse_filter = 2
+expand_mode = 1
+
+[node name="Status" type="Label" parent="UI/Panel"]
+offset_left = 20.0
+offset_top = 360.0
+offset_right = 282.0
+offset_bottom = 389.0
+theme_override_font_sizes/font_size = 16
+text = "Карабин: 12 / 12"
+
+[node name="Note" type="Label" parent="UI/Panel"]
+offset_left = 20.0
+offset_top = 493.0
+offset_right = 282.0
+offset_bottom = 569.0
+theme_override_colors/font_color = Color(0.72, 0.77, 0.76, 1)
+theme_override_font_sizes/font_size = 16
+text = "Мышь — поворот на 360°.\nМожно закрепить ракурс выше.\nC — ходьба / подкрадывание."
+
+[node name="Direction" type="OptionButton" parent="UI/Panel"]
+offset_left = 20.0
+offset_top = 445.0
+offset_right = 282.0
+offset_bottom = 480.0
+focus_mode = 0
+
+[node name="Sneak" type="CheckButton" parent="UI/Panel"]
+offset_left = 16.0
+offset_top = 397.0
+offset_right = 286.0
+offset_bottom = 436.0
+focus_mode = 0
+text = "Подкрадывание · C"
+
+[node name="Reset" type="Button" parent="UI/Panel"]
+offset_left = 20.0
+offset_top = 585.0
+offset_right = 282.0
+offset_bottom = 627.0
+focus_mode = 0
+text = "Сбросить · F2"
+
+[node name="PauseMenu" parent="UI" instance=ExtResource("pause")]
+script = ExtResource("pause_script")

@@ -49,7 +49,10 @@ try {
         if ($Name -eq 'forest_audio' -and $log -notmatch 'RESULT: \d+ checks, 0 failures') {
             throw "Forest audio checks did not reach completion. See $logPath"
         }
-        if ($Name -in @('visual', 'forest_dusk_visual', 'footstep_visual') -and $log -notmatch 'Visual captures saved:') {
+        if ($Name -eq 'character_lab' -and $log -notmatch 'RESULT: \d+ checks, 0 failures') {
+            throw "Character lab checks did not reach completion. See $logPath"
+        }
+        if ($Name -in @('visual', 'forest_dusk_visual', 'footstep_visual', 'character_lab_visual', 'character_directions_visual', 'character_gait_visual') -and $log -notmatch 'Visual captures saved:') {
             Write-Output $log
             throw "Visual captures did not reach completion. See $logPath"
         }
@@ -64,6 +67,7 @@ try {
 
     Invoke-GodotCheck 'import' @('--headless', '--editor', '--import')
     Invoke-GodotCheck 'startup' @('--headless', '--quit-after', '120')
+    Invoke-GodotCheck 'character_lab' @('--headless', '--fixed-fps', '60', '--script', 'res://tests/character_lab/lab_test.gd')
     Invoke-GodotCheck 'gameplay' @('--headless', '--fixed-fps', '60', '--quit-after', '1800', '--script', 'res://tests/gameplay_test.gd')
     Invoke-GodotCheck 'combat' @('--headless', '--fixed-fps', '60', '--quit-after', '3600', '--script', 'res://tests/combat_test.gd')
     Invoke-GodotCheck 'balance' @('--headless', '--fixed-fps', '60', '--quit-after', '1800', '--script', 'res://tests/balance_test.gd')
@@ -104,6 +108,9 @@ try {
         Invoke-GodotCheck 'circling_realtime' @('--headless', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/circling_test.gd', '--', '--async-navigation')
     }
     if ($Visual) {
+        Invoke-GodotCheck 'character_lab_visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--script', 'res://tests/character_lab/lab_visual.gd')
+        Invoke-GodotCheck 'character_directions_visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--script', 'res://tests/character_lab/direction_visual.gd')
+        Invoke-GodotCheck 'character_gait_visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--script', 'res://tests/character_lab/gait_visual.gd')
         Invoke-GodotCheck 'loot_glass' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/loot_glass_test.gd')
         Invoke-GodotCheck 'forest_dusk_visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/forest_dusk_visual.gd')
         Invoke-GodotCheck 'visual' @('--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/visual_check.gd')
