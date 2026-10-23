@@ -14,12 +14,13 @@ shader = ExtResource("cutout")
 resource_local_to_scene = true
 size = Vector2(40, 16)
 
-[node name="LootContainer" type="StaticBody2D"]
+[node name="LootContainer" type="StaticBody2D" node_paths=PackedStringArray("interaction_point")]
 collision_layer = 1
 collision_mask = 0
 script = ExtResource("1")
 texture_filter = 1
 display_name = "Припасы"
+interaction_point = NodePath("Sprite/InteractionPoint")
 size = Vector2(40, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -51,3 +52,5 @@ position = Vector2(0, -14)
 scale = Vector2(0.14083832, 0.14938389)
 texture = ExtResource("chest_art")
 material = SubResource("Cutout")
+
+[node name="InteractionPoint" type="Marker2D" parent="Sprite"]

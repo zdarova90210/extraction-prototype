@@ -2,6 +2,7 @@ class_name GroundItem
 extends Node2D
 ## A single known item on the floor. Inventory.transfer_to owns every move.
 
+@export var interaction_point: Marker2D
 var _highlighted: bool = false
 @onready var inventory: Inventory = $Inventory
 
@@ -18,6 +19,10 @@ func pick_up(destination: Inventory) -> bool:
 		return true
 	_set_hint("Нет места в рюкзаке")
 	return false
+
+
+func get_interaction_position() -> Vector2:
+	return interaction_point.global_position
 
 
 func set_highlighted(highlighted: bool) -> void:

@@ -17,6 +17,7 @@ func _run() -> void:
 	await _ticks(6)
 	await _check_contact_movement(room)
 	await _check_prop_approaches(room)
+	await _check_loot_facing(room)
 	await _check_dressing(room)
 	var progress := root.get_node("RaidProgress")
 	_check(progress.save_path.is_empty(), "Forest tests use memory progress, not the owner's save")
@@ -225,6 +226,57 @@ func _check_prop_approaches(room: Node2D) -> void:
 			await _walk(player, Vector2.UP, 10)
 			_check(player.global_position.distance_to(stop) > 30, "Prop contact allows reversing out: " + label)
 	player.global_position = initial
+	await _ticks(2)
+
+
+func _check_loot_facing(room: Node2D) -> void:
+	var player: CharacterBody2D = room.get_node("Player")
+	var initial := player.global_position
+	var initial_aim: float = player.aim.rotation
+	var chest: StaticBody2D = room.get_node("LootContainers/WoodCache")
+	var interaction: Node = player.get_node("LootInteraction")
+	var menu: Control = room.get_node("HUD/LootMenu")
+	# Actual stops at the same saved chest, including the reported southern
+	# approach. Cardinal facing is independent of the selection implementation.
+	for offset in [Vector2(0, 60), Vector2(0, -60), Vector2(-52, 0), Vector2(60, 0)]:
+		player.global_position = chest.global_position + offset
+		await _ticks(2)
+		var direction: Vector2 = -offset.normalized()
+		await _walk(player, direction, 24)
+		var label := " from " + str(offset)
+		_check(interaction.can_reach(chest), "Real chest contact remains reachable" + label)
+		player.aim.rotation = direction.angle()
+		await _ticks(2)
+		_check(interaction.can_interact(chest) and interaction._nearest() == chest and chest.get_node("Hint").visible, "Facing the visible chest at contact selects it" + label)
+		await _key(KEY_E)
+		_check(menu.visible and menu._container == chest, "Actual E opens the facing chest" + label)
+		menu.close_menu()
+		player.aim.rotation = direction.angle() + PI
+		await _ticks(2)
+		_check(not interaction.can_interact(chest) and not chest.get_node("Hint").visible, "Facing away at contact removes the chest hint" + label)
+		await _key(KEY_E)
+		_check(not menu.visible, "Actual E cannot open the chest behind the player" + label)
+	# A ground item's visible center remains at ground height, unlike a raised
+	# chest. The same contract must support both without a global Y correction.
+	var ground: GroundItem = load("res://scenes/ground_item.tscn").instantiate()
+	room.add_child(ground)
+	ground.global_position = Vector2(700, 730)
+	var items: Array[ItemDefinition] = [load("res://resources/items/metal.tres")]
+	ground.inventory.replace_slots(items)
+	for offset in [Vector2(0, 36), Vector2(0, -36), Vector2(-36, 0), Vector2(36, 0)]:
+		player.global_position = ground.global_position + offset
+		player.aim.look_at(ground.global_position)
+		await _ticks(2)
+		_check(interaction.can_interact(ground) and interaction._nearest() == ground, "Visible ground item is selected" + str(offset))
+		player.aim.rotation += PI
+		await _ticks(2)
+		_check(not interaction.can_interact(ground), "Ground item behind the visual aim is rejected" + str(offset))
+	player.global_position = ground.global_position + Vector2(0, 30)
+	player.aim.rotation = PI / 2
+	_check(interaction.can_interact(ground), "Coincident visible target and aim do not create an undefined-facing dead zone")
+	ground.free()
+	player.global_position = initial
+	player.aim.rotation = initial_aim
 	await _ticks(2)
 
 

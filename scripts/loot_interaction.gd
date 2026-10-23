@@ -29,18 +29,26 @@ func can_interact(container: Node2D) -> bool:
 		return false
 	if container is GroundItem and container.inventory.item_count == 0:
 		return false
-	var forward := Vector2.RIGHT.rotated(aim.global_rotation)
-	return forward.dot(aim.global_position.direction_to(container.global_position)) >= cos(deg_to_rad(facing_angle * 0.5))
+	return _alignment(container) >= cos(deg_to_rad(facing_angle * 0.5))
+
+
+func _alignment(container: Node2D) -> float:
+	# Both ends of gaze live in rendered coordinates. The object's root remains
+	# its ground origin, which may lie below the player aim even when art is above.
+	var target: Vector2 = container.get_interaction_position()
+	var offset := target - aim.global_position
+	if offset.length_squared() < 1.0:
+		return 1.0 # No meaningful facing angle when the two visual points coincide.
+	return Vector2.RIGHT.rotated(aim.global_rotation).dot(offset.normalized())
 
 
 func _nearest() -> Node2D:
 	var nearest: Node2D
 	var distance := reach + 1.0
 	var best_alignment := -2.0
-	var forward := Vector2.RIGHT.rotated(aim.global_rotation)
 	for candidate in get_tree().get_nodes_in_group("loot_interactables"):
 		var candidate_distance: float = player.global_position.distance_to(candidate.global_position)
-		var alignment: float = forward.dot(aim.global_position.direction_to(candidate.global_position))
+		var alignment := _alignment(candidate)
 		if can_interact(candidate) and (alignment > best_alignment + 0.001 or (absf(alignment - best_alignment) <= 0.001 and candidate_distance < distance)):
 			nearest = candidate
 			distance = candidate_distance

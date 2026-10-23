@@ -18,6 +18,7 @@ func _run() -> void:
 	await _ticks(10)
 	await _save_forest("forest_post")
 	await _capture_depth_cases()
+	await _capture_loot_facing()
 	await _capture_actors()
 	root.size = Vector2i(3440, 1440)
 	camera.force_update_scroll()
@@ -122,6 +123,33 @@ func _capture_depth_cases() -> void:
 			if fade != null:
 				fade.set_process(true)
 	player.position = initial
+	camera.zoom = Vector2(0.8, 0.8)
+	camera.force_update_scroll()
+	await _ticks(3)
+
+
+func _capture_loot_facing() -> void:
+	var player: CharacterBody2D = current_scene.get_node("Player")
+	var chest: StaticBody2D = current_scene.get_node("LootContainers/WoodCache")
+	var camera: Camera2D = player.get_node("Camera2D")
+	var initial := player.position
+	var initial_aim: float = player.aim.rotation
+	player.global_position = chest.global_position + Vector2(0, 60)
+	await _ticks(2)
+	for tick in range(24):
+		player.velocity = Vector2.UP * 250
+		player.move_and_slide()
+		await _ticks(1)
+	player.velocity = Vector2.ZERO
+	camera.zoom = Vector2(3, 3)
+	for looking_up in [true, false]:
+		player.aim.rotation = -PI / 2 if looking_up else PI / 2
+		camera.force_update_scroll()
+		await _ticks(5)
+		await _save_forest("forest_loot_facing_" + ("up" if looking_up else "down"))
+		_check(chest.get_node("Hint").visible == looking_up, "Rendered southern chest contact shows E only while facing up toward its art")
+	player.position = initial
+	player.aim.rotation = initial_aim
 	camera.zoom = Vector2(0.8, 0.8)
 	camera.force_update_scroll()
 	await _ticks(3)

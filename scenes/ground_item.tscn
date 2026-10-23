@@ -14,8 +14,9 @@ corner_radius_top_right = 3
 corner_radius_bottom_left = 3
 corner_radius_bottom_right = 3
 
-[node name="GroundItem" type="Node2D"]
+[node name="GroundItem" type="Node2D" node_paths=PackedStringArray("interaction_point")]
 script = ExtResource("1")
+interaction_point = NodePath("InteractionPoint")
 
 [node name="Inventory" type="Node" parent="."]
 script = ExtResource("2")
@@ -36,3 +37,5 @@ theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("HintBackground")
 horizontal_alignment = 1
+
+[node name="InteractionPoint" type="Marker2D" parent="."]

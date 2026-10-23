@@ -3,6 +3,8 @@ extends StaticBody2D
 ## Saved world object; its Inventory owns runtime loot, not shared resources.
 
 @export var display_name: String = "Ящик"
+## Visual gaze target, independent of the ground collider used for reach/walls.
+@export var interaction_point: Marker2D
 @export var impact_cue: SoundCue = preload("res://resources/audio/combat/wood.tres")
 @export var size: Vector2 = Vector2(40, 16):
 	set(value):
@@ -37,6 +39,10 @@ var is_searching: bool:
 
 func get_impact_cue() -> SoundCue:
 	return impact_cue
+
+
+func get_interaction_position() -> Vector2:
+	return interaction_point.global_position
 
 
 func _ready() -> void:
