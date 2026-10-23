@@ -1,0 +1,21 @@
+[gd_scene format=3]
+[ext_resource type="Texture2D" path="res://resources/art/forest_dusk/shrub.tres" id="art"]
+[ext_resource type="Shader" path="res://resources/art/forest_dusk/cutout.gdshader" id="cutout"]
+[ext_resource type="Script" path="res://scripts/cover_occlusion.gd" id="occlusion"]
+
+[sub_resource type="ShaderMaterial" id="Cutout"]
+shader = ExtResource("cutout")
+
+[node name="Shrub" type="Node2D"]
+texture_filter = 1
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -18.8821)
+scale = Vector2(0.21854305, 0.21854305)
+texture = ExtResource("art")
+material = SubResource("Cutout")
+
+[node name="Occlusion" type="Node" parent="." node_paths=PackedStringArray("visual")]
+script = ExtResource("occlusion")
+visual = NodePath("../Sprite")
+obscured_alpha = 0.5

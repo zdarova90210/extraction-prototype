@@ -89,14 +89,14 @@ func _run() -> void:
 	await _ticks(40)
 	Input.action_release("move_left")
 	_check(player.global_position.x >= 798.0 and player.global_position.x <= 802.0, "Crate stops player")
-	_check(camera.get_screen_center_position().distance_to(player.global_position) < 2.0, "Camera follows within map limits")
+	_check(camera.get_screen_center_position().distance_to(camera.global_position) < 2.0, "Camera follows its body-centered composition within map limits")
 
 	# In headless, Window reads a dummy system cursor; synthetic mouse events
 	# cannot move it. Check the world-space aiming invariant at its actual position.
 	player.global_position = Vector2(900, 540)
 	await _ticks(3)
 	var aim: Node2D = player.get_node("Aim")
-	var cursor_direction := player.global_position.direction_to(player.get_global_mouse_position())
+	var cursor_direction := aim.global_position.direction_to(player.get_global_mouse_position())
 	_check(Vector2.RIGHT.rotated(aim.global_rotation).dot(cursor_direction) > 0.999, "Weapon points at viewport cursor in world coordinates")
 	_check(is_zero_approx(camera.global_rotation), "Aiming does not rotate camera")
 	player.set_physics_process(false)

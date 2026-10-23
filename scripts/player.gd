@@ -45,7 +45,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	moved.emit(get_position_delta().length())
 	var mouse_position := get_global_mouse_position()
-	if global_position.distance_squared_to(mouse_position) > 1.0:
+	if aim.global_position.distance_squared_to(mouse_position) > 1.0:
 		aim.look_at(mouse_position)
 	if item_use.is_using:
 		if not direction.is_zero_approx():
@@ -54,7 +54,8 @@ func _physics_process(delta: float) -> void:
 			item_use.advance(delta)
 		return
 	if Input.is_action_pressed("shoot"):
-		weapon.try_fire(mouse_position, self)
+		# Input is in rendered world coordinates; combat uses the ground plane.
+		weapon.try_fire(weapon.aim_from_screen(mouse_position, self), self)
 	if Input.is_action_just_pressed("reload"):
 		if weapon.is_reloading:
 			weapon.try_active_reload()

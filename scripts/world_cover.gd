@@ -6,6 +6,12 @@ extends StaticBody2D
 	set(value):
 		size = value.max(Vector2(8, 8))
 		_sync_shape()
+## Optional native ground outline; Size controls the default rectangle only.
+## Keep it independent of the raised artwork, not a hull of the whole sprite.
+@export var footprint_shape: Shape2D:
+	set(value):
+		footprint_shape = value
+		_sync_shape()
 @export var impact_cue: SoundCue = preload("res://resources/audio/combat/wood.tres")
 
 
@@ -16,6 +22,9 @@ func _ready() -> void:
 func _sync_shape() -> void:
 	var collision := get_node_or_null("CollisionShape2D") as CollisionShape2D
 	if collision == null:
+		return
+	if footprint_shape != null:
+		collision.shape = footprint_shape
 		return
 	var rectangle := RectangleShape2D.new()
 	rectangle.size = size

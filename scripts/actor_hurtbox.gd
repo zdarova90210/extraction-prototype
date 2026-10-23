@@ -1,5 +1,5 @@
 extends Area2D
-## Nonblocking damage silhouette, separate from the actor's movement collider.
+## Nonblocking damage silhouette projected onto the common ground physics plane.
 ## Uses the actor's existing collision layer; never moves or scales the body.
 
 var _active_layer: int

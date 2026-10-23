@@ -1,0 +1,81 @@
+{
+  "generator": "Built-in image_gen, transparent background",
+  "prompt": "details_prompt.txt",
+  "reference": "props.png, style/palette only; existing files unchanged",
+  "processing": "Byte-for-byte PNG copy; AtlasTexture regions and scene scale only; alpha retained",
+  "sha256": "f3c29590ef783ff2ea35560c3a04f81f66fab4f63410829de57f784f3547c07c",
+  "atlas_layout": {
+    "grass_low": [
+      70,
+      166,
+      284,
+      157
+    ],
+    "grass_tall": [
+      427,
+      79,
+      305,
+      261
+    ],
+    "fern": [
+      791,
+      104,
+      351,
+      219
+    ],
+    "shrub": [
+      1197,
+      93,
+      302,
+      240
+    ],
+    "stump": [
+      52,
+      415,
+      335,
+      230
+    ],
+    "firewood": [
+      435,
+      433,
+      302,
+      204
+    ],
+    "workbench": [
+      780,
+      429,
+      355,
+      214
+    ],
+    "planks": [
+      1185,
+      436,
+      315,
+      185
+    ],
+    "puddle": [
+      35,
+      715,
+      364,
+      232
+    ],
+    "needles": [
+      425,
+      734,
+      327,
+      200
+    ],
+    "small_rocks": [
+      794,
+      722,
+      353,
+      212
+    ],
+    "fern_grass": [
+      1174,
+      704,
+      333,
+      246
+    ]
+  }
+}

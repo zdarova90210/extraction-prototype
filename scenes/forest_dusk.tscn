@@ -21,6 +21,8 @@
 [ext_resource type="Script" path="res://scripts/raid_room.gd" id="room"]
 [ext_resource type="Resource" path="res://resources/items/wire.tres" id="wire"]
 
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/dressing.tscn" id="dressing"]
+
 [sub_resource type="NavigationPolygon" id="Navigation"]
 parsed_geometry_type = 1
 parsed_collision_mask = 5
@@ -32,18 +34,6 @@ size = Vector2(1560, 32)
 [sub_resource type="RectangleShape2D" id="VerticalBorder"]
 size = Vector2(32, 1024)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7s8al"]
-resource_local_to_scene = true
-size = Vector2(40, 28)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hq25d"]
-resource_local_to_scene = true
-size = Vector2(40, 28)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_opy5e"]
-resource_local_to_scene = true
-size = Vector2(40, 28)
-
 [node name="ForestDusk" type="Node2D"]
 y_sort_enabled = true
 texture_filter = 1
@@ -54,6 +44,8 @@ audio_test_setup = false
 [node name="Lighting" parent="." instance=ExtResource("dusk_light")]
 
 [node name="Ground" parent="." instance=ExtResource("ground")]
+
+[node name="Dressing" parent="." instance=ExtResource("dressing")]
 
 [node name="Ambience" parent="." instance=ExtResource("ambience")]
 
@@ -189,18 +181,12 @@ y_sort_enabled = true
 [node name="HutSupplies" parent="LootContainers" instance=ExtResource("chest")]
 position = Vector2(440, 515)
 
-[node name="CollisionShape2D" parent="LootContainers/HutSupplies" index="0"]
-shape = SubResource("RectangleShape2D_7s8al")
-
 [node name="Inventory" parent="LootContainers/HutSupplies" index="1"]
 capacity = 6
 starting_items = Array[ExtResource("item")]([ExtResource("medkit"), ExtResource("wire"), ExtResource("metal")])
 
 [node name="WoodCache" parent="LootContainers" instance=ExtResource("chest")]
-position = Vector2(820, 570)
-
-[node name="CollisionShape2D" parent="LootContainers/WoodCache" index="0"]
-shape = SubResource("RectangleShape2D_hq25d")
+position = Vector2(840, 570)
 
 [node name="Inventory" parent="LootContainers/WoodCache" index="1"]
 capacity = 6
@@ -209,9 +195,6 @@ starting_items = Array[ExtResource("item")]([ExtResource("metal"), ExtResource("
 [node name="EastSupplies" parent="LootContainers" instance=ExtResource("chest")]
 position = Vector2(1295, 650)
 
-[node name="CollisionShape2D" parent="LootContainers/EastSupplies" index="0"]
-shape = SubResource("RectangleShape2D_opy5e")
-
 [node name="Inventory" parent="LootContainers/EastSupplies" index="1"]
 capacity = 6
 starting_items = Array[ExtResource("item")]([ExtResource("medkit"), ExtResource("electronics"), ExtResource("metal")])
@@ -219,10 +202,10 @@ starting_items = Array[ExtResource("item")]([ExtResource("medkit"), ExtResource(
 [node name="PatrolRoute" type="Node2D" parent="."]
 
 [node name="A" type="Marker2D" parent="PatrolRoute"]
-position = Vector2(1110, 425)
+position = Vector2(1110, 455)
 
 [node name="B" type="Marker2D" parent="PatrolRoute"]
-position = Vector2(1230, 495)
+position = Vector2(1230, 525)
 
 [node name="TestEnemies" type="Node2D" parent="."]
 y_sort_enabled = true
@@ -230,29 +213,29 @@ y_sort_enabled = true
 [node name="GuardSpawns" type="Node2D" parent="."]
 
 [node name="Восток" type="Marker2D" parent="GuardSpawns"]
-position = Vector2(1200, 420)
+position = Vector2(1200, 450)
 rotation = 3.1415927
 
 [node name="Центр" type="Marker2D" parent="GuardSpawns"]
-position = Vector2(900, 530)
+position = Vector2(900, 560)
 rotation = 3.1415927
 
 [node name="За_домом" type="Marker2D" parent="GuardSpawns"]
-position = Vector2(350, 305)
+position = Vector2(350, 335)
 rotation = 1.5707963
 
 [node name="Юг" type="Marker2D" parent="GuardSpawns"]
-position = Vector2(700, 800)
+position = Vector2(700, 830)
 rotation = -1.5707963
 
 [node name="Player" parent="." instance=ExtResource("player")]
-position = Vector2(470, 700)
+position = Vector2(470, 730)
 
 [node name="Inventory" parent="Player" index="8"]
 starting_items = Array[ExtResource("item")]([ExtResource("medkit"), ExtResource("medkit")])
 
 [node name="Enemy" parent="." node_paths=PackedStringArray("target", "patrol_start", "patrol_end") instance=ExtResource("guard")]
-position = Vector2(1110, 425)
+position = Vector2(1110, 455)
 target = NodePath("../Player")
 patrol_start = NodePath("../PatrolRoute/A")
 patrol_end = NodePath("../PatrolRoute/B")

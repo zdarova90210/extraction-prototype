@@ -15,6 +15,9 @@ func _run() -> void:
 	# bodies from physics by default. Shot checks need an active target body.
 	enemy.set_physics_process(false)
 	await _ticks(6)
+	await _check_contact_movement(room)
+	await _check_prop_approaches(room)
+	await _check_dressing(room)
 	var progress := root.get_node("RaidProgress")
 	_check(progress.save_path.is_empty(), "Forest tests use memory progress, not the owner's save")
 	_check(player.health == 100 and player.get_node("Inventory").item_count == 2, "Forest combat starts with full health and two test medkits")
@@ -76,7 +79,8 @@ func _run() -> void:
 	_check(enemy.health == health_before - player.weapon.damage, "Clear shot damages the visible guard")
 	await _ticks(25)
 	var torso_health: float = enemy.health
-	_check(player.weapon.try_fire(enemy.global_position + Vector2(0, -21), player), "Player can aim at the drawn upper body")
+	var upper_body: Vector2 = enemy.aim.global_position + Vector2(0, -21)
+	_check(player.weapon.try_fire(player.weapon.aim_from_screen(upper_body, player), player), "Player can aim at the drawn upper body through input projection")
 	_check(enemy.health == torso_health - player.weapon.damage, "A visible upper-body hit reaches the separate damage silhouette")
 	var player_health_before: float = player.health
 	_check(enemy.weapon.try_fire(player.global_position, enemy), "Guard weapon uses its existing forest target")
@@ -150,6 +154,127 @@ func _run() -> void:
 	quit(0 if _failures == 0 else 1)
 
 
+func _walk(player: CharacterBody2D, direction: Vector2, ticks: int) -> void:
+	for tick in range(ticks):
+		player.velocity = direction * 250
+		player.move_and_slide()
+		await _ticks(1)
+	player.velocity = Vector2.ZERO
+
+
+func _check_contact_movement(room: Node2D) -> void:
+	var player: CharacterBody2D = room.get_node("Player")
+	var initial := player.position
+	# This exact approach wedged the old 30 px passage: down could not escape.
+	player.position = Vector2(785, 640)
+	await _ticks(2)
+	await _walk(player, Vector2.UP, 60)
+	_check(player.position.y < 500, "Actual walking traverses the formerly wedged log/chest corridor")
+	var stop := player.position
+	await _walk(player, Vector2.DOWN, 20)
+	_check(player.position.y > stop.y + 70, "Player can reverse and leave the former pocket without teleport or recovery")
+	var stump: StaticBody2D = room.get_node("Dressing/TimberYard/Stump1")
+	for from_north in [true, false]:
+		player.position = stump.position + Vector2(0, -85 if from_north else 85)
+		await _ticks(2)
+		await _walk(player, Vector2.DOWN if from_north else Vector2.UP, 35)
+		var gap := absf(player.global_position.y - stump.global_position.y)
+		_check(absf(gap - (stump.size.y * 0.5 + 15)) < 0.5, "Stump contact stops the ground collider at its real footprint " + ("from north" if from_north else "from south"))
+		_check((player.position.y < stump.position.y) == from_north, "Blocking and front/back ordering agree at stump contact")
+		stop = player.position
+		await _walk(player, Vector2.UP if from_north else Vector2.DOWN, 14)
+		_check(player.position.distance_to(stop) > 50, "Stump contact always allows walking back out")
+	var logs: StaticBody2D = room.get_node("Obstacles/WestLogs")
+	player.position = logs.position + Vector2(0, 160)
+	await _ticks(2)
+	await _walk(player, Vector2.UP, 45)
+	_check(absf(player.position.y - (logs.position.y + logs.size.y * 0.5 + 15)) < 0.5, "Walking north meets log footprint at the feet, without a phantom 30 px gap")
+	var visual: Node2D = player.get_node("Aim/BodyVisual")
+	visual._sync_visual()
+	_check(absf(player.get_node("Shadow").position.y) < 3, "Visible contact shadow and movement center share the ground origin")
+	var health: float = player.health
+	_check(player.weapon.try_fire(player.position + Vector2.DOWN * 200, player) and player.health == health, "Ground contact does not place the shot origin inside cover or the shooter's own hurtbox")
+	player.restore_state()
+	player.position = initial
+	await _ticks(26)
+
+
+func _check_prop_approaches(room: Node2D) -> void:
+	var player: CharacterBody2D = room.get_node("Player")
+	var initial := player.position
+	# Approach real saved instances, including off-center rock lobes. Testing the
+	# stopped feet against source alpha catches the old invisible northern gap.
+	for path in ["LootContainers/WoodCache", "LootContainers/EastSupplies", "Obstacles/BackRocks", "Obstacles/SouthRocks"]:
+		var prop: StaticBody2D = room.get_node(path)
+		var sprite: Sprite2D = prop.get_node("Sprite")
+		var image := sprite.texture.get_image()
+		var sideways := 32.0 if "Rocks" in path else 8.0
+		for offset in [-sideways, 0.0, sideways]:
+			player.global_position = prop.global_position + Vector2(offset, -60)
+			await _ticks(2)
+			await _walk(player, Vector2.DOWN, 24)
+			var label := str(prop.name) + " x=" + str(offset)
+			var stopped_by_prop := false
+			for index in range(player.get_slide_collision_count()):
+				stopped_by_prop = stopped_by_prop or player.get_slide_collision(index).get_collider() == prop
+			_check(stopped_by_prop and player.global_position.y < prop.global_position.y, "North approach meets the actual prop footprint: " + label)
+			var foot := Vector2i(sprite.to_local(player.global_position + Vector2(0, -1.5)) - sprite.get_rect().position)
+			var inside_image := Rect2i(Vector2i.ZERO, image.get_size()).has_point(foot)
+			_check(inside_image and image.get_pixelv(foot).a > 0.5, "Stopped feet overlap opaque artwork instead of an invisible gap: " + label)
+			var stop := player.global_position
+			await _walk(player, Vector2.UP, 10)
+			_check(player.global_position.distance_to(stop) > 30, "Prop contact allows reversing out: " + label)
+	player.global_position = initial
+	await _ticks(2)
+
+
+func _check_dressing(room: Node2D) -> void:
+	var map := room.get_world_2d().navigation_map
+	var start := Vector2(470, 700)
+	# Real saved map destinations: all loot approaches, F2 spawns and both exits
+	# from the courtyard, not just the easier geometry on the technical fixture.
+	var destinations := {
+		"hut supplies": Vector2(440, 580),
+		"wood cache": Vector2(820, 515),
+		"east supplies": Vector2(1295, 705),
+		"north extraction": Vector2(1120, 90),
+		"southern entrance": Vector2(480, 930),
+		"behind hut": Vector2(350, 305),
+	}
+	for marker in room.get_node("GuardSpawns").get_children():
+		destinations["guard " + str(marker.name)] = marker.global_position
+	for label in destinations:
+		var destination: Vector2 = destinations[label]
+		var path := NavigationServer2D.map_get_path(map, start, destination, true)
+		_check(path.size() >= 2 and path[-1].distance_to(destination) < 5, "Dressed forest navigation reaches " + label)
+	var world := room.get_world_2d().direct_space_state
+	var bench: StaticBody2D = room.get_node("Dressing/TimberYard/Workbench1")
+	var ray := PhysicsRayQueryParameters2D.create(bench.global_position - Vector2(90, 0), bench.global_position + Vector2(90, 0), 1)
+	var hit := world.intersect_ray(ray)
+	_check(hit.get("collider") == bench, "New solid workbench blocks actual combat rays")
+	var player: CharacterBody2D = room.get_node("Player")
+	var saved_position := player.global_position
+	var shrub: Node2D = room.get_node("Dressing/Vegetation/Shrub1")
+	player.global_position = shrub.global_position - Vector2(40, 0)
+	await _ticks(2)
+	for tick in range(24):
+		player.velocity = Vector2(240, 0)
+		player.move_and_slide()
+		await _ticks(1)
+	_check(player.global_position.x > shrub.global_position.x + 35, "New bushes remain passable in actual forest movement")
+	var puddle: Sprite2D = room.get_node("Dressing/GroundDetails/puddle_0")
+	player.global_position = puddle.global_position - Vector2(0, 35)
+	await _ticks(2)
+	for tick in range(22):
+		player.velocity = Vector2(0, 240)
+		player.move_and_slide()
+		await _ticks(1)
+	_check(player.global_position.y > puddle.global_position.y + 30, "Shallow water is ground detail and never blocks walking")
+	player.velocity = Vector2.ZERO
+	player.global_position = saved_position
+	await _ticks(2)
+
+
 func _check_contact_shadows() -> void:
 	for scene_path in ["res://scenes/player.tscn", "res://scenes/enemy.tscn"]:
 		var actor: CharacterBody2D = load(scene_path).instantiate()
@@ -158,6 +283,7 @@ func _check_contact_shadows() -> void:
 		var visual: Node2D = actor.get_node("Aim/BodyVisual")
 		var shadow: Polygon2D = actor.get_node("Shadow")
 		var feet_aligned := true
+		var ray_origins_stable := true
 		# All dusk frames share a 64 px, bottom-aligned canvas. Check every pose,
 		# including mirrored views, against that art contract rather than an offset.
 		for facing in [0.0, PI, PI / 2, -PI / 2]:
@@ -166,8 +292,11 @@ func _check_contact_shadows() -> void:
 			for pose in range(4):
 				actor.moved.emit(visual.stride_distance / 4.0)
 				visual._sync_visual()
-				feet_aligned = feet_aligned and shadow.position.y > 28.0 and shadow.position.y < 33.0 and absf(shadow.rotation) < 0.01
+				feet_aligned = feet_aligned and absf(shadow.position.y) < 3.0 and absf(shadow.rotation) < 0.01
+				var offset := Vector2(0, -30)
+				ray_origins_stable = ray_origins_stable and actor.aim.global_position.distance_to(actor.global_position + offset) < 0.01 and actor.weapon.aim_from_screen(actor.aim.global_position + Vector2.RIGHT * 100, actor).distance_to(actor.global_position + Vector2.RIGHT * 100) < 0.01
 		_check(feet_aligned, "Contact shadow stays at the feet through walking and facing: " + actor.name)
+		_check(ray_origins_stable, "Render aim projects to the ground plane in every facing: " + actor.name)
 		actor.velocity = Vector2.ZERO
 		actor.take_damage(10000)
 		await _ticks(2)
@@ -175,7 +304,7 @@ func _check_contact_shadows() -> void:
 		if actor.has_method("restore_state"):
 			actor.restore_state()
 			await _ticks(2)
-			_check(not visual.fallen and shadow.position.y > 28.0 and shadow.scale.x < 20.0, "Revival restores the standing contact shadow")
+			_check(not visual.fallen and absf(shadow.position.y) < 3.0 and shadow.scale.x < 20.0, "Revival restores the standing ground contact shadow")
 		actor.free()
 		await _ticks(1)
 

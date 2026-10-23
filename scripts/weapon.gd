@@ -69,6 +69,11 @@ func _physics_process(delta: float) -> void:
 		queue_redraw()
 
 
+func aim_from_screen(point: Vector2, shooter: Node2D) -> Vector2:
+	# point is a world position under the cursor, not a viewport pixel coordinate.
+	return point - (global_position - shooter.global_position)
+
+
 func try_fire(aim_position: Vector2, shooter: CollisionObject2D) -> bool:
 	if not enabled or is_reloading or _cooldown > 0.00001:
 		return false
@@ -87,9 +92,12 @@ func try_fire(aim_position: Vector2, shooter: CollisionObject2D) -> bool:
 	_flash_time = 0.055
 	queue_redraw()
 	var endpoint := origin + direction * max_range
-	# Start at body center, not the muzzle: a barrel touching/poking into a wall
+	# Start at the ground collider center, not the muzzle: a barrel inside a wall
 	# must never allow shots through it. Also detect origins inside solid shapes.
 	var query := PhysicsRayQueryParameters2D.create(origin, endpoint, hit_mask, [shooter.get_rid()])
+	var own_hurtbox := shooter.get_node_or_null("Hurtbox") as Area2D
+	if own_hurtbox != null:
+		query.exclude = query.exclude + [own_hurtbox.get_rid()]
 	query.hit_from_inside = true
 	query.collide_with_areas = true # Optional nonblocking actor silhouettes share take_damage.
 	var result := get_world_2d().direct_space_state.intersect_ray(query)
@@ -100,12 +108,14 @@ func try_fire(aim_position: Vector2, shooter: CollisionObject2D) -> bool:
 		hit_registered.emit(endpoint, collider)
 		if collider.has_method("take_damage"):
 			collider.take_damage(damage)
-	var muzzle_distance := origin.distance_to(muzzle.global_position)
+	var visual_offset := global_position - origin
+	var muzzle_distance := global_position.distance_to(muzzle.global_position)
 	var start := origin + direction * minf(muzzle_distance, origin.distance_to(endpoint))
 	var effect := Node2D.new()
 	effect.set_script(SHOT_EFFECT)
 	get_tree().current_scene.add_child(effect)
-	effect.setup(start, endpoint, not result.is_empty(), tracer_color)
+	# Render the flat-ground trace at the held weapon's height. Events stay physical.
+	effect.setup(start + visual_offset, endpoint + visual_offset, not result.is_empty(), tracer_color)
 	shot_fired.emit(start, endpoint, not result.is_empty())
 	return true
 

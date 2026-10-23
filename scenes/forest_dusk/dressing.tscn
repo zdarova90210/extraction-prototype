@@ -1,0 +1,724 @@
+[gd_scene format=3]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/grass_low.tscn" id="grass_low"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/grass_tall.tscn" id="grass_tall"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/fern.tscn" id="fern"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/shrub.tscn" id="shrub"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/fern_grass.tscn" id="fern_grass"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/stump.tscn" id="stump"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/firewood.tscn" id="firewood"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/workbench.tscn" id="workbench"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/young_pine.tscn" id="young_pine"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/pine.tscn" id="pine"]
+[ext_resource type="Texture2D" path="res://resources/art/forest_dusk/planks.tres" id="planks"]
+[ext_resource type="Texture2D" path="res://resources/art/forest_dusk/puddle.tres" id="puddle"]
+[ext_resource type="Texture2D" path="res://resources/art/forest_dusk/needles.tres" id="needles"]
+[ext_resource type="Texture2D" path="res://resources/art/forest_dusk/small_rocks.tres" id="small_rocks"]
+[ext_resource type="Shader" path="res://resources/art/forest_dusk/cutout.gdshader" id="cutout"]
+
+[sub_resource type="ShaderMaterial" id="Cutout"]
+shader = ExtResource("cutout")
+
+[node name="Dressing" type="Node2D"]
+y_sort_enabled = true
+texture_filter = 1
+
+[node name="GroundDetails" type="Node2D" parent="."]
+z_index = -10
+
+[node name="puddle_0" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(615, 715)
+scale = Vector2(0.30219780, 0.30219780)
+texture = ExtResource("puddle")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="puddle_1" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(1190, 315)
+scale = Vector2(0.18131868, 0.18131868)
+texture = ExtResource("puddle")
+material = SubResource("Cutout")
+flip_h = true
+
+[node name="planks_0" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(380, 495)
+scale = Vector2(0.15238095, 0.15238095)
+texture = ExtResource("planks")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="planks_1" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(539, 385)
+scale = Vector2(0.12698413, 0.12698413)
+texture = ExtResource("planks")
+material = SubResource("Cutout")
+flip_h = true
+
+[node name="planks_2" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(757, 607)
+scale = Vector2(0.13968254, 0.13968254)
+texture = ExtResource("planks")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="planks_3" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(1243, 691)
+scale = Vector2(0.12063492, 0.12063492)
+texture = ExtResource("planks")
+material = SubResource("Cutout")
+flip_h = true
+
+[node name="needles_0" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(125, 460)
+scale = Vector2(0.14678899, 0.14678899)
+texture = ExtResource("needles")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="needles_1" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(210, 705)
+scale = Vector2(0.12844037, 0.12844037)
+texture = ExtResource("needles")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="needles_2" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(365, 820)
+scale = Vector2(0.10703364, 0.10703364)
+texture = ExtResource("needles")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="needles_3" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(710, 353)
+scale = Vector2(0.14678899, 0.14678899)
+texture = ExtResource("needles")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="needles_4" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(909, 316)
+scale = Vector2(0.12232416, 0.12232416)
+texture = ExtResource("needles")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="needles_5" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(1289, 373)
+scale = Vector2(0.13761468, 0.13761468)
+texture = ExtResource("needles")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="needles_6" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(1380, 710)
+scale = Vector2(0.12844037, 0.12844037)
+texture = ExtResource("needles")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="needles_7" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(870, 870)
+scale = Vector2(0.14067278, 0.14067278)
+texture = ExtResource("needles")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="needles_8" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(495, 870)
+scale = Vector2(0.11620795, 0.11620795)
+texture = ExtResource("needles")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="needles_9" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(1004, 832)
+scale = Vector2(0.12232416, 0.12232416)
+texture = ExtResource("needles")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="needles_10" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(63, 815)
+scale = Vector2(0.15902141, 0.15902141)
+texture = ExtResource("needles")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="needles_11" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(996, 203)
+scale = Vector2(0.11620795, 0.11620795)
+texture = ExtResource("needles")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="small_rocks_0" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(320, 736)
+scale = Vector2(0.06798867, 0.06798867)
+texture = ExtResource("small_rocks")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="small_rocks_1" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(878, 389)
+scale = Vector2(0.07365439, 0.07365439)
+texture = ExtResource("small_rocks")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="small_rocks_2" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(970, 784)
+scale = Vector2(0.07932011, 0.07932011)
+texture = ExtResource("small_rocks")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="small_rocks_3" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(1188, 789)
+scale = Vector2(0.06798867, 0.06798867)
+texture = ExtResource("small_rocks")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="small_rocks_4" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(554, 668)
+scale = Vector2(0.05665722, 0.05665722)
+texture = ExtResource("small_rocks")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="small_rocks_5" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(220, 547)
+scale = Vector2(0.07365439, 0.07365439)
+texture = ExtResource("small_rocks")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="small_rocks_6" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(1289, 528)
+scale = Vector2(0.06232295, 0.06232295)
+texture = ExtResource("small_rocks")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="small_rocks_7" type="Sprite2D" parent="GroundDetails"]
+position = Vector2(430, 849)
+scale = Vector2(0.06515581, 0.06515581)
+texture = ExtResource("small_rocks")
+material = SubResource("Cutout")
+flip_h = false
+
+[node name="Vegetation" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="GrassLow1" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(40, 402)
+
+[node name="Sprite" parent="Vegetation/GrassLow1" index="0"]
+flip_h = true
+
+[node name="GrassTall1" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(81, 390)
+
+[node name="Sprite" parent="Vegetation/GrassTall1" index="0"]
+flip_h = true
+
+[node name="FernGrass1" parent="Vegetation" instance=ExtResource("fern_grass")]
+position = Vector2(59, 422)
+
+[node name="Shrub1" parent="Vegetation" instance=ExtResource("shrub")]
+position = Vector2(91, 376)
+
+[node name="GrassLow2" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(150, 500)
+
+[node name="GrassTall2" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(191, 488)
+
+[node name="Fern1" parent="Vegetation" instance=ExtResource("fern")]
+position = Vector2(169, 520)
+
+[node name="Sprite" parent="Vegetation/Fern1" index="0"]
+flip_h = true
+
+[node name="GrassLow3" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(110, 562)
+
+[node name="Sprite" parent="Vegetation/GrassLow3" index="0"]
+flip_h = true
+
+[node name="GrassTall3" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(151, 550)
+
+[node name="FernGrass2" parent="Vegetation" instance=ExtResource("fern_grass")]
+position = Vector2(129, 582)
+
+[node name="GrassLow4" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(52, 702)
+
+[node name="GrassTall4" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(93, 690)
+
+[node name="Sprite" parent="Vegetation/GrassTall4" index="0"]
+flip_h = true
+
+[node name="Fern2" parent="Vegetation" instance=ExtResource("fern")]
+position = Vector2(71, 722)
+
+[node name="Shrub2" parent="Vegetation" instance=ExtResource("shrub")]
+position = Vector2(103, 676)
+
+[node name="GrassLow5" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(125, 807)
+
+[node name="Sprite" parent="Vegetation/GrassLow5" index="0"]
+flip_h = true
+
+[node name="GrassTall5" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(166, 795)
+
+[node name="FernGrass3" parent="Vegetation" instance=ExtResource("fern_grass")]
+position = Vector2(144, 827)
+
+[node name="Sprite" parent="Vegetation/FernGrass3" index="0"]
+flip_h = true
+
+[node name="GrassLow6" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(330, 870)
+
+[node name="GrassTall6" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(371, 858)
+
+[node name="Fern3" parent="Vegetation" instance=ExtResource("fern")]
+position = Vector2(349, 890)
+
+[node name="GrassLow7" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(527, 898)
+
+[node name="Sprite" parent="Vegetation/GrassLow7" index="0"]
+flip_h = true
+
+[node name="GrassTall7" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(568, 886)
+
+[node name="Sprite" parent="Vegetation/GrassTall7" index="0"]
+flip_h = true
+
+[node name="FernGrass4" parent="Vegetation" instance=ExtResource("fern_grass")]
+position = Vector2(546, 918)
+
+[node name="Shrub3" parent="Vegetation" instance=ExtResource("shrub")]
+position = Vector2(578, 872)
+
+[node name="GrassLow8" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(683, 917)
+
+[node name="GrassTall8" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(724, 905)
+
+[node name="Fern4" parent="Vegetation" instance=ExtResource("fern")]
+position = Vector2(702, 937)
+
+[node name="Sprite" parent="Vegetation/Fern4" index="0"]
+flip_h = true
+
+[node name="GrassLow9" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(875, 912)
+
+[node name="Sprite" parent="Vegetation/GrassLow9" index="0"]
+flip_h = true
+
+[node name="GrassTall9" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(916, 900)
+
+[node name="FernGrass5" parent="Vegetation" instance=ExtResource("fern_grass")]
+position = Vector2(894, 932)
+
+[node name="GrassLow10" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1095, 897)
+
+[node name="GrassTall10" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(1136, 885)
+
+[node name="Sprite" parent="Vegetation/GrassTall10" index="0"]
+flip_h = true
+
+[node name="Fern5" parent="Vegetation" instance=ExtResource("fern")]
+position = Vector2(1114, 917)
+
+[node name="Shrub4" parent="Vegetation" instance=ExtResource("shrub")]
+position = Vector2(1146, 871)
+
+[node name="GrassLow11" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1300, 837)
+
+[node name="Sprite" parent="Vegetation/GrassLow11" index="0"]
+flip_h = true
+
+[node name="GrassTall11" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(1341, 825)
+
+[node name="FernGrass6" parent="Vegetation" instance=ExtResource("fern_grass")]
+position = Vector2(1319, 857)
+
+[node name="Sprite" parent="Vegetation/FernGrass6" index="0"]
+flip_h = true
+
+[node name="GrassLow12" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1405, 742)
+
+[node name="GrassTall12" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(1446, 730)
+
+[node name="Fern6" parent="Vegetation" instance=ExtResource("fern")]
+position = Vector2(1424, 762)
+
+[node name="GrassLow13" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1435, 477)
+
+[node name="Sprite" parent="Vegetation/GrassLow13" index="0"]
+flip_h = true
+
+[node name="GrassTall13" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(1476, 465)
+
+[node name="Sprite" parent="Vegetation/GrassTall13" index="0"]
+flip_h = true
+
+[node name="FernGrass7" parent="Vegetation" instance=ExtResource("fern_grass")]
+position = Vector2(1454, 497)
+
+[node name="Shrub5" parent="Vegetation" instance=ExtResource("shrub")]
+position = Vector2(1486, 451)
+
+[node name="GrassLow14" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1305, 412)
+
+[node name="GrassTall14" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(1346, 400)
+
+[node name="Fern7" parent="Vegetation" instance=ExtResource("fern")]
+position = Vector2(1324, 432)
+
+[node name="Sprite" parent="Vegetation/Fern7" index="0"]
+flip_h = true
+
+[node name="GrassLow15" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1335, 298)
+
+[node name="Sprite" parent="Vegetation/GrassLow15" index="0"]
+flip_h = true
+
+[node name="GrassTall15" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(1376, 286)
+
+[node name="FernGrass8" parent="Vegetation" instance=ExtResource("fern_grass")]
+position = Vector2(1354, 318)
+
+[node name="GrassLow16" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1213, 250)
+
+[node name="GrassTall16" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(1254, 238)
+
+[node name="Sprite" parent="Vegetation/GrassTall16" index="0"]
+flip_h = true
+
+[node name="Fern8" parent="Vegetation" instance=ExtResource("fern")]
+position = Vector2(1232, 270)
+
+[node name="Shrub6" parent="Vegetation" instance=ExtResource("shrub")]
+position = Vector2(1264, 224)
+
+[node name="GrassLow17" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(937, 287)
+
+[node name="Sprite" parent="Vegetation/GrassLow17" index="0"]
+flip_h = true
+
+[node name="GrassTall17" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(978, 275)
+
+[node name="FernGrass9" parent="Vegetation" instance=ExtResource("fern_grass")]
+position = Vector2(956, 307)
+
+[node name="Sprite" parent="Vegetation/FernGrass9" index="0"]
+flip_h = true
+
+[node name="GrassLow18" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(850, 264)
+
+[node name="GrassTall18" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(891, 252)
+
+[node name="Fern9" parent="Vegetation" instance=ExtResource("fern")]
+position = Vector2(869, 284)
+
+[node name="GrassLow19" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(575, 289)
+
+[node name="Sprite" parent="Vegetation/GrassLow19" index="0"]
+flip_h = true
+
+[node name="GrassTall19" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(616, 277)
+
+[node name="Sprite" parent="Vegetation/GrassTall19" index="0"]
+flip_h = true
+
+[node name="FernGrass10" parent="Vegetation" instance=ExtResource("fern_grass")]
+position = Vector2(594, 309)
+
+[node name="Shrub7" parent="Vegetation" instance=ExtResource("shrub")]
+position = Vector2(626, 263)
+
+[node name="GrassLow20" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(505, 331)
+
+[node name="GrassTall20" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(546, 319)
+
+[node name="Fern10" parent="Vegetation" instance=ExtResource("fern")]
+position = Vector2(524, 351)
+
+[node name="Sprite" parent="Vegetation/Fern10" index="0"]
+flip_h = true
+
+[node name="GrassLow21" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(170, 339)
+
+[node name="Sprite" parent="Vegetation/GrassLow21" index="0"]
+flip_h = true
+
+[node name="GrassTall21" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(211, 327)
+
+[node name="FernGrass11" parent="Vegetation" instance=ExtResource("fern_grass")]
+position = Vector2(189, 359)
+
+[node name="GrassLow22" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(234, 275)
+
+[node name="GrassTall22" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(275, 263)
+
+[node name="Sprite" parent="Vegetation/GrassTall22" index="0"]
+flip_h = true
+
+[node name="Fern11" parent="Vegetation" instance=ExtResource("fern")]
+position = Vector2(253, 295)
+
+[node name="Shrub8" parent="Vegetation" instance=ExtResource("shrub")]
+position = Vector2(285, 249)
+
+[node name="GrassLow23" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(755, 377)
+
+[node name="Sprite" parent="Vegetation/GrassLow23" index="0"]
+flip_h = true
+
+[node name="GrassTall23" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(796, 365)
+
+[node name="FernGrass12" parent="Vegetation" instance=ExtResource("fern_grass")]
+position = Vector2(774, 397)
+
+[node name="Sprite" parent="Vegetation/FernGrass12" index="0"]
+flip_h = true
+
+[node name="GrassLow24" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1001, 762)
+
+[node name="GrassTall24" parent="Vegetation" instance=ExtResource("grass_tall")]
+position = Vector2(1042, 750)
+
+[node name="Fern12" parent="Vegetation" instance=ExtResource("fern")]
+position = Vector2(1020, 782)
+
+[node name="GrassLow25" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(280, 464)
+
+[node name="Sprite" parent="Vegetation/GrassLow25" index="0"]
+flip_h = true
+
+[node name="GrassLow26" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(492, 503)
+
+[node name="GrassLow27" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(585, 446)
+
+[node name="Sprite" parent="Vegetation/GrassLow27" index="0"]
+flip_h = true
+
+[node name="GrassLow28" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(780, 397)
+
+[node name="GrassLow29" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(929, 360)
+
+[node name="Sprite" parent="Vegetation/GrassLow29" index="0"]
+flip_h = true
+
+[node name="GrassLow30" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1039, 343)
+
+[node name="GrassLow31" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1084, 257)
+
+[node name="Sprite" parent="Vegetation/GrassLow31" index="0"]
+flip_h = true
+
+[node name="GrassLow32" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1176, 390)
+
+[node name="GrassLow33" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1308, 498)
+
+[node name="Sprite" parent="Vegetation/GrassLow33" index="0"]
+flip_h = true
+
+[node name="GrassLow34" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1331, 619)
+
+[node name="GrassLow35" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1249, 752)
+
+[node name="Sprite" parent="Vegetation/GrassLow35" index="0"]
+flip_h = true
+
+[node name="GrassLow36" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1092, 785)
+
+[node name="GrassLow37" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(929, 827)
+
+[node name="Sprite" parent="Vegetation/GrassLow37" index="0"]
+flip_h = true
+
+[node name="GrassLow38" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(760, 811)
+
+[node name="GrassLow39" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(560, 771)
+
+[node name="Sprite" parent="Vegetation/GrassLow39" index="0"]
+flip_h = true
+
+[node name="GrassLow40" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(344, 726)
+
+[node name="GrassLow41" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(193, 676)
+
+[node name="Sprite" parent="Vegetation/GrassLow41" index="0"]
+flip_h = true
+
+[node name="GrassLow42" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(171, 568)
+
+[node name="GrassLow43" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1070, 140)
+
+[node name="Sprite" parent="Vegetation/GrassLow43" index="0"]
+flip_h = true
+
+[node name="GrassLow44" parent="Vegetation" instance=ExtResource("grass_low")]
+position = Vector2(1185, 174)
+
+[node name="TimberYard" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Workbench1" parent="TimberYard" instance=ExtResource("workbench")]
+position = Vector2(566, 381)
+
+[node name="Firewood1" parent="TimberYard" instance=ExtResource("firewood")]
+position = Vector2(535, 505)
+
+[node name="Firewood2" parent="TimberYard" instance=ExtResource("firewood")]
+position = Vector2(900, 640)
+size = Vector2(44, 18)
+
+[node name="Sprite" parent="TimberYard/Firewood2" index="1"]
+position = Vector2(0, -13.132)
+scale = Vector2(0.17880795, 0.17880795)
+flip_h = true
+
+[node name="Stump1" parent="TimberYard" instance=ExtResource("stump")]
+position = Vector2(550, 640)
+
+[node name="Stump2" parent="TimberYard" instance=ExtResource("stump")]
+position = Vector2(617, 877)
+
+[node name="Stump3" parent="TimberYard" instance=ExtResource("stump")]
+position = Vector2(1356, 558)
+
+[node name="TreeGroups" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="YoungPine1" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(47, 346)
+
+[node name="YoungPine2" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(65, 588)
+
+[node name="YoungPine3" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(58, 902)
+
+[node name="YoungPine4" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(212, 925)
+
+[node name="YoungPine5" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(371, 943)
+
+[node name="YoungPine6" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(591, 958)
+
+[node name="YoungPine7" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(865, 965)
+
+[node name="YoungPine8" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(1197, 947)
+
+[node name="YoungPine9" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(1469, 826)
+
+[node name="YoungPine10" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(1490, 527)
+
+[node name="YoungPine11" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(1403, 323)
+
+[node name="YoungPine12" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(1335, 187)
+
+[node name="YoungPine13" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(1007, 195)
+
+[node name="YoungPine14" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(815, 173)
+
+[node name="YoungPine15" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(520, 175)
+
+[node name="YoungPine16" parent="TreeGroups" instance=ExtResource("young_pine")]
+position = Vector2(236, 174)
+
+[node name="Pine1" parent="TreeGroups" instance=ExtResource("pine")]
+position = Vector2(53, 220)
+
+[node name="Pine2" parent="TreeGroups" instance=ExtResource("pine")]
+position = Vector2(37, 745)
+
+[node name="Pine3" parent="TreeGroups" instance=ExtResource("pine")]
+position = Vector2(1494, 430)
+
+[node name="Pine4" parent="TreeGroups" instance=ExtResource("pine")]
+position = Vector2(1510, 700)
+
+[node name="Pine5" parent="TreeGroups" instance=ExtResource("pine")]
+position = Vector2(1293, 964)
+
+[node name="Pine6" parent="TreeGroups" instance=ExtResource("pine")]
+position = Vector2(694, 1010)
+
+[node name="Pine7" parent="TreeGroups" instance=ExtResource("pine")]
+position = Vector2(960, 1007)

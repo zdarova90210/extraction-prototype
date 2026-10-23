@@ -10,6 +10,7 @@ const GROUND_ITEM = preload("res://scenes/ground_item.tscn")
 @export_range(30.0, 180.0, 5.0, "suffix:deg") var facing_angle: float = 120.0
 var _highlighted: Node2D
 @onready var player: CharacterBody2D = get_parent()
+@onready var aim: Node2D = player.get_node("Aim")
 
 
 func can_reach(container: Node2D) -> bool:
@@ -28,18 +29,18 @@ func can_interact(container: Node2D) -> bool:
 		return false
 	if container is GroundItem and container.inventory.item_count == 0:
 		return false
-	var forward := Vector2.RIGHT.rotated(player.get_node("Aim").global_rotation)
-	return forward.dot(player.global_position.direction_to(container.global_position)) >= cos(deg_to_rad(facing_angle * 0.5))
+	var forward := Vector2.RIGHT.rotated(aim.global_rotation)
+	return forward.dot(aim.global_position.direction_to(container.global_position)) >= cos(deg_to_rad(facing_angle * 0.5))
 
 
 func _nearest() -> Node2D:
 	var nearest: Node2D
 	var distance := reach + 1.0
 	var best_alignment := -2.0
-	var forward := Vector2.RIGHT.rotated(player.get_node("Aim").global_rotation)
+	var forward := Vector2.RIGHT.rotated(aim.global_rotation)
 	for candidate in get_tree().get_nodes_in_group("loot_interactables"):
 		var candidate_distance: float = player.global_position.distance_to(candidate.global_position)
-		var alignment: float = forward.dot(player.global_position.direction_to(candidate.global_position))
+		var alignment: float = forward.dot(aim.global_position.direction_to(candidate.global_position))
 		if can_interact(candidate) and (alignment > best_alignment + 0.001 or (absf(alignment - best_alignment) <= 0.001 and candidate_distance < distance)):
 			nearest = candidate
 			distance = candidate_distance
@@ -66,7 +67,7 @@ func drop_item(slot: int) -> bool:
 
 func _find_drop_position() -> Variant:
 	var space := player.get_world_2d().direct_space_state
-	var forward: float = player.get_node("Aim").global_rotation
+	var forward: float = aim.global_rotation
 	var clearance := CircleShape2D.new()
 	clearance.radius = 14.0
 	var shape_query := PhysicsShapeQueryParameters2D.new()

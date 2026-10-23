@@ -4,7 +4,7 @@ extends StaticBody2D
 
 @export var display_name: String = "Ящик"
 @export var impact_cue: SoundCue = preload("res://resources/audio/combat/wood.tres")
-@export var size: Vector2 = Vector2(40, 28):
+@export var size: Vector2 = Vector2(40, 16):
 	set(value):
 		size = value.max(Vector2(20, 16))
 		if is_node_ready():

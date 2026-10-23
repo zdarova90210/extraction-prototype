@@ -97,10 +97,10 @@ func _run() -> void:
 	player.global_position = Vector2(575, 690)
 	player.get_node("Aim").global_rotation = PI
 	await _ticks(5)
-	_check(box.size == Vector2(40, 28) and box.get_node("CollisionShape2D").shape.size == box.size, "Compact crate size matches its physical collider")
+	_check(box.size == Vector2(40, 16) and box.get_node("CollisionShape2D").shape.size == box.size, "Compact ground footprint matches the crate collider")
 	box.size = Vector2(44, 30)
-	_check(other_box.get_node("CollisionShape2D").shape.size == Vector2(40, 28), "Editing one crate size does not alter another instance")
-	box.size = Vector2(40, 28)
+	_check(other_box.get_node("CollisionShape2D").shape.size == Vector2(40, 16), "Editing one crate size does not alter another instance")
+	box.size = Vector2(40, 16)
 	_check(interaction.can_reach(box) and not interaction.can_interact(box) and not box.get_node("Hint").visible, "Container behind player is reachable but cannot be interacted with")
 	await _key(KEY_E)
 	_check(not menu.visible, "Pressing E with back turned does not open a crate")

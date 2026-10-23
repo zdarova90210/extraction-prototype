@@ -12,7 +12,7 @@ shader = ExtResource("cutout")
 
 [sub_resource type="RectangleShape2D" id="Shape"]
 resource_local_to_scene = true
-size = Vector2(40, 28)
+size = Vector2(40, 16)
 
 [node name="LootContainer" type="StaticBody2D"]
 collision_layer = 1
@@ -20,6 +20,7 @@ collision_mask = 0
 script = ExtResource("1")
 texture_filter = 1
 display_name = "Припасы"
+size = Vector2(40, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("Shape")
@@ -46,7 +47,7 @@ z_index = 5
 [node name="Audio" parent="." instance=ExtResource("3")]
 
 [node name="Sprite" type="Sprite2D" parent="."]
-position = Vector2(0, -2)
+position = Vector2(0, -14)
 scale = Vector2(0.14083832, 0.14938389)
 texture = ExtResource("chest_art")
 material = SubResource("Cutout")

@@ -1,0 +1,15 @@
+[gd_scene format=3]
+[ext_resource type="Texture2D" path="res://resources/art/forest_dusk/grass_low.tres" id="art"]
+[ext_resource type="Shader" path="res://resources/art/forest_dusk/cutout.gdshader" id="cutout"]
+
+[sub_resource type="ShaderMaterial" id="Cutout"]
+shader = ExtResource("cutout")
+
+[node name="GrassLow" type="Node2D"]
+texture_filter = 1
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -6.3685)
+scale = Vector2(0.11267606, 0.11267606)
+texture = ExtResource("art")
+material = SubResource("Cutout")

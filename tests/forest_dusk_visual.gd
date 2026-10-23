@@ -17,6 +17,7 @@ func _run() -> void:
 	camera.force_update_scroll()
 	await _ticks(10)
 	await _save_forest("forest_post")
+	await _capture_depth_cases()
 	await _capture_actors()
 	root.size = Vector2i(3440, 1440)
 	camera.force_update_scroll()
@@ -48,7 +49,86 @@ func _run() -> void:
 	await _ticks(3)
 	await _save_forest("forest_base_entry")
 	print("Visual captures saved: %s post, wide, behind_hut, cover, loot, base_entry" % "dusk")
-	quit()
+	print("RESULT: %d checks, %d failures" % [_checks, _failures])
+	quit(0 if _failures == 0 else 1)
+
+
+func _frame_image() -> Image:
+	await _ticks(2)
+	await RenderingServer.frame_post_draw
+	return root.get_texture().get_image()
+
+
+func _capture_depth_cases() -> void:
+	var player: CharacterBody2D = current_scene.get_node("Player")
+	var camera: Camera2D = player.get_node("Camera2D")
+	var initial := player.position
+	camera.zoom = Vector2(3, 3)
+	player.aim.rotation = 0.0
+	for path in ["Dressing/TimberYard/Stump1", "Dressing/TimberYard/Firewood2", "LootContainers/WoodCache", "Obstacles/BackRocks", "Obstacles/SouthRocks"]:
+		var prop: Node2D = current_scene.get_node(path)
+		var name := str(prop.name)
+		var prop_sprite: Sprite2D = prop.get_node("Sprite")
+		for in_front in [false, true]:
+			player.position = prop.global_position + Vector2(0, 85 if in_front else -85)
+			await _ticks(2)
+			for tick in range(35):
+				player.velocity = Vector2(0, -250 if in_front else 250)
+				player.move_and_slide()
+				await _ticks(1)
+			player.velocity = Vector2.ZERO
+			camera.force_update_scroll()
+			await _ticks(30)
+			await _save_forest("forest_depth_" + name + ("_front" if in_front else "_behind"))
+			# Freeze optional fading for the isolated-image sorting comparison.
+			# The preceding capture retains the real in-game transparency.
+			var fade: Node = prop.get_node_or_null("Occlusion")
+			var original_color := prop_sprite.self_modulate
+			if fade != null:
+				fade.set_process(false)
+				prop_sprite.self_modulate.a = 1.0
+			# Compare the real composited pixels with each real sprite in isolation.
+			# No synthetic colors or duplicated sorting formula in the expected result.
+			player.get_node("Shadow").hide()
+			player.weapon.hide()
+			var combined: Image = await _frame_image()
+			player.hide()
+			var prop_only: Image = await _frame_image()
+			prop_sprite.hide()
+			var background: Image = await _frame_image()
+			player.show()
+			var actor_only: Image = await _frame_image()
+			prop_sprite.show()
+			var body: Sprite2D = player.get_node("Aim/BodyVisual/Sprite")
+			var body_rect: Rect2 = body.get_global_transform_with_canvas() * body.get_rect()
+			var prop_rect: Rect2 = prop_sprite.get_global_transform_with_canvas() * prop_sprite.get_rect()
+			var region := Rect2i(body_rect.intersection(prop_rect)).intersection(Rect2i(Vector2i.ZERO, combined.get_size()))
+			var overlap := 0
+			var correct := 0
+			for y in range(region.position.y, region.end.y):
+				for x in range(region.position.x, region.end.x):
+					var bg := background.get_pixel(x, y)
+					var actor_color := actor_only.get_pixel(x, y)
+					var prop_color := prop_only.get_pixel(x, y)
+					if _color_difference(bg, actor_color) > 0.03 and _color_difference(bg, prop_color) > 0.03:
+						overlap += 1
+						var expected := actor_color if in_front else prop_color
+						if _color_difference(combined.get_pixel(x, y), expected) < 0.02:
+							correct += 1
+			_check(overlap > 8 and correct > overlap * 0.95, "Real sprite depth " + name + (" front" if in_front else " behind") + ": %d/%d overlap pixels" % [correct, overlap])
+			player.get_node("Shadow").show()
+			player.weapon.show()
+			prop_sprite.self_modulate = original_color
+			if fade != null:
+				fade.set_process(true)
+	player.position = initial
+	camera.zoom = Vector2(0.8, 0.8)
+	camera.force_update_scroll()
+	await _ticks(3)
+
+
+func _color_difference(a: Color, b: Color) -> float:
+	return maxf(absf(a.r - b.r), maxf(absf(a.g - b.g), absf(a.b - b.b)))
 
 
 func _save_forest(filename: String) -> void:

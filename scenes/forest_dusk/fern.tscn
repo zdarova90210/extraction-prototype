@@ -1,0 +1,15 @@
+[gd_scene format=3]
+[ext_resource type="Texture2D" path="res://resources/art/forest_dusk/fern.tres" id="art"]
+[ext_resource type="Shader" path="res://resources/art/forest_dusk/cutout.gdshader" id="cutout"]
+
+[sub_resource type="ShaderMaterial" id="Cutout"]
+shader = ExtResource("cutout")
+
+[node name="Fern" type="Node2D"]
+texture_filter = 1
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -12.3538)
+scale = Vector2(0.15669516, 0.15669516)
+texture = ExtResource("art")
+material = SubResource("Cutout")

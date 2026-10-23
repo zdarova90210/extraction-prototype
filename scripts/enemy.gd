@@ -321,5 +321,6 @@ func _draw() -> void:
 		return
 	if state == State.AIM:
 		var progress := _preparation
-		draw_line(Vector2.ZERO, to_local(_warning_end), Color(0.95, 0.36, 0.23, 0.25 + progress * 0.55), 1.5, true)
-		draw_arc(Vector2.ZERO, 25.0, -PI * 0.5, -PI * 0.5 + TAU * progress, 40, Color("efb37b"), 2.0, true)
+		var visual_offset := aim.global_position - global_position
+		draw_line(to_local(aim.global_position), to_local(_warning_end + visual_offset), Color(0.95, 0.36, 0.23, 0.25 + progress * 0.55), 1.5, true)
+		draw_arc(to_local(aim.global_position), 25.0, -PI * 0.5, -PI * 0.5 + TAU * progress, 40, Color("efb37b"), 2.0, true)
