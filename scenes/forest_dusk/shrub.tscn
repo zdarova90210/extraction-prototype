@@ -2,6 +2,8 @@
 [ext_resource type="Texture2D" path="res://resources/art/forest_dusk/shrub.tres" id="art"]
 [ext_resource type="Shader" path="res://resources/art/forest_dusk/cutout.gdshader" id="cutout"]
 [ext_resource type="Script" path="res://scripts/cover_occlusion.gd" id="occlusion"]
+[ext_resource type="Script" path="res://scripts/footstep_surface.gd" id="sound_patch"]
+[ext_resource type="Resource" path="res://resources/audio/forest/bush_brush.tres" id="brush"]
 
 [sub_resource type="ShaderMaterial" id="Cutout"]
 shader = ExtResource("cutout")
@@ -19,3 +21,10 @@ material = SubResource("Cutout")
 script = ExtResource("occlusion")
 visual = NodePath("../Sprite")
 obscured_alpha = 0.5
+
+[node name="SoundPatch" type="Node2D" parent="."]
+script = ExtResource("sound_patch")
+brush_cue = ExtResource("brush")
+priority = 50
+size = Vector2(44, 26)
+draw_deck = false

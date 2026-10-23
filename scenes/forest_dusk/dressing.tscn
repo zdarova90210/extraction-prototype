@@ -14,6 +14,9 @@
 [ext_resource type="Texture2D" path="res://resources/art/forest_dusk/needles.tres" id="needles"]
 [ext_resource type="Texture2D" path="res://resources/art/forest_dusk/small_rocks.tres" id="small_rocks"]
 [ext_resource type="Shader" path="res://resources/art/forest_dusk/cutout.gdshader" id="cutout"]
+[ext_resource type="Script" path="res://scripts/footstep_surface.gd" id="sound_surface"]
+[ext_resource type="Resource" path="res://resources/audio/forest/footsteps_puddle.tres" id="water_sound"]
+[ext_resource type="Resource" path="res://resources/audio/forest/footsteps_wet_dirt.tres" id="wet_sound"]
 
 [sub_resource type="ShaderMaterial" id="Cutout"]
 shader = ExtResource("cutout")
@@ -722,3 +725,31 @@ position = Vector2(694, 1010)
 
 [node name="Pine7" parent="TreeGroups" instance=ExtResource("pine")]
 position = Vector2(960, 1007)
+
+[node name="WetGround" type="Node2D" parent="GroundDetails/puddle_0"]
+script = ExtResource("sound_surface")
+profile = ExtResource("wet_sound")
+priority = 20
+size = Vector2(420, 280)
+draw_deck = false
+
+[node name="Water" type="Node2D" parent="GroundDetails/puddle_0" node_paths=PackedStringArray("ground_sprite")]
+script = ExtResource("sound_surface")
+profile = ExtResource("water_sound")
+priority = 30
+ground_sprite = NodePath("..")
+draw_deck = false
+
+[node name="WetGround" type="Node2D" parent="GroundDetails/puddle_1"]
+script = ExtResource("sound_surface")
+profile = ExtResource("wet_sound")
+priority = 20
+size = Vector2(420, 280)
+draw_deck = false
+
+[node name="Water" type="Node2D" parent="GroundDetails/puddle_1" node_paths=PackedStringArray("ground_sprite")]
+script = ExtResource("sound_surface")
+profile = ExtResource("water_sound")
+priority = 30
+ground_sprite = NodePath("..")
+draw_deck = false

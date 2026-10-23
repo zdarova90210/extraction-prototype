@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" path="res://scenes/yard_ambience.tscn" id="ambience"]
+[ext_resource type="PackedScene" path="res://scenes/forest_dusk/ambience.tscn" id="ambience"]
 [ext_resource type="PackedScene" path="res://scenes/loot_container.tscn" id="chest"]
 [ext_resource type="Resource" path="res://resources/items/electronics.tres" id="electronics"]
 [ext_resource type="PackedScene" path="res://scenes/extraction_zone.tscn" id="exit"]

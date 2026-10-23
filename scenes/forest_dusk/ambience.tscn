@@ -1,0 +1,53 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/yard_ambience.gd" id="controller"]
+[ext_resource type="Script" path="res://scripts/ambient_spot.gd" id="spot"]
+[ext_resource type="AudioStream" path="res://assets/audio/forest/ambience/forest_bed_loop.ogg" id="bed"]
+[ext_resource type="Resource" path="res://resources/audio/forest/forest_crow.tres" id="crow"]
+[ext_resource type="Resource" path="res://resources/audio/forest/forest_woodpecker.tres" id="woodpecker"]
+[ext_resource type="Resource" path="res://resources/audio/forest/forest_wind_gust.tres" id="wind"]
+[ext_resource type="Resource" path="res://resources/audio/forest/forest_tree_creak.tres" id="creak"]
+
+[node name="Ambience" type="Node2D"]
+script = ExtResource("controller")
+background_stream = ExtResource("bed")
+background_volume_db = -4.0
+first_detail_delay = Vector2(12, 22)
+detail_interval = Vector2(25, 45)
+
+[node name="Bed" type="AudioStreamPlayer" parent="."]
+bus = &"Ambience"
+
+[node name="Details" type="Node2D" parent="."]
+
+[node name="Crow" type="AudioStreamPlayer2D" parent="Details"]
+position = Vector2(1300, 200)
+bus = &"Ambience"
+max_distance = 1800.0
+attenuation = 1.0
+script = ExtResource("spot")
+cue = ExtResource("crow")
+
+[node name="Woodpecker" type="AudioStreamPlayer2D" parent="Details"]
+position = Vector2(250, 160)
+bus = &"Ambience"
+max_distance = 1600.0
+attenuation = 1.0
+script = ExtResource("spot")
+cue = ExtResource("woodpecker")
+
+[node name="Wind" type="AudioStreamPlayer2D" parent="Details"]
+position = Vector2(768, 300)
+bus = &"Ambience"
+max_distance = 1800.0
+attenuation = 0.7
+script = ExtResource("spot")
+cue = ExtResource("wind")
+
+[node name="TreeCreak" type="AudioStreamPlayer2D" parent="Details"]
+position = Vector2(1350, 750)
+bus = &"Ambience"
+max_distance = 1000.0
+attenuation = 1.5
+script = ExtResource("spot")
+cue = ExtResource("creak")

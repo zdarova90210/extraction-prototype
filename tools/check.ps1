@@ -46,6 +46,9 @@ try {
             Write-Output $log
             throw "$Name checks did not reach completion. See $logPath"
         }
+        if ($Name -eq 'forest_audio' -and $log -notmatch 'RESULT: \d+ checks, 0 failures') {
+            throw "Forest audio checks did not reach completion. See $logPath"
+        }
         if ($Name -in @('visual', 'forest_dusk_visual', 'footstep_visual') -and $log -notmatch 'Visual captures saved:') {
             Write-Output $log
             throw "Visual captures did not reach completion. See $logPath"
@@ -88,6 +91,7 @@ try {
     Invoke-GodotCheck 'healing' @('--headless', '--fixed-fps', '60', '--quit-after', '4200', '--script', 'res://tests/healing_test.gd')
     Invoke-GodotCheck 'footsteps' @('--headless', '--fixed-fps', '60', '--quit-after', '2400', '--script', 'res://tests/footstep_test.gd')
     Invoke-GodotCheck 'footstep_audio' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '900', '--script', 'res://tests/footstep_audio_test.gd')
+    Invoke-GodotCheck 'forest_audio' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/forest_audio_test.gd')
     Invoke-GodotCheck 'interaction' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '3600', '--script', 'res://tests/interaction_test.gd')
     Invoke-GodotCheck 'interaction_audio' @('--headless', '--audio-driver', 'Dummy', '--max-fps', '60', '--quit-after', '1800', '--script', 'res://tests/interaction_audio_test.gd')
     Invoke-GodotCheck 'hud_menu' @('--headless', '--fixed-fps', '60', '--quit-after', '1800', '--script', 'res://tests/hud_menu_test.gd')

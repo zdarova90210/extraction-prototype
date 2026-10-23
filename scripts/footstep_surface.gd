@@ -4,7 +4,14 @@ extends Node2D
 ## Nonphysical ground patch: the same editable bounds drive drawing and sound.
 
 @export var profile: FootstepProfile
+## Optional movement rustle. A plant patch can have a cue without a floor profile.
+@export var brush_cue: SoundCue
 @export var priority: int = 0
+## Reuse the saved floor polygon, so editing its outline also changes its sound.
+@export var ground_polygon: Polygon2D
+## Follow opaque water pixels instead of its rectangular texture canvas.
+@export var ground_sprite: Sprite2D
+var _image: Image
 @export var size: Vector2 = Vector2(240, 96):
 	set(value):
 		size = Vector2(maxf(8.0, value.x), maxf(8.0, value.y))
@@ -17,9 +24,24 @@ extends Node2D
 
 func _ready() -> void:
 	add_to_group(&"footstep_surfaces")
+	if ground_sprite != null and ground_sprite.texture != null:
+		_image = ground_sprite.texture.get_image()
 
 
 func contains_point(point: Vector2) -> bool:
+	if ground_polygon != null:
+		return Geometry2D.is_point_in_polygon(ground_polygon.to_local(point), ground_polygon.polygon)
+	if ground_sprite != null:
+		if _image == null:
+			return false
+		var pixel := Vector2i((ground_sprite.to_local(point) - ground_sprite.get_rect().position).floor())
+		if not Rect2i(Vector2i.ZERO, _image.get_size()).has_point(pixel):
+			return false
+		if ground_sprite.flip_h:
+			pixel.x = _image.get_width() - 1 - pixel.x
+		if ground_sprite.flip_v:
+			pixel.y = _image.get_height() - 1 - pixel.y
+		return _image.get_pixelv(pixel).a >= 0.5
 	return Rect2(-size * 0.5, size).has_point(to_local(point))
 
 

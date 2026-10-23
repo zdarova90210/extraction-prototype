@@ -1,6 +1,8 @@
 [gd_scene format=3]
 [ext_resource type="Texture2D" path="res://resources/art/forest_dusk/fern.tres" id="art"]
 [ext_resource type="Shader" path="res://resources/art/forest_dusk/cutout.gdshader" id="cutout"]
+[ext_resource type="Script" path="res://scripts/footstep_surface.gd" id="sound_patch"]
+[ext_resource type="Resource" path="res://resources/audio/forest/grass_brush.tres" id="brush"]
 
 [sub_resource type="ShaderMaterial" id="Cutout"]
 shader = ExtResource("cutout")
@@ -13,3 +15,10 @@ position = Vector2(0, -12.3538)
 scale = Vector2(0.15669516, 0.15669516)
 texture = ExtResource("art")
 material = SubResource("Cutout")
+
+[node name="SoundPatch" type="Node2D" parent="."]
+script = ExtResource("sound_patch")
+brush_cue = ExtResource("brush")
+priority = 40
+size = Vector2(36, 20)
+draw_deck = false

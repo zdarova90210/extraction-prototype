@@ -2,6 +2,9 @@
 
 [ext_resource type="Texture2D" path="res://assets/art/forest_dusk/ground.png" id="1"]
 [ext_resource type="Shader" path="res://resources/art/forest_dusk/ground.gdshader" id="2"]
+[ext_resource type="Script" path="res://scripts/footstep_surface.gd" id="surface"]
+[ext_resource type="Resource" path="res://resources/audio/forest/footsteps_grass.tres" id="grass_sound"]
+[ext_resource type="Resource" path="res://resources/audio/forest/footsteps_dirt.tres" id="dirt_sound"]
 
 [sub_resource type="ShaderMaterial" id="Grass"]
 shader = ExtResource("2")
@@ -21,6 +24,12 @@ uv = PackedVector2Array(-14192, -7096, 24836, -7096, 24836, 10644, -14192, 10644
 texture = ExtResource("1")
 material = SubResource("Grass")
 color = Color(0.90, 0.94, 0.92, 1)
+
+[node name="SoundSurface" type="Node2D" parent="Grass" node_paths=PackedStringArray("ground_polygon")]
+script = ExtResource("surface")
+profile = ExtResource("grass_sound")
+ground_polygon = NodePath("..")
+draw_deck = false
 
 [node name="Courtyard" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(185, 470, 310, 452, 470, 488, 570, 430, 720, 420, 800, 366, 1020, 355, 1100, 280, 1184, 280, 1210, 436, 1300, 490, 1350, 640, 1230, 750, 1070, 775, 970, 816, 760, 822, 620, 765, 465, 802, 340, 735, 200, 685, 155, 580)
@@ -42,3 +51,24 @@ uv = PackedVector2Array(7414.766, 1541.855, 7456.344, 311.836, 8073.086, 311.836
 texture = ExtResource("1")
 material = SubResource("Dirt")
 color = Color(1, 1, 1, 1)
+
+[node name="SoundSurface" type="Node2D" parent="Courtyard" node_paths=PackedStringArray("ground_polygon")]
+script = ExtResource("surface")
+profile = ExtResource("dirt_sound")
+priority = 10
+ground_polygon = NodePath("..")
+draw_deck = false
+
+[node name="SoundSurface" type="Node2D" parent="BehindHutPath" node_paths=PackedStringArray("ground_polygon")]
+script = ExtResource("surface")
+profile = ExtResource("dirt_sound")
+priority = 10
+ground_polygon = NodePath("..")
+draw_deck = false
+
+[node name="SoundSurface" type="Node2D" parent="ExitPath" node_paths=PackedStringArray("ground_polygon")]
+script = ExtResource("surface")
+profile = ExtResource("dirt_sound")
+priority = 10
+ground_polygon = NodePath("..")
+draw_deck = false

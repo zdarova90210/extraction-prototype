@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" path="res://scenes/gun_visual.tscn" id="pixel_gun"]
 [ext_resource type="Shader" path="res://resources/art/forest_dusk/cutout.gdshader" id="pixel_cutout"]
 [ext_resource type="Script" path="res://scripts/actor_hurtbox.gd" id="pixel_hurtbox"]
+[ext_resource type="PackedScene" path="res://scenes/foliage_audio.tscn" id="foliage_audio"]
 
 [sub_resource type="CapsuleShape2D" id="HurtShape"]
 radius = 13.0
@@ -126,3 +127,5 @@ script = ExtResource("pixel_hurtbox")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(0, -1)
 shape = SubResource("HurtShape")
+
+[node name="FoliageAudio" parent="." instance=ExtResource("foliage_audio")]

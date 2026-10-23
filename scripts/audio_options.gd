@@ -83,10 +83,10 @@ func _preview_spec(category: StringName) -> Dictionary:
 		var cue := load("res://resources/audio/" + cues[category] + ".tres") as SoundCue
 		return {"clip": cue.clips[0], "volume_db": cue.volume_db - 6.0}
 	if category == &"footsteps":
-		var profile := preload("res://resources/audio/footsteps_concrete.tres")
+		var profile := preload("res://resources/audio/forest/footsteps_dirt.tres")
 		return {"clip": profile.clips[0], "volume_db": -22.0 + profile.gain_db}
 	if category == &"ambience":
-		return {"clip": preload("res://assets/audio/ambience/warehouse_bed_loop.ogg"), "volume_db": -4.0}
+		return {"clip": preload("res://assets/audio/forest/ambience/forest_bed_loop.ogg"), "volume_db": -4.0}
 	return {}
 
 

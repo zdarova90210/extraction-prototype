@@ -1,0 +1,13 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://scripts/sound_cue.gd" id="script"]
+[ext_resource type="AudioStream" path="res://assets/audio/forest/ambience/forest_crow_01.wav" id="clip0"]
+[ext_resource type="AudioStream" path="res://assets/audio/forest/ambience/forest_crow_02.wav" id="clip1"]
+
+[resource]
+script = ExtResource("script")
+id = &"forest_crow"
+clips = Array[AudioStream]([ExtResource("clip0"), ExtResource("clip1")])
+clip_weights = PackedFloat32Array(3, 2)
+volume_db = -5.0
+pitch_variation = 0.015
