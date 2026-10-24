@@ -14,9 +14,9 @@ func _ready() -> void:
 	$Center/Panel/Margin/Content/Developer.pressed.connect(func(): set_developer_open(true))
 	$DeveloperPanel.back_requested.connect(func(): set_developer_open(false))
 	var keys: Label = $Center/Panel/Margin/Content/Bindings/Keys
-	keys.text = "%s %s %s %s\nМышь\nЛКМ\n%s\n%s ещё раз\n%s\n%s\n%s\n%s\nEsc" % [
+	keys.text = "%s %s %s %s\nМышь\nЛКМ\n%s\n%s\n%s ещё раз\n%s\n%s\n%s\n%s\nEsc" % [
 		_binding("move_up"), _binding("move_left"), _binding("move_down"), _binding("move_right"),
-		_binding("reload"), _binding("reload"), _binding("use_item"), _binding("interact"), _binding("inventory"), _binding("restart")]
+		_binding("toggle_sneak"), _binding("reload"), _binding("reload"), _binding("use_item"), _binding("interact"), _binding("inventory"), _binding("restart")]
 	$Center/Panel/Margin/Content/Note.text += "\n%s над вещью в рюкзаке — выбросить на пол." % _binding("discard_item")
 
 

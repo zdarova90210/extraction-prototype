@@ -55,37 +55,9 @@ region = {rect(region)}
 filter_clip = true
 ''')
 
-for actor in ('scout', 'guard'):
-    image = Image.open(ART / (actor + '.png'))
-    row_edges = [0, 335, 665, 1024]
-    column_edges = [0, 430, 770, 1100, 1536]
-    regions = [bounds(image, (column_edges[c], row_edges[r], column_edges[c + 1], row_edges[r + 1]))
-               for r in range(3) for c in range(4)]
-    width = max(region[2] for region in regions)
-    height = max(region[3] for region in regions)
-    layout[actor] = {'regions': regions, 'canvas': [width, height], 'display_scale': 64.0 / height}
-    text = f'''[gd_resource type="SpriteFrames" load_steps=14 format=3]
-
-[ext_resource type="Texture2D" path="res://assets/art/forest_dusk/{actor}.png" id="1"]
-'''
-    for index, region in enumerate(regions):
-        w, h = region[2:]
-        text += f'''
-[sub_resource type="AtlasTexture" id="Frame_{index}"]
-atlas = ExtResource("1")
-region = {rect(region)}
-margin = {rect([(width-w)/2, height-h, width-w, height-h])}
-filter_clip = true
-'''
-    text += '\n[resource]\nanimations = [\n'
-    for row, animation in enumerate(('down', 'side', 'up')):
-        frames = ', '.join('{"duration": 1.0, "texture": SubResource("Frame_%d")}' % (row*4+c) for c in range(4))
-        text += '{"frames": [%s], "loop": true, "name": &"%s", "speed": 8.0},\n' % (frames, animation)
-    save(actor + '_frames.tres', text + ']\n')
-
 (ART / 'SOURCES.json').write_text(json.dumps({
-    'generator': 'Built-in image_gen; exact four prompts in prompts.json',
-    'references': 'Sunny forest props/ground used only as read-only layout references. Both actors are newly generated.',
+    'generator': 'Built-in image_gen; environment prompts in prompts.json',
+    'references': 'Sunny forest props/ground used only as read-only layout references. Character assets are prepared separately in assets/art/characters.',
     'processing': 'Byte-for-byte PNG copies; AtlasTexture regions/margins and Sprite2D scale only. Original alpha retained.',
     'files': {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in ART.glob('*.png')},
     'atlas_layout': layout,

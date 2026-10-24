@@ -86,6 +86,7 @@ func _run() -> void:
 	_player_steps.clear()
 	_surfaces.clear()
 	footsteps.step_distance = 24.0
+	player.body_visual.stride_distance_override = 48.0
 	Input.action_press("move_right")
 	await _ticks(130)
 	Input.action_release("move_right")

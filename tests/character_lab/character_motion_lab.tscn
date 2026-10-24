@@ -114,7 +114,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 16
-text = "WASD — ходьба · ПКМ — прицелиться · ЛКМ — огонь · R — перезарядка\nC — режим походки · F2 — сброс · Esc — пауза / громкость"
+text = "WASD — ходьба · мышь — направление · ЛКМ — огонь · R — перезарядка\nC — режим походки · F2 — сброс · Esc — пауза / громкость"
 
 [node name="Panel" type="Panel" parent="UI"]
 anchors_preset = 1

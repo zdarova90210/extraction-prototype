@@ -29,7 +29,11 @@ func _hover(control: Control) -> void:
 	event = InputEventMouseMotion.new()
 	event.position = control.get_global_rect().get_center()
 	root.push_input(event, true)
-	await _ticks(20)
+	# Native tooltips use elapsed time, not a count of rendered frames. Leave
+	# margin beyond the engine delay even when startup frame pacing varies.
+	var deadline := Time.get_ticks_msec() + 600
+	while Time.get_ticks_msec() < deadline:
+		await process_frame
 
 
 func _has_popup() -> bool:

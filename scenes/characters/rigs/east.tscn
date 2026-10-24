@@ -1,0 +1,149 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://assets/art/characters/layer_legs.png" id="legs"]
+[ext_resource type="Texture2D" path="res://assets/art/characters/layer_torso.png" id="torso"]
+[ext_resource type="Texture2D" path="res://assets/art/characters/layer_support_arm.png" id="support_arm"]
+[ext_resource type="Texture2D" path="res://assets/art/characters/layer_trigger_arm.png" id="trigger_arm"]
+[ext_resource type="Texture2D" path="res://assets/art/characters/layer_carbine.png" id="carbine"]
+[ext_resource type="Texture2D" path="res://assets/art/characters/layer_trigger_hand.png" id="trigger_hand"]
+[ext_resource type="Texture2D" path="res://assets/art/characters/layer_support_hand.png" id="support_hand"]
+[ext_resource type="Shader" path="res://scripts/characters/leg_shadows.gdshader" id="leg_shadows"]
+[ext_resource type="Script" path="res://scripts/characters/rig_pose.gd" id="rig"]
+
+[sub_resource type="ShaderMaterial" id="LegShadows"]
+shader = ExtResource("leg_shadows")
+shader_parameter/shadow_lift = 0.035
+
+[node name="East" type="Node2D"]
+script = ExtResource("rig")
+arm_scale_limits = Vector2(0.45, 1.8)
+
+[node name="FarLeg" type="Node2D" parent="."]
+position = Vector2(4, -27)
+
+[node name="Thigh" type="Polygon2D" parent="FarLeg"]
+material = SubResource("LegShadows")
+polygon = PackedVector2Array(-5, -2, 8, -2, 9, 14, -3, 17, -6, 10)
+uv = PackedVector2Array(63, 75, 76, 75, 77, 91, 65, 94, 62, 87)
+texture = ExtResource("legs")
+
+[node name="Shin" type="Node2D" parent="FarLeg"]
+position = Vector2(2, 13)
+
+[node name="Image" type="Polygon2D" parent="FarLeg/Shin"]
+material = SubResource("LegShadows")
+polygon = PackedVector2Array(-6, -2, 6, -2, 6, 9, -5, 10, -8, 6)
+uv = PackedVector2Array(64, 88, 76, 88, 76, 99, 65, 100, 62, 96)
+texture = ExtResource("legs")
+
+[node name="Foot" type="Node2D" parent="FarLeg/Shin"]
+position = Vector2(0, 10)
+
+[node name="Image" type="Polygon2D" parent="FarLeg/Shin/Foot"]
+material = SubResource("LegShadows")
+polygon = PackedVector2Array(-7, -2, 8, -2, 10, 0, 10, 5, -7, 5)
+uv = PackedVector2Array(63, 98, 78, 98, 80, 100, 80, 105, 63, 105)
+texture = ExtResource("legs")
+
+[node name="Heel" type="Marker2D" parent="FarLeg/Shin/Foot"]
+position = Vector2(-4, 4)
+
+[node name="Toe" type="Marker2D" parent="FarLeg/Shin/Foot"]
+position = Vector2(6, 4)
+
+[node name="NearLeg" type="Node2D" parent="."]
+position = Vector2(-5, -27)
+
+[node name="Thigh" type="Polygon2D" parent="NearLeg"]
+material = SubResource("LegShadows")
+polygon = PackedVector2Array(-11, -2, 7, -2, 8, 7, 3, 15, -9, 17)
+uv = PackedVector2Array(48, 75, 66, 75, 67, 84, 62, 92, 50, 94)
+texture = ExtResource("legs")
+
+[node name="Shin" type="Node2D" parent="NearLeg"]
+position = Vector2(-3, 13)
+
+[node name="Image" type="Polygon2D" parent="NearLeg/Shin"]
+material = SubResource("LegShadows")
+polygon = PackedVector2Array(-6, -2, 9, -2, 7, 5, 7, 10, -9, 10, -9, 9)
+uv = PackedVector2Array(50, 88, 65, 88, 63, 95, 63, 100, 47, 100, 47, 99)
+texture = ExtResource("legs")
+
+[node name="Foot" type="Node2D" parent="NearLeg/Shin"]
+position = Vector2(-2, 10)
+
+[node name="Image" type="Polygon2D" parent="NearLeg/Shin/Foot"]
+material = SubResource("LegShadows")
+polygon = PackedVector2Array(-7, -2, 9, -2, 10, 5, -7, 5)
+uv = PackedVector2Array(47, 98, 63, 98, 64, 105, 47, 105)
+texture = ExtResource("legs")
+
+[node name="Heel" type="Marker2D" parent="NearLeg/Shin/Foot"]
+position = Vector2(-4, 4)
+
+[node name="Toe" type="Marker2D" parent="NearLeg/Shin/Foot"]
+position = Vector2(6, 4)
+
+[node name="Upper" type="Node2D" parent="."]
+
+[node name="Crown" type="Marker2D" parent="Upper"]
+position = Vector2(0, -64)
+
+[node name="Torso" type="Sprite2D" parent="Upper"]
+position = Vector2(-64, -104)
+centered = false
+texture = ExtResource("torso")
+
+[node name="SupportArm" type="Node2D" parent="Upper"]
+position = Vector2(10, -40)
+
+[node name="Wrist" type="Marker2D" parent="Upper/SupportArm"]
+position = Vector2(8, -5)
+
+[node name="Image" type="Sprite2D" parent="Upper/SupportArm"]
+position = Vector2(-74, -64)
+centered = false
+texture = ExtResource("support_arm")
+
+[node name="TriggerArm" type="Node2D" parent="Upper"]
+position = Vector2(-12, -48)
+
+[node name="Wrist" type="Marker2D" parent="Upper/TriggerArm"]
+position = Vector2(14, 4)
+
+[node name="Image" type="Sprite2D" parent="Upper/TriggerArm"]
+position = Vector2(-52, -56)
+centered = false
+texture = ExtResource("trigger_arm")
+
+[node name="Grip" type="Node2D" parent="Upper"]
+position = Vector2(-4, -42)
+
+[node name="TriggerWrist" type="Marker2D" parent="Upper/Grip"]
+position = Vector2(6, 3)
+
+[node name="SupportWrist" type="Marker2D" parent="Upper/Grip"]
+position = Vector2(22, 2)
+
+[node name="Carbine" type="Sprite2D" parent="Upper/Grip"]
+position = Vector2(-60, -57)
+centered = false
+texture = ExtResource("carbine")
+
+[node name="TriggerHand" type="Sprite2D" parent="Upper/Grip"]
+position = Vector2(-60, -57)
+centered = false
+texture = ExtResource("trigger_hand")
+
+[node name="SupportHand" type="Sprite2D" parent="Upper/Grip"]
+position = Vector2(-60, -57)
+centered = false
+texture = ExtResource("support_hand")
+
+[node name="Muzzle" type="Marker2D" parent="Upper/Grip"]
+position = Vector2(36, -2.8)
+
+[node name="Flash" type="Polygon2D" parent="Upper/Grip/Muzzle"]
+visible = false
+polygon = PackedVector2Array(0, 0, 4, -2, 3, 0, 8, 0, 8, 2, 3, 2, 4, 4, 0, 2)
+color = Color(1, 0.79, 0.32, 1)

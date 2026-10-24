@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/pixel_actor_visual.gd" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/characters/character_visual.tscn" id="2"]
 [ext_resource type="Script" path="res://scripts/weapon.gd" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/weapon_audio.tscn" id="4"]
 [ext_resource type="Resource" path="res://resources/audio/weapons/rifle_shot.tres" id="5"]
@@ -12,18 +12,12 @@
 [ext_resource type="Resource" path="res://resources/audio/weapons/rifle_reload_finish.tres" id="10_reload"]
 [ext_resource type="PackedScene" path="res://scenes/actor_damage_audio.tscn" id="11_damage"]
 
-[ext_resource type="SpriteFrames" path="res://resources/art/forest_dusk/guard_frames.tres" id="pixel_frames"]
-[ext_resource type="PackedScene" path="res://scenes/gun_visual.tscn" id="pixel_gun"]
-[ext_resource type="Shader" path="res://resources/art/forest_dusk/cutout.gdshader" id="pixel_cutout"]
 [ext_resource type="Script" path="res://scripts/actor_hurtbox.gd" id="pixel_hurtbox"]
 [ext_resource type="PackedScene" path="res://scenes/foliage_audio.tscn" id="foliage_audio"]
 
 [sub_resource type="CapsuleShape2D" id="HurtShape"]
 radius = 13.0
-height = 54.0
-
-[sub_resource type="ShaderMaterial" id="Cutout"]
-shader = ExtResource("pixel_cutout")
+height = 64.0
 
 [sub_resource type="CircleShape2D" id="BodyShape"]
 radius = 15.0
@@ -38,26 +32,17 @@ texture_filter = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("BodyShape")
 
-[node name="Shadow" type="Polygon2D" parent="."]
-z_index = -1
-position = Vector2(0, -1.5)
-polygon = PackedVector2Array(1, 0, 0.924, 0.383, 0.707, 0.707, 0.383, 0.924, 0, 1, -0.383, 0.924, -0.707, 0.707, -0.924, 0.383, -1, 0, -0.924, -0.383, -0.707, -0.707, -0.383, -0.924, 0, -1, 0.383, -0.924, 0.707, -0.707, 0.924, -0.383)
-color = Color(0.025, 0.03, 0.03, 0.35)
-scale = Vector2(11, 3)
-
 [node name="Aim" type="Node2D" parent="."]
 position = Vector2(0, -30)
 rotation = 3.1415927
 
-[node name="BodyVisual" type="Node2D" parent="Aim" node_paths=PackedStringArray("contact_shadow", "actor")]
-script = ExtResource("2")
-frames = ExtResource("pixel_frames")
-sprite_scale = Vector2(0.19753086, 0.19753086)
-modulate = Color(1.12, 1.12, 1.12, 1)
-contact_shadow = NodePath("../../Shadow")
+[node name="BodyVisual" parent="Aim" node_paths=PackedStringArray("actor", "heading") instance=ExtResource("2")]
+position = Vector2(0, 30)
 actor = NodePath("../..")
+heading = NodePath("..")
+palette_tint = Color(0.86, 0.92, 0.86, 1)
 
-[node name="Weapon" type="Node2D" parent="Aim"]
+[node name="Weapon" type="Node2D" parent="Aim" node_paths=PackedStringArray("visual_muzzle")]
 script = ExtResource("3")
 damage = 18.0
 fire_rate = 5.0
@@ -66,6 +51,9 @@ magazine_size = 4
 reload_duration = 1.4
 hit_mask = 7
 tracer_color = Color(1, 0.45, 0.29, 1)
+
+visual_muzzle = NodePath("../BodyVisual/MuzzleAnchor")
+draw_muzzle_flash = false
 
 [node name="Muzzle" type="Marker2D" parent="Aim/Weapon"]
 position = Vector2(34, -2)
@@ -108,14 +96,8 @@ script = ExtResource("7_health")
 fill_color = Color(0.807843, 0.584314, 0.447059, 1)
 
 [node name="Footsteps" parent="." instance=ExtResource("8_footsteps")]
+steps_from_movement = false
 volume_db = -12.0
-
-[node name="Sprite" type="Sprite2D" parent="Aim/BodyVisual"]
-scale = Vector2(0.25, 0.25)
-material = SubResource("Cutout")
-
-[node name="GunVisual" parent="Aim/Weapon" instance=ExtResource("pixel_gun")]
-scale = Vector2(1, 0.5)
 
 [node name="Hurtbox" type="Area2D" parent="."]
 collision_layer = 8
@@ -125,7 +107,10 @@ monitorable = false
 script = ExtResource("pixel_hurtbox")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(0, -1)
+position = Vector2(0, -2)
 shape = SubResource("HurtShape")
 
 [node name="FoliageAudio" parent="." instance=ExtResource("foliage_audio")]
+
+[connection signal="foot_contact" from="Aim/BodyVisual" to="Footsteps" method="play_step"]
+[connection signal="shot_fired" from="Aim/Weapon" to="Aim/BodyVisual" method="notify_shot"]

@@ -11,12 +11,11 @@ func _run() -> void:
 	actor.input_enabled = false
 	var visual: Node2D = actor.visual
 	visual.set_physics_process(false)
-	for pose in ["lowered", "raising", "aim", "step_a", "step_b", "shot", "sneak_step", "sneak_contact"]:
+	for pose in ["hold", "step_a", "step_b", "shot", "sneak_step", "sneak_contact"]:
 		var sneak: bool = pose.begins_with("sneak_")
 		actor.set_sneaking(sneak)
 		room.get_node("UI/Panel/Sneak").set_pressed_no_signal(sneak)
 		visual.reset_pose()
-		visual.aim_blend = 0.5 if pose == "raising" else (0.0 if pose == "lowered" else 1.0)
 		if pose == "step_a" or pose == "sneak_step":
 			visual.gait_blend = 1.0
 			visual.phase = PI / 2.0
@@ -61,14 +60,11 @@ func _run() -> void:
 	preview.add_child(caption)
 	for frame in 64:
 		visual.gait_blend = 1.0
-		visual.aim_blend = clampf((float(frame) - 12.0) / 12.0, 0.0, 1.0)
-		if frame > 48:
-			visual.aim_blend = 1.0 - (frame - 48.0) / 15.0
 		visual.phase = frame * TAU / 16.0
 		visual.recoil = maxf(0.0, 1.0 - (frame - 36.0) / 3.0) if frame >= 36 and frame < 40 else 0.0
 		visual.flash_remaining = 0.05 if frame == 36 else 0.0
 		visual.apply_pose()
-		caption.text = "Ходьба · оружие опущено" if frame < 12 else ("Подъём оружия" if frame < 24 else ("Выстрел / отдача" if frame >= 36 and frame < 40 else ("Опускание оружия" if frame > 48 else "Ходьба · прицеливание")))
+		caption.text = "Выстрел / отдача" if frame >= 36 and frame < 40 else "Ходьба · единая поза оружия"
 		await _ticks(1)
 		await RenderingServer.frame_post_draw
 		assert(preview.get_texture().get_image().save_png("res://artifacts/character_lab_frames/%03d.png" % frame) == OK)
@@ -80,7 +76,7 @@ func _run() -> void:
 	quit(0)
 
 func _capture_gait_comparison(actor: CharacterBody2D, walking: Node2D) -> void:
-	var sneaking: Node2D = load("res://tests/character_lab/character_visual.tscn").instantiate()
+	var sneaking: Node2D = load("res://scenes/characters/character_visual.tscn").instantiate()
 	sneaking.position = Vector2(-2000, -2000)
 	root.add_child(sneaking)
 	sneaking.set_physics_process(false)
@@ -137,11 +133,9 @@ func _capture_gait_comparison(actor: CharacterBody2D, walking: Node2D) -> void:
 	for frame in FRAME_COUNT:
 		var elapsed := seconds * frame / FRAME_COUNT
 		walking.gait_blend = 1.0
-		walking.aim_blend = 1.0
 		walking.phase = elapsed * actor.move_speed / walking.walk_gait.stride_distance * TAU
 		walking.apply_pose()
 		sneaking.gait_blend = 1.0
-		sneaking.aim_blend = 1.0
 		sneaking.phase = elapsed * actor.move_speed * actor.sneak_speed_multiplier / sneaking.sneak_gait.stride_distance * TAU
 		sneaking.apply_pose()
 		await _ticks(1)

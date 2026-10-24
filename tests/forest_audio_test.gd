@@ -34,6 +34,7 @@ func _run() -> void:
 	var foliage: Node2D = player.get_node("FoliageAudio")
 	var ambience: Node2D = room.get_node("Ambience")
 	footsteps.step_distance = 16.0
+	player.body_visual.stride_distance_override = 32.0
 	footsteps.step_played.connect(func(profile: FootstepProfile, _clip: AudioStream): _steps.append(profile.surface_id))
 	foliage.brush_played.connect(func(_patch: FootstepSurface, cue: SoundCue): _brushes.append(cue))
 	await _ticks(5)

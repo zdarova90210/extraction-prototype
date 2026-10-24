@@ -26,7 +26,6 @@ func _physics_process(_delta: float) -> void:
 	if input_blocked:
 		velocity = Vector2.ZERO
 		visual.set_motion(0.0, 0.0)
-		visual.aim_requested = false
 		_wait_for_release = true
 		return
 	var speed := move_speed * lerpf(1.0, sneak_speed_multiplier, visual.sneak_blend)
@@ -44,17 +43,14 @@ func _physics_process(_delta: float) -> void:
 			shoot = false
 		else:
 			_wait_for_release = false
-	visual.aim_requested = shoot or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
 	visual.apply_pose()
 	if Input.is_action_just_pressed("reload"):
 		weapon.request_reload()
-	if shoot and visual.aim_blend >= 0.98:
+	if shoot:
 		fire_current_pose()
 
 func fire_current_pose() -> bool:
 	var direction := Vector2.RIGHT.rotated(visual.aim_angle)
-	# Match the actual rig's muzzle while retaining the production ground-origin ray.
-	weapon.position = visual.muzzle_offset() - direction * 32.0
 	weapon.rotation = visual.aim_angle
 	return weapon.try_fire(global_position + direction * weapon.max_range, self)
 

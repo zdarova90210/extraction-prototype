@@ -29,21 +29,24 @@ func _run() -> void:
 	_check(player.weapon.damage == 20 and player.weapon.fire_rate == 3 and enemy.max_health == 150, "Forest uses existing combat balance")
 	var visual: Node2D = player.get_node("Aim/BodyVisual")
 	var sprite: Sprite2D = visual.get_node("Sprite")
-	_check(sprite.texture is AtlasTexture and visual.frames.get_animation_names().size() == 3, "Player has independent atlas views with no baked background")
-	for animation in [&"down", &"side", &"up"]:
-		_check(visual.frames.get_frame_count(animation) == 4, "Each facing has four aligned poses")
+	_check(sprite.texture is ViewportTexture and visual.model.get_child_count() == 5, "Forest player uses the shared modular visual with five saved rigs")
+	for facing in 8:
+		player.aim.rotation = facing * PI / 4.0
+		visual.sync_actor()
+		_check(visual.direction_index == facing, "Forest visual selects direction %d from the actor's real Aim" % facing)
 	player.aim.rotation = 0.0
 	player.velocity = Vector2.RIGHT * 100
 	player.moved.emit(20.0)
 	await _ticks(2)
-	var walking_texture: Texture2D = sprite.texture
+	var walking_phase: float = visual.phase
+	_check(walking_phase > 0.0 and visual.gait_blend > 0.0, "Actual travel advances shared articulated gait")
 	player.velocity = Vector2.ZERO
 	player.moved.emit(0.0)
-	await _ticks(2)
-	_check(sprite.texture != walking_texture, "Walking advances with actual travel and stops in idle")
+	await _ticks(12)
+	_check(is_zero_approx(visual.gait_blend) and visual.phase == walking_phase, "Stopping settles the gait without resetting its phase")
 	player.aim.rotation = PI
 	await _ticks(2)
-	_check(sprite.flip_h and is_zero_approx(visual.global_rotation), "Facing left mirrors a sprite without rotating the body")
+	_check(visual.direction_index == 4 and visual.rig.scale.x < 0 and is_zero_approx(visual.global_rotation), "Facing left mirrors the saved rig without rotating the body")
 	var hut: StaticBody2D = room.get_node("Obstacles/Hut")
 	player.global_position = Vector2(350, 315)
 	await _ticks(25)
@@ -80,7 +83,7 @@ func _run() -> void:
 	_check(enemy.health == health_before - player.weapon.damage, "Clear shot damages the visible guard")
 	await _ticks(25)
 	var torso_health: float = enemy.health
-	var upper_body: Vector2 = enemy.aim.global_position + Vector2(0, -21)
+	var upper_body: Vector2 = enemy.global_position + Vector2(0, -56)
 	_check(player.weapon.try_fire(player.weapon.aim_from_screen(upper_body, player), player), "Player can aim at the drawn upper body through input projection")
 	_check(enemy.health == torso_health - player.weapon.damage, "A visible upper-body hit reaches the separate damage silhouette")
 	var player_health_before: float = player.health
@@ -93,7 +96,7 @@ func _run() -> void:
 	var spawn_result: String = room.spawn_guard(1)
 	_check(spawn_result.begins_with("Охранник добавлен"), "F2 spawns a guard from a saved valid marker")
 	var spawned: Node2D = room.get_guards().back()
-	_check(spawned.get_node("Aim/BodyVisual").frames.resource_path.ends_with("guard_frames.tres"), "F2 uses the room's pixel guard variant")
+	_check(spawned.get_node("Aim/BodyVisual").scene_file_path == "res://scenes/characters/character_visual.tscn", "F2 uses the same shared character scene as saved guards")
 	room.set_guards_active(false)
 	var chest := room.get_node("LootContainers/HutSupplies")
 	player.global_position = Vector2(440, 580)
@@ -191,8 +194,8 @@ func _check_contact_movement(room: Node2D) -> void:
 	await _walk(player, Vector2.UP, 45)
 	_check(absf(player.position.y - (logs.position.y + logs.size.y * 0.5 + 15)) < 0.5, "Walking north meets log footprint at the feet, without a phantom 30 px gap")
 	var visual: Node2D = player.get_node("Aim/BodyVisual")
-	visual._sync_visual()
-	_check(absf(player.get_node("Shadow").position.y) < 3, "Visible contact shadow and movement center share the ground origin")
+	visual.sync_actor()
+	_check(absf(visual.get_node("Shadow").position.y) < 3, "Visible contact shadow and movement center share the ground origin")
 	var health: float = player.health
 	_check(player.weapon.try_fire(player.position + Vector2.DOWN * 200, player) and player.health == health, "Ground contact does not place the shot origin inside cover or the shooter's own hurtbox")
 	player.restore_state()
@@ -333,7 +336,7 @@ func _check_contact_shadows() -> void:
 		root.add_child(actor)
 		actor.set_physics_process(false)
 		var visual: Node2D = actor.get_node("Aim/BodyVisual")
-		var shadow: Polygon2D = actor.get_node("Shadow")
+		var shadow: Polygon2D = visual.get_node("Shadow")
 		var feet_aligned := true
 		var ray_origins_stable := true
 		# All dusk frames share a 64 px, bottom-aligned canvas. Check every pose,
@@ -342,8 +345,8 @@ func _check_contact_shadows() -> void:
 			actor.aim.rotation = facing
 			actor.velocity = Vector2.RIGHT.rotated(facing) * 100
 			for pose in range(4):
-				actor.moved.emit(visual.stride_distance / 4.0)
-				visual._sync_visual()
+				actor.moved.emit(visual.walk_gait.stride_distance / 4.0)
+				visual.sync_actor()
 				feet_aligned = feet_aligned and absf(shadow.position.y) < 3.0 and absf(shadow.rotation) < 0.01
 				var offset := Vector2(0, -30)
 				ray_origins_stable = ray_origins_stable and actor.aim.global_position.distance_to(actor.global_position + offset) < 0.01 and actor.weapon.aim_from_screen(actor.aim.global_position + Vector2.RIGHT * 100, actor).distance_to(actor.global_position + Vector2.RIGHT * 100) < 0.01
@@ -352,11 +355,11 @@ func _check_contact_shadows() -> void:
 		actor.velocity = Vector2.ZERO
 		actor.take_damage(10000)
 		await _ticks(2)
-		_check(visual.fallen and shadow.position.y < 16.0 and shadow.scale.x > 25.0, "Death places an extended shadow under the fallen body: " + actor.name)
+		_check(visual.fallen and shadow.position.y < 16.0 and shadow.scale.x > 2.0, "Death places an extended shadow under the fallen body: " + actor.name)
 		if actor.has_method("restore_state"):
 			actor.restore_state()
 			await _ticks(2)
-			_check(not visual.fallen and absf(shadow.position.y) < 3.0 and shadow.scale.x < 20.0, "Revival restores the standing ground contact shadow")
+			_check(not visual.fallen and absf(shadow.position.y) < 3.0 and shadow.scale.x < 2.0, "Revival restores the standing ground contact shadow")
 		actor.free()
 		await _ticks(1)
 

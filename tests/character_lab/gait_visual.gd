@@ -31,7 +31,7 @@ func _run() -> void:
 		stage.add_child(caption)
 	for movement in 8:
 		for bearing in 8:
-			var visual: Node2D = load("res://tests/character_lab/character_visual.tscn").instantiate()
+			var visual: Node2D = load("res://scenes/characters/character_visual.tscn").instantiate()
 			visual.position = Vector2(-2000, -2000)
 			root.add_child(visual)
 			visual.set_physics_process(false)
@@ -62,7 +62,6 @@ func _run() -> void:
 					visual._motion_direction = -1.0 if visual.motion_vector.dot(Vector2.from_angle(bearing * PI / 4.0)) < -0.1 else 1.0
 					visual.gait_blend = 1.0
 					visual.sneak_blend = 1.0 if sneak else 0.0
-					visual.aim_blend = 1.0
 					visual.phase = sample * TAU / 4.0 * visual._motion_direction
 					visual.apply_pose()
 			await _ticks(2)
@@ -70,7 +69,7 @@ func _run() -> void:
 			assert(stage.get_texture().get_image().save_png("res://artifacts/character_gait_matrix_%s_%d.png" % [gait_name, sample]) == OK)
 	stage.queue_free()
 	await _ticks(2)
-	await _capture_pair(models, [2, 6], "front_back", ["Вниз", "Вверх"])
+	await _capture_views(models, [2, 6], "front_back", ["Вниз", "Вверх"])
 	for visual in models:
 		visual.queue_free()
 	await _ticks(2)

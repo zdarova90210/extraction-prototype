@@ -1,0 +1,69 @@
+{
+  "description": "Approved east-view modular parts used by the common forest player/guard and animation stand. Four additional view atlases and prompts are in directions/SOURCES.json.",
+  "source_provenance": [
+    {
+      "source_file": "C:\\zdarova90210\\game-projects\\assets\\imgs\\sprites\\2\\ChatGPT Image Oct 23, 2026, 09_20_24 PM-2.png",
+      "copy": "sources/legs.png",
+      "sha256": "3fa49b6c95f41d3f09b56642553e05fc196828251c387219ef2a7ecfdd895773"
+    },
+    {
+      "source_file": "C:\\zdarova90210\\game-projects\\assets\\imgs\\sprites\\2\\ChatGPT Image Oct 23, 2026, 09_20_25 PM-3.png",
+      "copy": "sources/torso.png",
+      "sha256": "c8a6d97c305fc044cc1a4233cf4b1dc09351c78920ee297de40575c075759380"
+    },
+    {
+      "source_file": "C:\\zdarova90210\\game-projects\\assets\\imgs\\sprites\\2\\ChatGPT Image Oct 23, 2026, 09_20_26 PM-5.png",
+      "copy": "sources/arms.png",
+      "sha256": "d21fd9d7a479831e648df37a3aada69b5c65069916bdfb78f0ce1e9145a949c5"
+    },
+    {
+      "source_file": "C:\\zdarova90210\\game-projects\\assets\\imgs\\sprites\\2\\ChatGPT Image Oct 23, 2026, 09_20_28 PM-6.png",
+      "copy": "sources/hands.png",
+      "sha256": "019ac7acedca2945806f7a0583f555ca1c9893d42fae561835d0dce111646666"
+    },
+    {
+      "source_file": "C:\\zdarova90210\\game-projects\\assets\\imgs\\sprites\\2\\ChatGPT Image Oct 23, 2026, 09_20_29 PM-7.png",
+      "copy": "sources/carbine.png",
+      "sha256": "db4d678f2b1248fc2f5d90fa6529fbf17deff36089077ae6f1e6f9f7c7b04892"
+    }
+  ],
+  "preparation": "Static source crops and scale matching in artifacts/character_east_v1, native 128x128 layer export via Godot. Legs split into articulated polygons in .tscn; no new generated artwork.",
+  "frame_size": [
+    128,
+    128
+  ],
+  "ground_pivot": [
+    64,
+    104
+  ],
+  "prepared_files": [
+    {
+      "file": "layer_legs.png",
+      "sha256": "570b4e1730a47fad11b5d2b061b0bd8a1ccc8b50274c8ad0b775888291443200"
+    },
+    {
+      "file": "layer_torso.png",
+      "sha256": "6c717f22d0178a348e060d87c3a7a2d2fb051147d87793a5d7edd7eb96b7718c"
+    },
+    {
+      "file": "layer_support_arm.png",
+      "sha256": "abe0158df02a2f5a1326913fe92b4463e2e275a43a47ccd0756b2f00c1021ede"
+    },
+    {
+      "file": "layer_trigger_arm.png",
+      "sha256": "9cc5096fab6171833c088586d0d167ff4465ab4cc53ebc9d502bc7dee51920ba"
+    },
+    {
+      "file": "layer_carbine.png",
+      "sha256": "f5e952e59462e483fe6302499b3fab3ee9fc4e3ee641a88ee8f945226d0ebdb6"
+    },
+    {
+      "file": "layer_trigger_hand.png",
+      "sha256": "db4e1a469a77eb9cf48e4aceb217e215db0156043906d3ad34e52c64de5c1005"
+    },
+    {
+      "file": "layer_support_hand.png",
+      "sha256": "719c37941282e3e3af70ecda06d922622d7946ce664fbe68b21ed0ba26387a9c"
+    }
+  ]
+}

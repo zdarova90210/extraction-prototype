@@ -58,6 +58,7 @@ var _investigation_destination: Vector2 = Vector2.ZERO
 @onready var weapon: Node2D = $Aim/Weapon
 @onready var agent: NavigationAgent2D = $NavigationAgent2D
 @onready var caption: Label = $Caption
+@onready var body_visual: Node2D = $Aim/BodyVisual
 
 
 func _ready() -> void:
@@ -184,6 +185,7 @@ func _physics_process(delta: float) -> void:
 			_change_state(State.RELOAD if weapon.ammo <= 0 else State.BURST)
 	move_and_slide()
 	moved.emit(get_position_delta().length())
+	body_visual.sync_actor()
 	if state == State.AIM:
 		var direction := Vector2.RIGHT.rotated(aim.global_rotation)
 		_warning_end = global_position + direction * weapon.max_range

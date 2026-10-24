@@ -20,6 +20,9 @@ const SHOT_EFFECT = preload("res://scripts/shot_effect.gd")
 @export_range(0.1, 10.0, 0.1, "suffix:s") var reload_duration: float = 1.5
 @export_flags_2d_physics var hit_mask: int = 1 | 4 | 8
 @export var tracer_color: Color = Color(1.0, 0.86, 0.56)
+## Optional drawn barrel; physics still starts at the shooter's ground centre.
+@export var visual_muzzle: Marker2D
+@export var draw_muzzle_flash := true
 @export_range(0.2, 2.0, 0.05, "suffix:s") var empty_feedback_interval: float = 0.5
 @export_group("Active Reload")
 @export var active_reload_enabled: bool = false
@@ -110,12 +113,18 @@ func try_fire(aim_position: Vector2, shooter: CollisionObject2D) -> bool:
 			collider.take_damage(damage)
 	var visual_offset := global_position - origin
 	var muzzle_distance := global_position.distance_to(muzzle.global_position)
+	if is_instance_valid(visual_muzzle):
+		muzzle_distance = maxf(0.0, (visual_muzzle.global_position - global_position).dot(direction))
 	var start := origin + direction * minf(muzzle_distance, origin.distance_to(endpoint))
+	var drawn_start := start + visual_offset
+	if is_instance_valid(visual_muzzle):
+		var fraction := minf(1.0, origin.distance_to(endpoint) / maxf(0.001, muzzle_distance))
+		drawn_start = global_position.lerp(visual_muzzle.global_position, fraction)
 	var effect := Node2D.new()
 	effect.set_script(SHOT_EFFECT)
 	get_tree().current_scene.add_child(effect)
 	# Render the flat-ground trace at the held weapon's height. Events stay physical.
-	effect.setup(start + visual_offset, endpoint + visual_offset, not result.is_empty(), tracer_color)
+	effect.setup(drawn_start, endpoint + visual_offset, not result.is_empty(), tracer_color)
 	shot_fired.emit(start, endpoint, not result.is_empty())
 	return true
 
@@ -168,7 +177,7 @@ func restore_state() -> void:
 
 
 func _draw() -> void:
-	if _flash_time > 0.0:
+	if draw_muzzle_flash and _flash_time > 0.0:
 		draw_colored_polygon(PackedVector2Array([
 			Vector2(29, -5), Vector2(46, 0), Vector2(29, 5), Vector2(34, 0)
 		]), Color(1.0, 0.79, 0.40, 0.9))

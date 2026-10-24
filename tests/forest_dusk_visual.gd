@@ -90,7 +90,7 @@ func _capture_depth_cases() -> void:
 				prop_sprite.self_modulate.a = 1.0
 			# Compare the real composited pixels with each real sprite in isolation.
 			# No synthetic colors or duplicated sorting formula in the expected result.
-			player.get_node("Shadow").hide()
+			player.get_node("Aim/BodyVisual/Shadow").hide()
 			player.weapon.hide()
 			var combined: Image = await _frame_image()
 			player.hide()
@@ -106,8 +106,20 @@ func _capture_depth_cases() -> void:
 			var region := Rect2i(body_rect.intersection(prop_rect)).intersection(Rect2i(Vector2i.ZERO, combined.get_size()))
 			var overlap := 0
 			var correct := 0
+			var prop_image := prop_sprite.texture.get_image()
+			var to_prop := prop_sprite.get_global_transform_with_canvas().affine_inverse()
 			for y in range(region.position.y, region.end.y):
 				for x in range(region.position.x, region.end.x):
+					# Alpha fringes legitimately mix a rear actor into the edge. Check
+					# ordering on opaque prop texels, retaining the strict color test.
+					var uv := (to_prop * Vector2(x + 0.5, y + 0.5) - prop_sprite.get_rect().position) / prop_sprite.get_rect().size
+					if prop_sprite.flip_h:
+						uv.x = 1.0 - uv.x
+					if prop_sprite.flip_v:
+						uv.y = 1.0 - uv.y
+					var texel := Vector2i((uv * Vector2(prop_image.get_size())).floor())
+					if not Rect2i(Vector2i.ZERO, prop_image.get_size()).has_point(texel) or prop_image.get_pixelv(texel).a < 0.98:
+						continue
 					var bg := background.get_pixel(x, y)
 					var actor_color := actor_only.get_pixel(x, y)
 					var prop_color := prop_only.get_pixel(x, y)
@@ -117,7 +129,7 @@ func _capture_depth_cases() -> void:
 						if _color_difference(combined.get_pixel(x, y), expected) < 0.02:
 							correct += 1
 			_check(overlap > 8 and correct > overlap * 0.95, "Real sprite depth " + name + (" front" if in_front else " behind") + ": %d/%d overlap pixels" % [correct, overlap])
-			player.get_node("Shadow").show()
+			player.get_node("Aim/BodyVisual/Shadow").show()
 			player.weapon.show()
 			prop_sprite.self_modulate = original_color
 			if fade != null:
@@ -173,10 +185,10 @@ func _capture_actors() -> void:
 	player.position = Vector2(700, 730)
 	enemy.position = Vector2(810, 730)
 	camera.zoom = Vector2(3, 3)
-	for facing in [0.0, PI / 2, -PI / 2]:
+	for facing in [0.0, PI / 2, -PI / 2, -PI / 4, -PI * 3 / 4]:
 		player.aim.rotation = facing
 		enemy.aim.rotation = facing
-		enemy.get_node("Aim/BodyVisual")._sync_visual()
+		enemy.get_node("Aim/BodyVisual").sync_actor()
 		camera.force_update_scroll()
 		await _ticks(4)
 		await _save_forest("forest_actors_" + str(int(rad_to_deg(facing))))
@@ -185,7 +197,7 @@ func _capture_actors() -> void:
 	enemy.aim.rotation = 0.0
 	enemy.take_damage(1000)
 	# The capture room disables guard processing, including its hit flash timer.
-	enemy.get_node("Aim/BodyVisual")._process(0.2)
+	enemy.get_node("Aim/BodyVisual").advance(0.2)
 	await _ticks(4)
 	await _save_forest("forest_contact_shadows")
 	player.position = original_player_position
