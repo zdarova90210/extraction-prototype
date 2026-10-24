@@ -73,6 +73,7 @@ func _run() -> void:
 		await RenderingServer.frame_post_draw
 		assert(stage.get_texture().get_image().save_png(directory + "%03d.png" % frame) == OK)
 	await _capture_views(models, [5, 6, 7], "rear", ["Вверх-влево", "Вверх", "Вверх-вправо"])
+	await _capture_views(models, [3, 1], "front_diagonal", ["Вниз-влево", "Вниз-вправо"])
 	for visual in models:
 		visual.queue_free()
 	stage.queue_free()
@@ -173,7 +174,7 @@ func _check_visible_barrels(models: Array[Node2D], degrees: int) -> void:
 	# This catches a barrel hidden by oversized forearms despite correct markers.
 	var full: Dictionary = {}
 	var hidden: Array[CanvasItem] = []
-	for index in [0, 1, 2, 3, 4]:
+	for index in [0, 1, 2, 3, 4, 5, 7]:
 		var visual: Node2D = models[index]
 		full[visual] = visual.get_node("Pixels").get_texture().get_image()
 		for part: CanvasItem in [visual.near_leg, visual.far_leg, visual.trigger_arm, visual.support_arm, visual.upper.get_node("Torso")]:
@@ -186,7 +187,7 @@ func _check_visible_barrels(models: Array[Node2D], degrees: int) -> void:
 				hidden.append(hand)
 	await _ticks(2)
 	await RenderingServer.frame_post_draw
-	for index in [0, 1, 2, 3, 4]:
+	for index in [0, 1, 2, 3, 4, 5, 7]:
 		var visual: Node2D = models[index]
 		var isolated: Image = visual.get_node("Pixels").get_texture().get_image()
 		var facing := Vector2.from_angle(visual.rig.drawn_weapon_angle)

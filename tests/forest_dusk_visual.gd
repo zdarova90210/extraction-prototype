@@ -185,7 +185,7 @@ func _capture_actors() -> void:
 	player.position = Vector2(700, 730)
 	enemy.position = Vector2(810, 730)
 	camera.zoom = Vector2(3, 3)
-	for facing in [0.0, PI / 2, -PI / 2, -PI / 4, -PI * 3 / 4]:
+	for facing in [0.0, PI / 2, -PI / 2, -PI / 4, -PI * 3 / 4, PI / 4, PI * 3 / 4]:
 		player.aim.rotation = facing
 		enemy.aim.rotation = facing
 		enemy.get_node("Aim/BodyVisual").sync_actor()

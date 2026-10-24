@@ -9,9 +9,18 @@ extends Node2D
 @export var foot_tracks := Vector2(-4, 3)
 @export var drawn_weapon_angle := 0.0
 @export var arm_scale_limits := Vector2(0.65, 1.35)
+## Optional stock contact. Other views retain their authored grip position.
+@export var stock_socket: Marker2D
+@export var stock_anchor: Marker2D
 
 @onready var near_hip: Vector2 = $NearLeg.position
 @onready var far_hip: Vector2 = $FarLeg.position
 @onready var near_segments := PackedVector2Array([$NearLeg/Shin.position, $NearLeg/Shin/Foot.position])
 @onready var far_segments := PackedVector2Array([$FarLeg/Shin.position, $FarLeg/Shin/Foot.position])
 @onready var grip_origin: Vector2 = $Upper/Grip.position
+
+func weapon_position(angle: float) -> Vector2:
+	if stock_socket == null or stock_anchor == null:
+		return grip_origin
+	var weapon_grip: Node2D = stock_anchor.get_parent()
+	return stock_socket.position - (stock_anchor.position * weapon_grip.scale).rotated(angle)

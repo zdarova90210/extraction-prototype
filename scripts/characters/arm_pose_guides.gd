@@ -18,7 +18,11 @@ func _ready() -> void:
 		var rig: Node2D = get_parent().get_parent()
 		var grip: Node2D = get_parent().get_node("Grip")
 		var wrist: Marker2D = grip.get_node("SupportWrist" if name == "SupportArm" else "TriggerWrist")
-		_wrists[arm] = grip.position + wrist.position.rotated(deg_to_rad(rig.bearing_degrees) - rig.drawn_weapon_angle)
+		var neutral_angle: float = deg_to_rad(rig.bearing_degrees) - rig.drawn_weapon_angle
+		var neutral_grip: Vector2 = grip.position
+		if rig.stock_socket != null and rig.stock_anchor != null:
+			neutral_grip = rig.weapon_position(neutral_angle)
+		_wrists[arm] = neutral_grip + (wrist.position * grip.scale).rotated(neutral_angle)
 
 func pose(arm: Node2D, wrist: Marker2D) -> void:
 	var prefix := "Support" if arm.name == "SupportArm" else "Trigger"

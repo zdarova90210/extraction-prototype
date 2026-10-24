@@ -180,7 +180,7 @@ func apply_pose() -> void:
 	var local_direction := Vector2.from_angle(aim_angle)
 	local_direction.x *= rig.scale.x
 	grip.rotation = local_direction.angle() - rig.drawn_weapon_angle - recoil * 0.025
-	grip.position = rig.grip_origin - local_direction * recoil * 1.4
+	grip.position = rig.weapon_position(grip.rotation) - local_direction * recoil * 1.4
 	_fit_arm(trigger_arm, grip.get_node("TriggerWrist"))
 	_fit_arm(support_arm, grip.get_node("SupportWrist"))
 	flash.visible = flash_remaining > 0.0

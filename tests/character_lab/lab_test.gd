@@ -151,6 +151,7 @@ func _run() -> void:
 	_check(actor.sneaking and visual.sneak_blend >= 0.99, "F2 preserves the selected gait for repeated comparisons")
 	await _check_directions(room, actor)
 	_check_arm_art(visual)
+	_check_stock_contact(visual)
 	_check_north_whole_arms(visual)
 	_check_rear_leg_joins(visual)
 	_check_projected_gaits(visual)
@@ -321,6 +322,44 @@ func _check_arm_art(visual: Node2D) -> void:
 		if visual.support_arm.has_node("Forearm") or visual.support_arm.has_node("Elbow"):
 			_check(elbow_continuous and first_elbow.distance_to(last_elbow) > 2.5, "Support elbow visibly and continuously accompanies rotating gun: view %d" % index)
 	visual.direction_override = -1
+
+func _check_stock_contact(visual: Node2D) -> void:
+	# Independent of wrist matching: the painted buttpad must stay at the
+	# shoulder through the whole sector, not swing freely around the hands.
+	for index in [1, 3, 5, 7]:
+		visual.direction_override = index
+		visual.reset_pose()
+		var socket: Marker2D = visual.rig.stock_socket
+		var stock: Marker2D = visual.rig.stock_anchor
+		var gun: Sprite2D = visual.grip.get_node("Carbine")
+		var texel := Vector2i(gun.to_local(stock.global_position).floor())
+		var source: Image = gun.texture.get_image()
+		_check(Rect2i(Vector2i.ZERO, source.get_size()).has_point(texel) and source.get_pixelv(texel).a > 0.6, "Stock marker lies on the painted buttpad: view %d" % index)
+		_check(socket.position.distance_to(visual.trigger_arm.position) <= 1.5 and _painted_alpha(visual.trigger_arm.get_node("Image"), socket.global_position) > 0.6, "Stock socket lies on the painted near shoulder: view %d" % index)
+		var largest_gap := 0.0
+		var grips_joined := true
+		var follows_shoulder := true
+		for sneak in [false, true]:
+			visual.sneak_blend = 1.0 if sneak else 0.0
+			for gait in [0.0, 1.0]:
+				visual.gait_blend = gait
+				for sample in 8:
+					visual.phase = sample * TAU / 8.0
+					for degrees in range(-25, 26):
+						visual.aim_angle = index * PI / 4.0 + deg_to_rad(degrees)
+						for kick in [0.0, 1.0]:
+							visual.recoil = kick
+							visual.apply_pose()
+							var gap := stock.global_position.distance_to(socket.global_position)
+							largest_gap = maxf(largest_gap, gap)
+							follows_shoulder = follows_shoulder and gap < (0.01 if kick == 0.0 else 1.41)
+							for arm in [visual.trigger_arm, visual.support_arm]:
+								var hand: Marker2D = visual.grip.get_node("TriggerWrist" if arm == visual.trigger_arm else "SupportWrist")
+								grips_joined = grips_joined and visual.wrist_for(arm).global_position.distance_to(hand.global_position) < 0.05
+		_check(follows_shoulder, "Stock stays shouldered across sector, both gaits and recoil: view %d, max %.3f px" % [index, largest_gap])
+		_check(grips_joined, "Both hands follow the shouldered rifle through motion and recoil: view %d" % index)
+	visual.direction_override = -1
+	visual.reset_pose()
 
 func _check_north_whole_arms(visual: Node2D) -> void:
 	visual.direction_override = 6

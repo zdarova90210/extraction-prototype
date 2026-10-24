@@ -18,8 +18,10 @@ region = Rect2(0, 0, 31, 40)
 atlas = ExtResource("atlas")
 region = Rect2(80, 48, 38, 21)
 
-[node name="southeast" type="Node2D"]
+[node name="southeast" type="Node2D" node_paths=PackedStringArray("stock_socket", "stock_anchor")]
 script = ExtResource("rig")
+stock_socket = NodePath("Upper/StockSocket")
+stock_anchor = NodePath("Upper/Grip/Stock")
 bearing_degrees = 45.0
 stride_axis = Vector2(0.71, 0.32)
 knee_sides = Vector2(1, 1)
@@ -147,7 +149,11 @@ position = Vector2(13.26, 1.4)
 
 [node name="Grip" type="Node2D" parent="Upper"]
 z_index = 1
-position = Vector2(5, -40)
+position = Vector2(-3.14, -40.57)
+scale = Vector2(0.85, 0.85)
+
+[node name="Stock" type="Marker2D" parent="Upper/Grip"]
+position = Vector2(-12.18, -5.95)
 
 [node name="TriggerWrist" type="Marker2D" parent="Upper/Grip"]
 position = Vector2(0, 0)
@@ -173,7 +179,10 @@ color = Color(1, 0.79, 0.32, 1)
 script = ExtResource("guides")
 
 [node name="Support" type="Marker2D" parent="Upper/ElbowGuides"]
-position = Vector2(11, -37)
+position = Vector2(15, -38)
 
 [node name="Trigger" type="Marker2D" parent="Upper/ElbowGuides"]
-position = Vector2(-11, -35)
+position = Vector2(-13, -38)
+
+[node name="StockSocket" type="Marker2D" parent="Upper"]
+position = Vector2(-11, -49)
