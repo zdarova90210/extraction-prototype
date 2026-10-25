@@ -1,0 +1,42 @@
+[gd_scene format=3]
+
+[ext_resource type="Shader" path="res://scripts/characters/leg_shadows.gdshader" id="1_btcju"]
+[ext_resource type="Texture2D" path="res://assets/art/characters/legs/work_trousers.png" id="2_j6cjm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ugoud"]
+shader = ExtResource("1_btcju")
+shader_parameter/shadow_lift = 0.035
+
+[node name="FarLeg" type="Node2D" unique_id=1941295799]
+modulate = Color(0.7, 0.72, 0.72, 1)
+position = Vector2(4, -27)
+
+[node name="Thigh" type="Polygon2D" parent="." unique_id=1816397028]
+material = SubResource("ShaderMaterial_ugoud")
+texture = ExtResource("2_j6cjm")
+polygon = PackedVector2Array(-3.5, -4, 11.5, -4, 11.5, 15, -3.5, 15)
+uv = PackedVector2Array(24, 0, 39, 0, 39, 19, 24, 19)
+
+[node name="Shin" type="Node2D" parent="." unique_id=349412809]
+position = Vector2(3, 12)
+
+[node name="Image" type="Polygon2D" parent="Shin" unique_id=1263687873]
+material = SubResource("ShaderMaterial_ugoud")
+texture = ExtResource("2_j6cjm")
+polygon = PackedVector2Array(-6.5, -2, 8.5, -2, 8.5, 13, -6.5, 13)
+uv = PackedVector2Array(24, 14, 39, 14, 39, 29, 24, 29)
+
+[node name="Foot" type="Node2D" parent="Shin" unique_id=319843185]
+position = Vector2(1.5, 11)
+
+[node name="Image" type="Polygon2D" parent="Shin/Foot" unique_id=1837512518]
+material = SubResource("ShaderMaterial_ugoud")
+texture = ExtResource("2_j6cjm")
+polygon = PackedVector2Array(-8, -2, 7, -2, 7, 4, -8, 4)
+uv = PackedVector2Array(24, 25, 39, 25, 39, 31, 24, 31)
+
+[node name="Heel" type="Marker2D" parent="Shin/Foot" unique_id=1435242203]
+position = Vector2(-3, 4)
+
+[node name="Toe" type="Marker2D" parent="Shin/Foot" unique_id=295788886]
+position = Vector2(4, 4)

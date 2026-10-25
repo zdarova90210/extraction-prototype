@@ -51,7 +51,7 @@ func _run() -> void:
 	player.global_position = Vector2(350, 315)
 	await _ticks(25)
 	_check(hut.get_node("Occlusion").is_obscuring and hut.get_node("Sprite").self_modulate.a < 0.31, "Walkable route behind hut fades its foreground art")
-	_check(hut.collision_layer == 1 and not hut.get_node("CollisionShape2D").disabled, "Fading never disables the wall collider")
+	_check(hut.get_collision_layer_value(1) and hut.get_collision_layer_value(5) and not hut.get_node("CollisionShape2D").disabled, "Fading never disables the wall movement or shot blocking")
 	for tick in range(50):
 		player.velocity = Vector2(0, 250)
 		player.move_and_slide()
@@ -96,7 +96,7 @@ func _run() -> void:
 	var spawn_result: String = room.spawn_guard(1)
 	_check(spawn_result.begins_with("Охранник добавлен"), "F2 spawns a guard from a saved valid marker")
 	var spawned: Node2D = room.get_guards().back()
-	_check(spawned.get_node("Aim/BodyVisual").scene_file_path == "res://scenes/characters/character_visual.tscn", "F2 uses the same shared character scene as saved guards")
+	_check(spawned.get_node("Aim/BodyVisual").scene_file_path == "res://scenes/characters/watchman/visual.tscn", "F2 uses the watchman's outfit just like saved guards")
 	room.set_guards_active(false)
 	var chest := room.get_node("LootContainers/HutSupplies")
 	player.global_position = Vector2(440, 580)

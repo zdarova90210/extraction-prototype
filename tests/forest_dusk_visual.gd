@@ -19,6 +19,7 @@ func _run() -> void:
 	await _save_forest("forest_post")
 	await _capture_depth_cases()
 	await _capture_loot_facing()
+	await _capture_obstacle_shots()
 	await _capture_actors()
 	root.size = Vector2i(3440, 1440)
 	camera.force_update_scroll()
@@ -205,3 +206,48 @@ func _capture_actors() -> void:
 	camera.zoom = Vector2(0.8, 0.8)
 	camera.force_update_scroll()
 	await _ticks(4)
+
+func _capture_obstacle_shots() -> void:
+	var player: CharacterBody2D = current_scene.get_node("Player")
+	var guard: CharacterBody2D = current_scene.get_node("Enemy")
+	var camera: Camera2D = player.get_node("Camera2D")
+	var initial_player := player.position
+	var initial_guard := guard.position
+	var initial_camera := camera.position
+	var initial_aim: float = player.aim.rotation
+	# Enable the collision body without starting a live duel during captures.
+	guard.process_mode = Node.PROCESS_MODE_INHERIT
+	guard.set_physics_process(false)
+	camera.zoom = Vector2(2.4, 2.4)
+	var cases := {
+		"LootContainers/WoodCache": Vector2(0, 90),
+		"Dressing/TimberYard/Firewood2": Vector2(-90, 0),
+		"Obstacles/WestLogs": Vector2(0, 110),
+		"Obstacles/BackRocks": Vector2(0, 100),
+	}
+	for path in cases:
+		var obstacle: WorldObstacle = current_scene.get_node(path)
+		player.position = obstacle.position + cases[path]
+		guard.position = obstacle.position - cases[path]
+		player.aim.rotation = player.position.direction_to(guard.position).angle()
+		guard.aim.rotation = guard.position.direction_to(player.position).angle()
+		guard.health = guard.max_health
+		guard.health_changed.emit(guard.health, guard.max_health)
+		camera.position = obstacle.position - player.position + Vector2(0, -28)
+		camera.force_update_scroll()
+		player.weapon.restore_state()
+		await _ticks(12)
+		var health: float = guard.health
+		var expected: float = health - (0.0 if obstacle.blocks_shots else player.weapon.damage)
+		_check(player.weapon.try_fire(guard.position, player) and guard.health == expected, "Rendered actual forest shot obeys obstacle rule: " + String(obstacle.name))
+		await _save_forest("forest_shot_" + String(obstacle.name))
+	player.position = initial_player
+	guard.position = initial_guard
+	player.aim.rotation = initial_aim
+	guard.health = guard.max_health
+	guard.health_changed.emit(guard.health, guard.max_health)
+	guard.process_mode = Node.PROCESS_MODE_DISABLED
+	camera.position = initial_camera
+	camera.zoom = Vector2(0.8, 0.8)
+	camera.force_update_scroll()
+	await _ticks(12)

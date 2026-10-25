@@ -55,6 +55,7 @@ script = ExtResource("navigation")
 walkable_bounds = Rect2(32, 32, 1472, 960)
 
 [node name="Borders" type="StaticBody2D" parent="."]
+collision_layer = 17
 collision_mask = 0
 
 [node name="North" type="CollisionShape2D" parent="Borders"]

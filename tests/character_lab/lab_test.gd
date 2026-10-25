@@ -153,7 +153,7 @@ func _run() -> void:
 	_check_arm_art(visual)
 	_check_stock_contact(visual)
 	_check_north_whole_arms(visual)
-	_check_rear_leg_joins(visual)
+	_check_leg_joins(visual)
 	_check_projected_gaits(visual)
 	room.free()
 	await _ticks(2)
@@ -422,16 +422,16 @@ func _painted_alpha(image: Polygon2D, world: Vector2) -> float:
 	var uv := source_basis * (local_basis.affine_inverse() * local)
 	return image.texture.get_image().get_pixelv(Vector2i(uv)).a
 
-func _check_rear_leg_joins(visual: Node2D) -> void:
+func _check_leg_joins(visual: Node2D) -> void:
 	visual.set_physics_process(false)
-	for index in [5, 7]:
+	for index in [2, 5, 7]:
 		visual.direction_override = index
 		visual.reset_pose()
 		var torso: Sprite2D = visual.upper.get_node("Torso")
 		var body := torso.texture.get_image()
 		var source: Image = visual.near_leg.get_node("Thigh").texture.get_image()
 		var ground: float = visual.model.global_position.y
-		_check(absf(_sole_y(visual.near_foot) - ground) < 0.05 and absf(_sole_y(visual.far_foot) - ground) < 0.05, "Reanchored rear legs keep their resting soles on the ground: view %d" % index)
+		_check(absf(_sole_y(visual.near_foot) - ground) < 0.05 and absf(_sole_y(visual.far_foot) - ground) < 0.05, "Prepared legs keep their resting soles on the ground: view %d" % index)
 		var minimum_coverage := 1.0
 		for sneak in [0.0, 0.5, 1.0]:
 			visual.sneak_blend = sneak
@@ -444,7 +444,7 @@ func _check_rear_leg_joins(visual: Node2D) -> void:
 						visual.apply_pose()
 						for leg in [visual.near_leg, visual.far_leg]:
 							minimum_coverage = minf(minimum_coverage, _waist_hidden_fraction(leg.get_node("Thigh"), torso, source, body))
-		_check(minimum_coverage >= 0.7, "Painted rear thigh tops stay tucked into the torso through both gaits, transitions and all movement directions: view %d, min %.0f%%" % [index, minimum_coverage * 100.0])
+		_check(minimum_coverage >= 0.7, "Painted thigh tops stay tucked into the torso through both gaits, transitions and all movement directions: view %d, min %.0f%%" % [index, minimum_coverage * 100.0])
 
 func _check_projected_gaits(visual: Node2D) -> void:
 	for index in 8:
@@ -474,7 +474,10 @@ func _check_projected_gaits(visual: Node2D) -> void:
 							var ankle: Vector2 = visual.model.to_local(foot.global_position)
 							current.append(knee)
 							current.append(ankle)
-							minimum_projection = minf(minimum_projection, minf(leg.get_node("Thigh").transform.determinant(), shin.get_node("Image").transform.determinant()))
+							var rest: PackedVector2Array = visual.rig.near_segments if leg == visual.near_leg else visual.rig.far_segments
+							var thigh_transform: Transform2D = leg.get_node("Thigh").transform
+							var shin_transform: Transform2D = shin.get_node("Image").transform
+							minimum_projection = minf(minimum_projection, minf(thigh_transform.basis_xform(rest[0].normalized()).length(), shin_transform.basis_xform(rest[1].normalized()).length()))
 							if index in [2, 6]:
 								knees_in_lane = knees_in_lane and knee.x >= minf(hip.x, ankle.x) - 1.0 and knee.x <= maxf(hip.x, ankle.x) + 1.0
 						if index in [2, 6]:

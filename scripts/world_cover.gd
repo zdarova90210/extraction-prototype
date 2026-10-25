@@ -1,5 +1,5 @@
 @tool
-extends StaticBody2D
+extends WorldObstacle
 ## Saved sprite cover with an independently editable ground footprint/material.
 
 @export var size: Vector2 = Vector2(160, 64):
@@ -16,6 +16,7 @@ extends StaticBody2D
 
 
 func _ready() -> void:
+	super._ready()
 	_sync_shape()
 
 

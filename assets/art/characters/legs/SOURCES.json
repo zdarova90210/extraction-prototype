@@ -1,0 +1,282 @@
+{
+  "atlas": "res://assets/art/characters/legs/work_trousers.png",
+  "atlas_sha256": "db15578791c00b1dbef4fcd88c0723b0170c29289d30ec54e6e32d726e8b8644",
+  "description": "Общие диагональные и передние ноги обоих персонажей. Объёмные рабочие брюки, покадровые суставы и сохранённый тон рендера для совпадения с тёмным боковым видом.",
+  "master_sha256": "e56263491400b2a175dbb5bbf5801e3f73726cc5df1e9fbcb82b5a927ae6dbab",
+  "parts": [
+    {
+      "ankle": [
+        4.0,
+        27.0
+      ],
+      "hip": [
+        7.5,
+        4.0
+      ],
+      "knee": [
+        5.5,
+        16.0
+      ],
+      "master_rect": [
+        729,
+        75,
+        148,
+        397
+      ],
+      "name": "southeast_near",
+      "origin": [
+        -4.0,
+        -27.0
+      ],
+      "rect": [
+        0,
+        0,
+        12,
+        31
+      ],
+      "render_tint": [
+        0.7,
+        0.72,
+        0.72
+      ],
+      "search": [
+        0.43,
+        0.0,
+        0.19,
+        0.5
+      ],
+      "source_sha256": "e56263491400b2a175dbb5bbf5801e3f73726cc5df1e9fbcb82b5a927ae6dbab"
+    },
+    {
+      "ankle": [
+        8.0,
+        27.0
+      ],
+      "hip": [
+        3.5,
+        4.0
+      ],
+      "knee": [
+        6.5,
+        16.0
+      ],
+      "master_rect": [
+        1120,
+        75,
+        188,
+        379
+      ],
+      "name": "southeast_far",
+      "origin": [
+        4.0,
+        -27.0
+      ],
+      "rect": [
+        24,
+        0,
+        15,
+        31
+      ],
+      "render_tint": [
+        0.7,
+        0.72,
+        0.72
+      ],
+      "search": [
+        0.7,
+        0.0,
+        0.18,
+        0.5
+      ],
+      "source_sha256": "e56263491400b2a175dbb5bbf5801e3f73726cc5df1e9fbcb82b5a927ae6dbab"
+    },
+    {
+      "ankle": [
+        4.0,
+        27.0
+      ],
+      "hip": [
+        3.5,
+        4.0
+      ],
+      "knee": [
+        4.5,
+        16.0
+      ],
+      "master_rect": [
+        1159,
+        548,
+        147,
+        412
+      ],
+      "name": "northeast_near",
+      "origin": [
+        4.0,
+        -27.0
+      ],
+      "rect": [
+        48,
+        0,
+        11,
+        31
+      ],
+      "render_tint": [
+        0.7,
+        0.72,
+        0.72
+      ],
+      "search": [
+        0.7,
+        0.5,
+        0.18,
+        0.5
+      ],
+      "source_sha256": "e56263491400b2a175dbb5bbf5801e3f73726cc5df1e9fbcb82b5a927ae6dbab"
+    },
+    {
+      "ankle": [
+        4.0,
+        27.0
+      ],
+      "hip": [
+        6.5,
+        4.0
+      ],
+      "knee": [
+        5.5,
+        16.0
+      ],
+      "master_rect": [
+        736,
+        557,
+        150,
+        398
+      ],
+      "name": "northeast_far",
+      "origin": [
+        -4.0,
+        -27.0
+      ],
+      "rect": [
+        72,
+        0,
+        12,
+        31
+      ],
+      "render_tint": [
+        0.7,
+        0.72,
+        0.72
+      ],
+      "search": [
+        0.43,
+        0.5,
+        0.19,
+        0.5
+      ],
+      "source_sha256": "e56263491400b2a175dbb5bbf5801e3f73726cc5df1e9fbcb82b5a927ae6dbab"
+    },
+    {
+      "ankle": [
+        3.5,
+        27.0
+      ],
+      "hip": [
+        6.5,
+        4.0
+      ],
+      "knee": [
+        4.5,
+        16.0
+      ],
+      "master_rect": [
+        978,
+        35,
+        235,
+        701
+      ],
+      "name": "south_near",
+      "origin": [
+        -4.0,
+        -27.0
+      ],
+      "rect": [
+        0,
+        40,
+        10,
+        31
+      ],
+      "render_tint": [
+        1.22,
+        1.17,
+        1.13
+      ],
+      "search": [
+        0.44,
+        0.0,
+        0.2,
+        1.0
+      ],
+      "source": "res://artifacts/leg_consistency/south_master.png",
+      "source_sha256": "1ef0fc746f75ef96ca0753a031c60b054a10a4ee7b12d3cb2327fb6e24705907"
+    },
+    {
+      "ankle": [
+        7.0,
+        27.0
+      ],
+      "hip": [
+        3.5,
+        4.0
+      ],
+      "knee": [
+        5.5,
+        16.0
+      ],
+      "master_rect": [
+        1610,
+        35,
+        254,
+        701
+      ],
+      "name": "south_far",
+      "origin": [
+        4.0,
+        -27.0
+      ],
+      "rect": [
+        24,
+        40,
+        11,
+        31
+      ],
+      "render_tint": [
+        1.22,
+        1.17,
+        1.13
+      ],
+      "search": [
+        0.75,
+        0.0,
+        0.2,
+        1.0
+      ],
+      "source": "res://artifacts/leg_consistency/south_master.png",
+      "source_sha256": "1ef0fc746f75ef96ca0753a031c60b054a10a4ee7b12d3cb2327fb6e24705907"
+    }
+  ],
+  "prompt": "Use case: precise-object-edit.\nAsset type: production pixel-art modular trouser legs for an existing top-down Godot game.\nImage 1 is the EDIT TARGET sheet (two rows, three columns). Images 2 and 3 are the ACCEPTED STYLE AND BODY PROPORTION references: these are the in-game eight-direction figure and actual SIDE-VIEW legs, whose volume works. Image 4 shows the real character and broader watchman in the forest.\nREDRAW the trouser legs in image 1 to match the substantial normal adult legs in the accepted side views. Current diagonal legs look like skinny sticks attached to a different body. They must be recognizably the SAME baggy work trousers and sturdy boots as the side-view reference, not long slim jeans.\nKeep the two-row/three-column arrangement, transparent background, right-facing elevated orthographic projection, muted grey-khaki cloth/brown boots and comparable height.\n\nEach row: column 1 assembled waist-to-sole lower-body reference; column 2 complete NEAR leg isolated; column 3 complete FAR leg isolated.\nTOP ROW SOUTH-EAST/front-right three-quarter: near leg is viewer-left. BOTTOM ROW NORTH-EAST/back-right three-quarter: near leg is viewer-right.\nDraw the anatomy and fabric anew, do NOT mechanically stretch the current outlines. Make the upper thighs solid and fuller where they continue beneath the coat, taper naturally toward a clearly shaped soft knee, then fuller calf folds and a robust boot cuff. Broad connected cloth at the crotch/waist when assembled, legs naturally leave the pelvis, rather than two separate vertical sticks with a wide rectangular gap. The upper cap of EACH separate leg must have matching overlapping cloth to tuck beneath a coat. Two legs must compose the guide's connected lower body.\nRelaxed balanced ready stance with slight natural knee softness and weight shift, not two rigid perfectly parallel poles; neither leg crosses the other, knees do not turn inward. NO pronounced crouch, deep flexion, bow legs, splayed duck feet, arched lower back, jutting buttocks, bulky inflated pelvis or hourglass taper. The rear hips remain compact beneath the jacket, and the forward knees and toes both face the same row direction.\nUse visible cloth planes and restrained fold clusters so thighs/knees/calves read as shaped clothing instead of a straight tube. Don't rely on deep black shading along both leg edges; give enough mid-tone surface to read at actual game scale. Do not overinflate trouser pockets.\n\nIMPORTANT small-game-scale proportions: each complete isolated leg around 31 logical pixels tall including 4 pixels of under-coat overlap. Thigh CLOTH should have 10-12 readable filled pixels across, knee 8-9, calf 7-9, boot length 12-14. This is a normal adult in loose work trousers, NOT thin long cartoon legs. Assembled waist-to-ground height about 28, outer lower-body span about 23-26; narrow natural inseam, ordinary stance. Keep both legs the same anatomical mass; perspective makes far leg only slightly smaller. Render larger with crisp coherent pixel clusters for later downsampling, but preserve these proportions.\nNo upper body, weapons, arms, text, labels, guide lines, grid, ground, cast shadows or extra components. No painterly softening, no photo realism. True alpha transparent background.",
+  "references": [
+    "res://artifacts/diagonal_leg_rebuild/master.png",
+    "res://artifacts/diagonal_leg_volume/before_directions.png",
+    "res://assets/art/characters/layer_legs.png",
+    "res://artifacts/diagonal_leg_volume/before_side_in_forest.png"
+  ],
+  "source": "res://artifacts/diagonal_leg_volume/master.png",
+  "south_source": {
+    "prompt": "Use case: stylized-concept.\nAsset type: modular pixel-art trouser legs for an existing Godot adult forest shooter.\nCreate a NEW transparent source sheet containing THREE widely separated items in ONE ROW: left a complete FRONT-FACING lower body from waist to soles, center the viewer-left leg isolated, right the viewer-right leg isolated. The two individual legs must exactly match the assembled pair in anatomy, thickness, cloth, boots and perspective.\nReference 1 is the accepted SIDE-VIEW trouser asset: match its NORMAL ADULT leg volume, pixel density, dark muted brown-olive/charcoal cloth and worn DARK brown boots. Reference 2 is the old SOUTH direction atlas: use it only for straight front-facing elevated orthographic direction; its skinny legs are wrong and must NOT be copied. Camera looks down about 35 degrees, body faces SOUTH directly toward viewer, absolutely no side or three-quarter twist.\nThese are the same loose working trousers, not skinny jeans. Filled thigh cloth should be around 9-11 logical pixels thick, calf 8-9, boot length 11-13. Full visible hip-to-ground about 27 native pixels plus 4 pixels hidden under the coat. Proportions matter more than huge detail. Clearly model the thigh volume, soft knee transition, calf folds and boot cuff. Normal relaxed ready stance, knees and toes forward, some natural softness in the silhouette. Pelvis directly above feet, no knock knees, no crossing, no exaggerated wide stance, no squat, no oversized buttocks.\nEach isolated complete leg is continuous painted cloth and boot from an overlapping rounded cap at the hip to the entire sole; keep enough hidden cloth to tuck under a jacket. No cut at knee or ankle. Isolated legs compose the guide with a small ordinary inseam gap and a natural connected pelvis, not two thin sticks.\nCRITICAL palette: DARK dusty olive-grey brown trousers matching reference 1. Midtones roughly #4e4c3f, lit folds #686451, shadow #2c2c27. A few restrained lighter edges are okay but the OVERALL fabric is DARK. Do not draw beige/tan/cream/light khaki pants, no golden highlight flood. Worn boots dark brown, not bright orange. Lighting neutral from above, no strong coloured rim light.\nCrisp deliberate pixel clusters, limited restrained shading, same visual density as the game asset. Render enlarged for preparation. No text, labels, borders, UI, background, grid, ground, cast shadow, upper bodies, arms or weapons. Real alpha transparent background.",
+    "source": "res://artifacts/leg_consistency/south_master.png",
+    "tool": "built-in image_gen"
+  },
+  "tool": "built-in image_gen"
+}

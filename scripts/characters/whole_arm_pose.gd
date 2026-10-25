@@ -15,7 +15,11 @@ var _points := PackedVector2Array()
 func _ready() -> void:
 	var rig: Node2D = get_parent().get_parent()
 	var grip: Node2D = grip_target.get_parent()
-	_neutral_wrist = grip.position + grip_target.position.rotated(deg_to_rad(rig.bearing_degrees) - rig.drawn_weapon_angle) - position
+	var neutral_angle: float = deg_to_rad(rig.bearing_degrees) - rig.drawn_weapon_angle
+	var neutral_grip: Vector2 = grip.position
+	if rig.stock_socket != null and rig.stock_anchor != null:
+		neutral_grip = rig.weapon_position(neutral_angle)
+	_neutral_wrist = neutral_grip + (grip_target.position * grip.scale).rotated(neutral_angle) - position
 	_points = $Image.uv
 	for index in _points.size():
 		_points[index] -= source_shoulder_uv

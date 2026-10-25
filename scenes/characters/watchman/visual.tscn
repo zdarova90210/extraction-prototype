@@ -1,0 +1,62 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/characters/character_visual.gd" id="visual"]
+[ext_resource type="Shader" path="res://scripts/characters/actor_cutout.gdshader" id="cutout"]
+[ext_resource type="Resource" path="res://resources/characters/walk.tres" id="walk"]
+[ext_resource type="Resource" path="res://resources/characters/sneak.tres" id="sneak"]
+
+[ext_resource type="PackedScene" path="res://scenes/characters/watchman/east.tscn" id="rig_east"]
+[ext_resource type="PackedScene" path="res://scenes/characters/watchman/southeast.tscn" id="rig_southeast"]
+[ext_resource type="PackedScene" path="res://scenes/characters/watchman/south.tscn" id="rig_south"]
+[ext_resource type="PackedScene" path="res://scenes/characters/watchman/northeast.tscn" id="rig_northeast"]
+[ext_resource type="PackedScene" path="res://scenes/characters/watchman/north.tscn" id="rig_north"]
+
+[sub_resource type="ViewportTexture" id="View"]
+resource_local_to_scene = true
+viewport_path = NodePath("Pixels")
+
+[sub_resource type="ShaderMaterial" id="Cutout"]
+shader = ExtResource("cutout")
+
+[node name="CharacterVisual" type="Node2D"]
+texture_filter = 1
+script = ExtResource("visual")
+walk_gait = ExtResource("walk")
+sneak_gait = ExtResource("sneak")
+
+[node name="Shadow" type="Polygon2D" parent="."]
+z_index = -1
+polygon = PackedVector2Array(-13, 0, -9, -3, 8, -3, 14, 0, 8, 3, -9, 3)
+color = Color(0.02, 0.025, 0.025, 0.3)
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, -40)
+texture = SubResource("View")
+material = SubResource("Cutout")
+
+[node name="MuzzleAnchor" type="Marker2D" parent="."]
+
+[node name="Pixels" type="SubViewport" parent="."]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(128, 128)
+render_target_update_mode = 4
+
+[node name="Model" type="Node2D" parent="Pixels"]
+position = Vector2(64, 104)
+texture_filter = 1
+
+
+[node name="East" parent="Pixels/Model" instance=ExtResource("rig_east")]
+
+[node name="SouthEast" parent="Pixels/Model" instance=ExtResource("rig_southeast")]
+visible = false
+
+[node name="South" parent="Pixels/Model" instance=ExtResource("rig_south")]
+visible = false
+
+[node name="NorthEast" parent="Pixels/Model" instance=ExtResource("rig_northeast")]
+visible = false
+
+[node name="North" parent="Pixels/Model" instance=ExtResource("rig_north")]
+visible = false

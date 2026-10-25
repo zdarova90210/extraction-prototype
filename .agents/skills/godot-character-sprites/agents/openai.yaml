@@ -1,0 +1,6 @@
+interface:
+  display_name: "Персонажи Godot: спрайты и позы"
+  short_description: "Подготовка и проверка персонажей Extraction Prototype"
+  default_prompt: "Используй $godot-character-sprites, чтобы подготовить и проверить новый визуал персонажа на основе выбранного концепта и подходящих компонентов проекта."
+policy:
+  allow_implicit_invocation: true

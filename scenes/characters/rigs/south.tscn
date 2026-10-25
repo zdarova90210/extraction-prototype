@@ -2,13 +2,11 @@
 
 [ext_resource type="Script" path="res://scripts/characters/rig_pose.gd" id="rig"]
 [ext_resource type="Texture2D" path="res://assets/art/characters/directions/south.png" id="atlas"]
-[ext_resource type="Shader" path="res://scripts/characters/leg_shadows.gdshader" id="shadow"]
 
 [ext_resource type="Script" path="res://scripts/characters/arm_pose_guides.gd" id="guides"]
 
-[sub_resource type="ShaderMaterial" id="LegShadows"]
-shader = ExtResource("shadow")
-shader_parameter/shadow_lift = 0.035
+[ext_resource type="PackedScene" path="res://scenes/characters/legs/south_near.tscn" id="leg_near"]
+[ext_resource type="PackedScene" path="res://scenes/characters/legs/south_far.tscn" id="leg_far"]
 
 [sub_resource type="AtlasTexture" id="Torso"]
 atlas = ExtResource("atlas")
@@ -24,74 +22,12 @@ bearing_degrees = 90.0
 stride_axis = Vector2(0, 0.45)
 knee_sides = Vector2(1, -1)
 use_profile_tracks = false
-foot_tracks = Vector2(-6, 6)
+foot_tracks = Vector2(-6.5, 6.5)
 drawn_weapon_angle = 1.5391
 
-[node name="FarLeg" type="Node2D" parent="."]
-position = Vector2(6, -27)
+[node name="FarLeg" parent="." instance=ExtResource("leg_far")]
 
-[node name="Thigh" type="Polygon2D" parent="FarLeg"]
-material = SubResource("LegShadows")
-polygon = PackedVector2Array(-6.5, -1, 6.5, -1, 6.5, 15, -6.5, 15)
-uv = PackedVector2Array(66, 0, 79, 0, 79, 16, 66, 16)
-texture = ExtResource("atlas")
-
-[node name="Shin" type="Node2D" parent="FarLeg"]
-position = Vector2(0, 13)
-
-[node name="Image" type="Polygon2D" parent="FarLeg/Shin"]
-material = SubResource("LegShadows")
-polygon = PackedVector2Array(-6.5, -2, 6.5, -2, 6.5, 11, -6.5, 11)
-uv = PackedVector2Array(66, 12, 79, 12, 79, 25, 66, 25)
-texture = ExtResource("atlas")
-
-[node name="Foot" type="Node2D" parent="FarLeg/Shin"]
-position = Vector2(0, 10)
-
-[node name="Image" type="Polygon2D" parent="FarLeg/Shin/Foot"]
-material = SubResource("LegShadows")
-polygon = PackedVector2Array(-6.5, -2, 6.5, -2, 6.5, 4, -6.5, 4)
-uv = PackedVector2Array(66, 22, 79, 22, 79, 28, 66, 28)
-texture = ExtResource("atlas")
-
-[node name="Heel" type="Marker2D" parent="FarLeg/Shin/Foot"]
-position = Vector2(-4, 4)
-
-[node name="Toe" type="Marker2D" parent="FarLeg/Shin/Foot"]
-position = Vector2(4, 4)
-
-[node name="NearLeg" type="Node2D" parent="."]
-position = Vector2(-6, -27)
-
-[node name="Thigh" type="Polygon2D" parent="NearLeg"]
-material = SubResource("LegShadows")
-polygon = PackedVector2Array(-5, -1, 5, -1, 5, 15, -5, 15)
-uv = PackedVector2Array(44, 0, 54, 0, 54, 16, 44, 16)
-texture = ExtResource("atlas")
-
-[node name="Shin" type="Node2D" parent="NearLeg"]
-position = Vector2(0, 13)
-
-[node name="Image" type="Polygon2D" parent="NearLeg/Shin"]
-material = SubResource("LegShadows")
-polygon = PackedVector2Array(-5, -2, 5, -2, 5, 11, -5, 11)
-uv = PackedVector2Array(44, 12, 54, 12, 54, 25, 44, 25)
-texture = ExtResource("atlas")
-
-[node name="Foot" type="Node2D" parent="NearLeg/Shin"]
-position = Vector2(0, 10)
-
-[node name="Image" type="Polygon2D" parent="NearLeg/Shin/Foot"]
-material = SubResource("LegShadows")
-polygon = PackedVector2Array(-5, -2, 5, -2, 5, 4, -5, 4)
-uv = PackedVector2Array(44, 22, 54, 22, 54, 28, 44, 28)
-texture = ExtResource("atlas")
-
-[node name="Heel" type="Marker2D" parent="NearLeg/Shin/Foot"]
-position = Vector2(-4, 4)
-
-[node name="Toe" type="Marker2D" parent="NearLeg/Shin/Foot"]
-position = Vector2(4, 4)
+[node name="NearLeg" parent="." instance=ExtResource("leg_near")]
 
 [node name="Upper" type="Node2D" parent="."]
 

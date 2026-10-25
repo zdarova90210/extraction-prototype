@@ -36,10 +36,10 @@ func _run() -> void:
 	_check(_player_steps.is_empty() and _guard_steps.is_empty(), "Stationary actors produce no footsteps")
 	player.global_position = Vector2(300, 600)
 	Input.action_press("move_right")
-	await _ticks(60)
+	await _ticks(90)
 	Input.action_release("move_right")
 	await _ticks(1)
-	_check(_player_steps.size() == floori(_travel / footsteps.step_distance) and _player_steps.size() >= 3, "Cadence follows actual travelled pixels instead of time or input presses")
+	_check(_player_steps.size() == floori(_travel / (player.body_visual.stride_distance_override * 0.5)) and _player_steps.size() >= 3, "Cadence follows actual travel and foot contacts instead of time or input presses")
 	_check(_surfaces.all(func(id: StringName): return id == &"concrete"), "Concrete travel selects concrete recordings")
 	var count := _player_steps.size()
 	await _ticks(50)
@@ -56,7 +56,7 @@ func _run() -> void:
 	player.global_position = Vector2(390, 700)
 	footsteps.stop()
 	Input.action_press("move_right")
-	await _ticks(40)
+	await _ticks(60)
 	Input.action_release("move_right")
 	await _ticks(1)
 	_check(_surfaces.back() == &"metal" and _player_steps.size() > wall_count, "Real movement over deck selects metal footsteps")
@@ -88,7 +88,7 @@ func _run() -> void:
 	footsteps.step_distance = 24.0
 	player.body_visual.stride_distance_override = 48.0
 	Input.action_press("move_right")
-	await _ticks(130)
+	await _ticks(165)
 	Input.action_release("move_right")
 	await _ticks(1)
 	var no_repeats := true

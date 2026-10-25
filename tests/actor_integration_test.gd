@@ -2,6 +2,7 @@ extends "res://tests/loot_slots_test.gd"
 ## Real forest actors and input: shared art, immediate fire, safe UI, healing and death.
 
 const CHARACTER = preload("res://scenes/characters/character_visual.tscn")
+const WATCHMAN = preload("res://scenes/characters/watchman/visual.tscn")
 const SHOT = preload("res://scripts/shot_effect.gd")
 
 func _run() -> void:
@@ -19,9 +20,10 @@ func _run() -> void:
 	await _ticks(5)
 	var visual: Node2D = player.body_visual
 	var other: Node2D = guard.body_visual
-	_check(visual.scene_file_path == CHARACTER.resource_path and other.scene_file_path == CHARACTER.resource_path, "Forest player and guard instance the same visual as the animation stand")
+	_check(visual.scene_file_path == CHARACTER.resource_path and other.scene_file_path == WATCHMAN.resource_path and visual.get_script() == other.get_script(), "Forest player and watchman use separate saved outfits with the same animator")
 	_check(visual.get_node("Pixels").get_texture() != other.get_node("Pixels").get_texture(), "Each actor owns an independent pose viewport")
-	_check(player.move_speed == 250.0 and guard.move_speed == 135.0 and player.weapon.damage == 20.0 and guard.weapon.damage == 18.0, "Visual adoption preserves movement and combat balance")
+	_check(player.move_speed == 160.0 and guard.move_speed == 140.0 and player.weapon.damage == 20.0 and guard.weapon.damage == 18.0, "Slower player stays slightly faster than watchman with existing weapon damage")
+	_check(visual.stride_distance_override == 128.0 and other.stride_distance_override == 128.0, "Both gameplay actors use the same travel distance per gait cycle")
 	_check(player.get_node("CollisionShape2D").shape.radius == 15 and guard.agent.radius == 15, "Ground collisions and navigation radius stay at 15 px")
 	_check(player.aim.position == Vector2(0, -30) and player.get_node("Camera2D").position == Vector2(0, -30), "Interaction origin and camera composition retain their established height")
 	player.weapon.max_range = 500.0
@@ -87,14 +89,14 @@ func _run() -> void:
 	Input.action_press("move_left")
 	await _ticks(20)
 	Input.action_release("move_left")
-	_check(player.sneaking and visual.sneak_blend > 0.99 and player.position.distance_to(start) > 45.0 and player.position.distance_to(start) < 55.0, "C applies the accepted slow gait to actual forest movement")
+	_check(player.sneaking and visual.sneak_blend > 0.99 and absf(player.position.distance_to(start) - player.move_speed * player.sneak_speed_multiplier * 20.0 / 60.0) < 5.0, "C applies the accepted slow gait to actual forest movement")
 	await _key(KEY_C)
 	await _ticks(18)
 	start = player.position
 	Input.action_press("move_right")
 	await _ticks(20)
 	Input.action_release("move_right")
-	_check(not player.sneaking and player.position.distance_to(start) > 78.0 and player.position.distance_to(start) < 88.0, "Ordinary movement returns to its existing 250 px/s speed")
+	_check(not player.sneaking and absf(player.position.distance_to(start) - player.move_speed * 20.0 / 60.0) < 5.0, "Ordinary movement returns to the configured 160 px/s speed")
 	# A rotated frozen guard must also fall horizontally at its ground origin.
 	guard.aim.rotation = -PI / 2
 	other.sync_actor()

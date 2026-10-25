@@ -13,7 +13,7 @@ enum State { PATROL, INVESTIGATE, SEARCH, AIM, BURST, RELOAD, DEAD }
 @export var patrol_start: Node2D
 @export var patrol_end: Node2D
 @export_range(1.0, 1000.0, 1.0) var max_health: float = 150.0
-@export_range(20.0, 400.0, 5.0) var move_speed: float = 135.0
+@export_range(20.0, 400.0, 5.0) var move_speed: float = 140.0
 @export_range(50.0, 1200.0, 10.0) var sight_range: float = 640.0
 @export_range(30.0, 360.0, 5.0) var field_of_view: float = 150.0
 @export_range(50.0, 1200.0, 10.0) var hearing_range: float = 750.0
@@ -44,7 +44,6 @@ var _patrol_index: int = 0
 var _repath_time: float = 0.0
 var _has_destination: bool = false
 var _sees_target: bool = false
-var _warning_end: Vector2 = Vector2.ZERO
 var _reload_destination: Vector2 = Vector2.ZERO
 var _reload_side: float = 1.0
 var _desired_angle: float = 0.0
@@ -78,7 +77,7 @@ func can_see_target() -> bool:
 		var facing := Vector2.RIGHT.rotated(aim.global_rotation)
 		if facing.dot(offset.normalized()) < cos(deg_to_rad(field_of_view * 0.5)):
 			return false
-	var query := PhysicsRayQueryParameters2D.create(global_position, target.global_position, 7, [get_rid()])
+	var query := PhysicsRayQueryParameters2D.create(global_position, target.global_position, weapon.hit_mask, [get_rid()])
 	query.hit_from_inside = true
 	var hit := get_world_2d().direct_space_state.intersect_ray(query)
 	return not hit.is_empty() and hit["collider"] == target
@@ -186,13 +185,6 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	moved.emit(get_position_delta().length())
 	body_visual.sync_actor()
-	if state == State.AIM:
-		var direction := Vector2.RIGHT.rotated(aim.global_rotation)
-		_warning_end = global_position + direction * weapon.max_range
-		var query := PhysicsRayQueryParameters2D.create(global_position, _warning_end, 7, [get_rid()])
-		var hit := get_world_2d().direct_space_state.intersect_ray(query)
-		if not hit.is_empty():
-			_warning_end = hit["position"]
 	_update_caption()
 	queue_redraw()
 
@@ -323,6 +315,4 @@ func _draw() -> void:
 		return
 	if state == State.AIM:
 		var progress := _preparation
-		var visual_offset := aim.global_position - global_position
-		draw_line(to_local(aim.global_position), to_local(_warning_end + visual_offset), Color(0.95, 0.36, 0.23, 0.25 + progress * 0.55), 1.5, true)
 		draw_arc(to_local(aim.global_position), 25.0, -PI * 0.5, -PI * 0.5 + TAU * progress, 40, Color("efb37b"), 2.0, true)

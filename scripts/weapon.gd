@@ -1,5 +1,5 @@
 extends Node2D
-## One physics ray per shot: nearest solid object stops both damage and tracer.
+## One physics ray per shot: nearest shot blocker stops damage and tracer.
 
 signal shot_fired(from: Vector2, to: Vector2, hit: bool)
 signal hit_registered(point: Vector2, collider: Object)
@@ -18,7 +18,7 @@ const SHOT_EFFECT = preload("res://scripts/shot_effect.gd")
 @export_range(50.0, 2400.0, 10.0, "suffix:px") var max_range: float = 1000.0
 @export_range(1, 100, 1) var magazine_size: int = 12
 @export_range(0.1, 10.0, 0.1, "suffix:s") var reload_duration: float = 1.5
-@export_flags_2d_physics var hit_mask: int = 1 | 4 | 8
+@export_flags_2d_physics var hit_mask: int = WorldObstacle.SHOT_MASK | 4 | 8
 @export var tracer_color: Color = Color(1.0, 0.86, 0.56)
 ## Optional drawn barrel; physics still starts at the shooter's ground centre.
 @export var visual_muzzle: Marker2D

@@ -6,7 +6,7 @@ signal damaged
 signal died
 signal moved(distance: float)
 
-@export_range(20.0, 800.0, 5.0, "suffix:px/s") var move_speed: float = 250.0
+@export_range(20.0, 800.0, 5.0, "suffix:px/s") var move_speed: float = 160.0
 @export_range(1.0, 1000.0, 1.0) var max_health: float = 100.0
 @export_range(0.3, 0.9, 0.05) var sneak_speed_multiplier := 0.6
 

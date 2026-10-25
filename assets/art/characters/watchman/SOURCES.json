@@ -1,0 +1,518 @@
+{
+	"art_dir": "res://assets/art/characters/watchman",
+	"description": "Собственный верх сторожа: ватник, шапка, голова, ремни и две цельные руки. Общая походка, ноги/карабин и физика сохранены. Пять поз дают восемь направлений.",
+	"output_dir": "res://scenes/characters/watchman",
+	"source_prompts": {
+		"canonical": "Use case: stylized-concept. Asset type: production-source modular 2D pixel-art upper-body parts for an eight-direction Godot character.\nReference image 1: use ONLY the TOP LEFT forest watchman concept for identity. Reference image 2: existing game figure scale and elevated orthographic camera, not its olive costume or backpack.\nIdentity: adult weathered forest watchman, dark slate-blue quilted work jacket, charcoal wool cap, short dark moustache/stubble, tan diagonal strap, modest belt pouches, NO backpack, NO military helmet, no armour. Restrained readable pixel clusters matching a sombre forest RPG, about 40 logical pixels from cap to waist, human proportions and ordinary shoulder widths. Keep the same man/outfit in every view.\n\nMake a transparent source sheet with exactly THREE ROWS and FOUR COLUMNS of evenly separated components, generous empty gutters. Invisible layout only: no text, no cell borders.\nROW ONE: facing straight SOUTH toward viewer.\nROW TWO: facing NORTH EAST, back-right three-quarter; we see his BACK and right side, NOT his chest.\nROW THREE: facing straight NORTH, back to viewer, absolutely NO face.\n\nEach row has the same FOUR columns:\nColumn 1: assembled upper body from head through waist, both complete arms naturally holding a short wooden rifle in a ready-to-shoot stance close to torso. This is the anatomy guide ONLY. Buttstock belongs by shoulder, wrists on grips; not rifle raised above head or hanging by its stock.\nColumn 2: exactly matching head + torso through waistband, arms and rifle REMOVED, shoulder cloth closed with no black sockets. Include full cap, collar, torso, straps and belt.\nColumn 3: the complete arm that is on the VIEWER'S LEFT in the guide, detached but keeping exactly that view and pose. Single continuous painted limb shoulder cap -> upper arm -> rounded elbow -> forearm -> cuff -> bare empty gripping hand. NO gun or body.\nColumn 4: the complete VIEWER'S RIGHT arm in the guide, same requirements, its own correct pose and grip. NO gun or body.\nAll arms are whole and continuous at elbow, never sliced into separate upper/lower arm parts. Clothing continues all around the elbow. Hands empty in detached components. In rear views forearms bend forward round the sides to chest-height grips; include hidden continuation in isolated arm so it can be animated without a hole.\nNo legs, ground, cast shadow, scenery, labels, arrows, UI, extra components or alternative outfits. Real alpha transparency, no painted checkerboard.\nAssembly priorities: shoulders attach BELOW neck. The elbow is a rounded bend near lower ribs and the forearm continues from it toward the weapon. Preserve the complete silhouette even when the assembled torso occludes part of a rear arm. Camera looks down about 35 degrees, never a side-on portrait. Source is larger for preparation but keep chunky coherent logical-pixel detail, no painterly hairlines.",
+		"remaining": "Use case: identity-preserve. Production-source modular pixel-art parts for the SAME watchman as reference image 1. Preserve his slate-blue quilted civilian jacket, charcoal wool cap, short moustache/stubble, tan strap and small belt pouches, NO backpack. Reference image 2 supplies game camera/scale only, not its costume. Match reference 1 logical proportions: cap-to-waist about 40 game pixels; complete bent arms about 24 game pixels tall; restrained detailed pixel clusters.\n\nTransparent sheet, TWO ROWS by FOUR COLUMNS, generous empty gutters, NO labels or grid lines.\nROW ONE: character facing EAST / screen-right, a true RIGHT SIDE profile in elevated orthographic RPG view. Nose and rifle point right, not toward viewer.\nROW TWO: character facing SOUTH EAST / screen-bottom-right, a front-right three-quarter view. Face and chest visible, different from the back-right reference.\n\nEach row:\nCOL1: assembled upper body cap to belt, both complete arms naturally holding a compact wooden rifle, buttstock near shoulder, barrel to that row's direction. Guide only.\nCOL2: matching head and torso through waistband alone, NO arms or weapon, closed natural shoulder cloth, no dangling sleeve pieces. Keep this man's proportions and costume exactly.\nCOL3: SUPPORT arm alone, shoulder through upper arm, rounded elbow, full forearm, cuff and empty bare supporting hand. Exact corresponding pose/perspective from guide, the hand holds under the forward barrel. Entire continuous painted arm, no elbow cuts.\nCOL4: TRIGGER arm alone, entire shoulder/upper arm/round elbow/forearm/cuff and empty trigger hand; naturally bent, exact guide's perspective, hand close to buttstock at chest level. No gun in detached limbs.\n\nFor EAST arms, upper arm descends naturally from shoulder, rounded elbow near lower ribs, forearm extends RIGHT toward the rifle; do not make straight disconnected sleeve bars. For SOUTH EAST, both hands meet the rifle diagonally down-right, keep the stock beside shoulder, not hanging away from torso. Detached arms must include the hidden continuation under the torso for animation. No legs, floor, cast shadows, scenery, UI, words, extra directions or components. Real transparent alpha background."
+	},
+	"tool": "built-in image_gen",
+	"upstream_review": {
+		"commit": "49b2c615b08c31cb74199d0ea54b7535910719eb",
+		"path": "content/skills/game-art-2d",
+		"repository": "https://github.com/woliveiras/geremmyas",
+		"use": "Сравнение подготовки; публичные скрипты не являются зависимостью игры."
+	},
+	"views": [
+		{
+			"atlas_sha256": "47cf7c3b4062536e9f788b8ec17946674cbe40deb9413c721c38906536927725",
+			"joints": [
+				[
+					[
+						0.42,
+						0.08
+					],
+					[
+						0.26,
+						0.68
+					],
+					[
+						0.82,
+						0.84
+					]
+				],
+				[
+					[
+						0.66,
+						0.08
+					],
+					[
+						0.78,
+						0.67
+					],
+					[
+						0.25,
+						0.84
+					]
+				]
+			],
+			"master_sha256": "0f5b55e4e0e4a9d4ca6ef5479a6955e3aa23682663ff13847a782a1813b33548",
+			"name": "south",
+			"parts": [
+				{
+					"master_rect": [
+						531,
+						83,
+						183,
+						281
+					],
+					"rect": [
+						0,
+						0,
+						26,
+						40
+					]
+				},
+				{
+					"master_rect": [
+						853,
+						167,
+						155,
+						164
+					],
+					"rect": [
+						0,
+						48,
+						23,
+						24
+					]
+				},
+				{
+					"master_rect": [
+						1143,
+						161,
+						138,
+						184
+					],
+					"rect": [
+						36,
+						48,
+						18,
+						24
+					]
+				}
+			],
+			"regions": [
+				[
+					0.34,
+					0.0,
+					0.2,
+					0.333333333333333
+				],
+				[
+					0.57,
+					0.0,
+					0.19,
+					0.333333333333333
+				],
+				[
+					0.78,
+					0.0,
+					0.22,
+					0.333333333333333
+				]
+			],
+			"source": "res://artifacts/character_watchman_sources/canonical.png"
+		},
+		{
+			"atlas_sha256": "792dd2b3970454a65cb71758b5f86586374ee492fbe8fdd07c315f805986a017",
+			"joints": [
+				[
+					[
+						0.18,
+						0.1
+					],
+					[
+						0.35,
+						0.79
+					],
+					[
+						0.87,
+						0.43
+					]
+				],
+				[
+					[
+						0.77,
+						0.1
+					],
+					[
+						0.68,
+						0.83
+					],
+					[
+						0.15,
+						0.64
+					]
+				]
+			],
+			"master_sha256": "0f5b55e4e0e4a9d4ca6ef5479a6955e3aa23682663ff13847a782a1813b33548",
+			"name": "northeast",
+			"parts": [
+				{
+					"master_rect": [
+						519,
+						431,
+						185,
+						276
+					],
+					"rect": [
+						0,
+						0,
+						27,
+						40
+					]
+				},
+				{
+					"master_rect": [
+						857,
+						522,
+						163,
+						136
+					],
+					"rect": [
+						0,
+						48,
+						29,
+						24
+					]
+				},
+				{
+					"master_rect": [
+						1112,
+						533,
+						185,
+						142
+					],
+					"rect": [
+						36,
+						48,
+						31,
+						24
+					]
+				}
+			],
+			"regions": [
+				[
+					0.34,
+					0.333333333333333,
+					0.2,
+					0.333333333333333
+				],
+				[
+					0.57,
+					0.333333333333333,
+					0.19,
+					0.333333333333333
+				],
+				[
+					0.78,
+					0.333333333333333,
+					0.22,
+					0.333333333333333
+				]
+			],
+			"source": "res://artifacts/character_watchman_sources/canonical.png"
+		},
+		{
+			"atlas_sha256": "3c6e65d6402329f849dfd3018b3a1e71765440bcb0fa380b4e0d54c8010292d7",
+			"joints": [
+				[
+					[
+						0.7,
+						0.08
+					],
+					[
+						0.63,
+						0.82
+					],
+					[
+						0.13,
+						0.37
+					]
+				],
+				[
+					[
+						0.23,
+						0.08
+					],
+					[
+						0.31,
+						0.83
+					],
+					[
+						0.87,
+						0.44
+					]
+				]
+			],
+			"master_sha256": "0f5b55e4e0e4a9d4ca6ef5479a6955e3aa23682663ff13847a782a1813b33548",
+			"name": "north",
+			"parts": [
+				{
+					"master_rect": [
+						520,
+						764,
+						199,
+						280
+					],
+					"rect": [
+						0,
+						0,
+						28,
+						40
+					]
+				},
+				{
+					"master_rect": [
+						816,
+						864,
+						136,
+						133
+					],
+					"rect": [
+						0,
+						48,
+						25,
+						24
+					]
+				},
+				{
+					"master_rect": [
+						1185,
+						864,
+						147,
+						134
+					],
+					"rect": [
+						36,
+						48,
+						26,
+						24
+					]
+				}
+			],
+			"regions": [
+				[
+					0.34,
+					0.666666666666667,
+					0.2,
+					0.333333333333333
+				],
+				[
+					0.57,
+					0.666666666666667,
+					0.19,
+					0.333333333333333
+				],
+				[
+					0.78,
+					0.666666666666667,
+					0.22,
+					0.333333333333333
+				]
+			],
+			"source": "res://artifacts/character_watchman_sources/canonical.png"
+		},
+		{
+			"atlas_sha256": "08ee36af151b34d2e6abcc712163e4b684c654e9df0a20f59ed09891f5a3c212",
+			"joints": [
+				[
+					[
+						0.18,
+						0.1
+					],
+					[
+						0.24,
+						0.7
+					],
+					[
+						0.87,
+						0.7
+					]
+				],
+				[
+					[
+						0.3,
+						0.1
+					],
+					[
+						0.16,
+						0.72
+					],
+					[
+						0.81,
+						0.64
+					]
+				]
+			],
+			"master_sha256": "b5ae08b481821b41b78b02b610e71d109e1307dd905026a2d738eb454c02f626",
+			"name": "east",
+			"parts": [
+				{
+					"master_rect": [
+						647,
+						108,
+						200,
+						332
+					],
+					"rect": [
+						0,
+						0,
+						24,
+						40
+					]
+				},
+				{
+					"master_rect": [
+						1082,
+						215,
+						270,
+						172
+					],
+					"rect": [
+						0,
+						48,
+						38,
+						24
+					]
+				},
+				{
+					"master_rect": [
+						1428,
+						220,
+						212,
+						169
+					],
+					"rect": [
+						36,
+						48,
+						30,
+						24
+					]
+				}
+			],
+			"regions": [
+				[
+					0.34,
+					0.0,
+					0.21,
+					0.5
+				],
+				[
+					0.57,
+					0.0,
+					0.22,
+					0.5
+				],
+				[
+					0.8,
+					0.0,
+					0.2,
+					0.5
+				]
+			],
+			"source": "res://artifacts/character_watchman_sources/east_southeast.png"
+		},
+		{
+			"atlas_sha256": "26f58c20bdb8badeaa989b2329180ac89616d9803e1ac681074b30c34fc60ad5",
+			"joints": [
+				[
+					[
+						0.19,
+						0.1
+					],
+					[
+						0.28,
+						0.63
+					],
+					[
+						0.86,
+						0.85
+					]
+				],
+				[
+					[
+						0.65,
+						0.12
+					],
+					[
+						0.22,
+						0.48
+					],
+					[
+						0.75,
+						0.8
+					]
+				]
+			],
+			"master_sha256": "b5ae08b481821b41b78b02b610e71d109e1307dd905026a2d738eb454c02f626",
+			"name": "southeast",
+			"parts": [
+				{
+					"master_rect": [
+						635,
+						518,
+						244,
+						331
+					],
+					"rect": [
+						0,
+						0,
+						29,
+						40
+					]
+				},
+				{
+					"master_rect": [
+						1050,
+						615,
+						269,
+						220
+					],
+					"rect": [
+						0,
+						48,
+						29,
+						24
+					]
+				},
+				{
+					"master_rect": [
+						1419,
+						622,
+						193,
+						190
+					],
+					"rect": [
+						36,
+						48,
+						24,
+						24
+					]
+				}
+			],
+			"regions": [
+				[
+					0.34,
+					0.5,
+					0.21,
+					0.5
+				],
+				[
+					0.57,
+					0.5,
+					0.22,
+					0.5
+				],
+				[
+					0.8,
+					0.5,
+					0.2,
+					0.5
+				]
+			],
+			"source": "res://artifacts/character_watchman_sources/east_southeast.png"
+		}
+	]
+}

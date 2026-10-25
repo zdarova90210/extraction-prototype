@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1"]
-[ext_resource type="PackedScene" path="res://scenes/characters/character_visual.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/characters/watchman/visual.tscn" id="2"]
 [ext_resource type="Script" path="res://scripts/weapon.gd" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/weapon_audio.tscn" id="4"]
 [ext_resource type="Resource" path="res://resources/audio/weapons/rifle_shot.tres" id="5"]
@@ -40,7 +40,7 @@ rotation = 3.1415927
 position = Vector2(0, 30)
 actor = NodePath("../..")
 heading = NodePath("..")
-palette_tint = Color(0.86, 0.92, 0.86, 1)
+stride_distance_override = 128.0
 
 [node name="Weapon" type="Node2D" parent="Aim" node_paths=PackedStringArray("visual_muzzle")]
 script = ExtResource("3")
@@ -49,7 +49,7 @@ fire_rate = 5.0
 max_range = 650.0
 magazine_size = 4
 reload_duration = 1.4
-hit_mask = 7
+hit_mask = 22
 tracer_color = Color(1, 0.45, 0.29, 1)
 
 visual_muzzle = NodePath("../BodyVisual/MuzzleAnchor")

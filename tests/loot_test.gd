@@ -118,7 +118,7 @@ func _run() -> void:
 	var endpoints: Array[Vector2] = []
 	player.weapon.shot_fired.connect(func(_from: Vector2, to: Vector2, _hit: bool): endpoints.append(to))
 	player.weapon.try_fire(Vector2(900, 690), player)
-	_check(endpoints.size() == 1 and absf(endpoints[0].x - 630.0) < 1.0 and first.inventory.item_count == 4, "Container stops bullets without consuming or damaging loot")
+	_check(endpoints.size() == 1 and endpoints[0].is_equal_approx(player.global_position + Vector2.RIGHT * player.weapon.max_range) and first.inventory.item_count == 4, "Low container passes bullets without consuming or damaging loot")
 	await _key(KEY_E)
 	_check(menu.visible and not paused and not player.input_enabled and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE and not cursor.visible, "E opens live-world loot UI with safe controls and normal pointer")
 	var source_list: Node = menu.source_panel.get_node("Grid")

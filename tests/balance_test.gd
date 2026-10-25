@@ -132,7 +132,7 @@ func _run() -> void:
 	Input.action_release("move_right")
 	_player.set_physics_process(false)
 	await _ticks(20)
-	_check(_player.global_position.x > start.x + 90.0, "Real movement input strafes out of the firing lane")
+	_check(absf(_player.global_position.x - start.x - _player.move_speed * 27.0 / 60.0) < 8.0, "Real movement input strafes out of the firing lane at configured speed")
 	_check(_player.health == health_after_first, "Strafing after first hit avoids all later shots of the fixed burst")
 	_check(_enemy._burst_direction.is_equal_approx(burst_direction), "Burst direction stays fixed instead of tracking the moving player")
 	_check(_enemy.state == _enemy.State.RELOAD, "Missed burst still consumes ammunition and opens reload window")

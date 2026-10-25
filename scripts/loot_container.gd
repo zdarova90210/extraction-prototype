@@ -1,5 +1,5 @@
 @tool
-extends StaticBody2D
+extends WorldObstacle
 ## Saved world object; its Inventory owns runtime loot, not shared resources.
 
 @export var display_name: String = "Ящик"
@@ -46,6 +46,7 @@ func get_interaction_position() -> Vector2:
 
 
 func _ready() -> void:
+	super._ready()
 	_update_shape()
 	if Engine.is_editor_hint():
 		return
